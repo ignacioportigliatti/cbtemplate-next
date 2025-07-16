@@ -1,37 +1,16 @@
-import { getAllCategories } from "@/lib/wordpress";
-import { Section, Container, Prose } from "@/components/craft";
-import { Metadata } from "next";
-import BackButton from "@/components/back";
-import Link from "next/link";
+import { getActiveTemplate, loadTemplate } from "@/lib/template-resolver";
 
-export const metadata: Metadata = {
-  title: "All Categories",
-  description: "Browse all categories of our blog posts",
-  alternates: {
-    canonical: "/posts/categories",
-  },
-};
+export async function generateMetadata() {
+  const templateId = await getActiveTemplate();
+  const template = await loadTemplate(templateId);
+  
+  // Delegamos la metadata al template
+  return template.blogCategoriesMetadata();
+}
 
-export default async function Page() {
-  const categories = await getAllCategories();
-
-  return (
-    <Section>
-      <Container className="space-y-6">
-        <Prose className="mb-8">
-          <h2>All Categories</h2>
-          <ul className="grid">
-            {categories.map((category: any) => (
-              <li key={category.id}>
-                <Link href={`/posts/?category=${category.id}`}>
-                  {category.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </Prose>
-        <BackButton />
-      </Container>
-    </Section>
-  );
+export default async function BlogCategoriesPage() {
+  const templateId = await getActiveTemplate();
+  const template = await loadTemplate(templateId);
+  
+  return <template.BlogCategoriesPage />;
 }

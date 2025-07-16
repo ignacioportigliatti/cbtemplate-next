@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Carousel, CarouselItem, CarouselContent, CarouselPrevious, CarouselNext } from '../ui/carousel'
+import { Carousel, CarouselItem, CarouselContent, CarouselPrevious, CarouselNext } from '@/components/ui/carousel'
 import { AboutUsContent } from '@/lib/wordpress.d';
 import Image from 'next/image';
 import Lightbox from "yet-another-react-lightbox";

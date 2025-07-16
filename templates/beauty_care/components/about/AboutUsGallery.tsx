@@ -1,23 +1,23 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Carousel, CarouselItem, CarouselContent, CarouselPrevious, CarouselNext } from '../ui/carousel'
-import { ServiceItem } from '@/lib/wordpress.d';
+import { Carousel, CarouselItem, CarouselContent, CarouselPrevious, CarouselNext } from '@/components/ui/carousel'
+import { AboutUsContent } from '@/lib/wordpress.d';
 import Image from 'next/image';
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import Autoplay from "embla-carousel-autoplay";
 
 interface Props {
-    service: ServiceItem;
+    aboutUsContent: AboutUsContent;
 }
 
-const ServiceGallery = ({ service }: Props) => {
+const AboutUsGallery = ({ aboutUsContent }: Props) => {
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
 
     // Transformar las imágenes al formato que espera yet-another-react-lightbox
-    const lightboxImages = service.gallery?.map((image) => ({
+    const lightboxImages = aboutUsContent.gallery?.map((image) => ({
         src: image.url,
         alt: image.alt || 'Gallery image',
         width: image.width,
@@ -46,8 +46,8 @@ const ServiceGallery = ({ service }: Props) => {
                 className="w-full max-w-full"
             >
                 <CarouselContent className="-ml-2 md:-ml-4">
-                    {service.gallery?.map((image, index) => (
-                        <CarouselItem key={image.id} className="pl-2 md:pl-4 basis-full md:basis-1/3">
+                    {aboutUsContent.gallery?.map((image, index) => (
+                        <CarouselItem key={image.id} className="pl-2 md:pl-4 basis-full md:basis-1/4">
                             <div className="p-1">
                                 <Image 
                                     src={image.url} 
@@ -86,4 +86,4 @@ const ServiceGallery = ({ service }: Props) => {
     )
 }
 
-export default ServiceGallery
+export default AboutUsGallery

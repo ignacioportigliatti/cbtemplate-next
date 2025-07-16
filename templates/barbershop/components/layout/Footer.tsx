@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Container, Section } from "../craft";
+import { Container, Section } from "@/components/craft";
 import Link from "next/link";
 import { contentMenu, mainMenu } from "@/menu.config";
 import { ContactContent, ThemeOptions } from "@/lib/wordpress.d";

@@ -1,63 +1,16 @@
-import AboutUsContact from "@/components/about/AboutUsContact";
-import AboutUsGallery from "@/components/about/AboutUsGallery";
-import AboutUsInfo from "@/components/about/AboutUsInfo";
-import AboutUsMission from "@/components/about/AboutUsMission";
-import AboutUsValues from "@/components/about/AboutUsValues";
-import Location from "@/components/homepage/Location";
-import { getAboutUsContent, getContactContent } from "@/lib/wordpress";
-import Link from "next/link";
-import React from "react";
-import {
-  FaEnvelope,
-  FaFacebook,
-  FaGoogle,
-  FaInstagram,
-  FaLinkedin,
-  FaMapMarker,
-  FaTwitter,
-} from "react-icons/fa";
+import { getActiveTemplate, loadTemplate } from "@/lib/template-resolver";
 
-const AboutUsPage = async () => {
-  try {
-    const aboutUsContent = await getAboutUsContent();
-    const contactContent = await getContactContent();
+export async function generateMetadata() {
+  const templateId = await getActiveTemplate();
+  const template = await loadTemplate(templateId);
+  
+  // Delegamos la metadata al template
+  return template.aboutMetadata();
+}
 
-    if (!aboutUsContent) {
-      return (
-        <main className="space-y-6">
-          <h1>No content available</h1>
-          <p>Unable to load about page content.</p>
-        </main>
-      );
-    }
-
-    return (
-      <main>
-        {/* About Us Content */}
-        <section className="pt-24 md:pt-32 bg-background-600 pb-16">
-          <div className="max-w-7xl mx-auto px-8 xl:px-0">
-            <AboutUsInfo aboutUsContent={aboutUsContent} />
-            <AboutUsGallery aboutUsContent={aboutUsContent} />
-            <AboutUsMission aboutUsContent={aboutUsContent} />
-            <AboutUsValues aboutUsContent={aboutUsContent} />
-          </div>
-        </section>
-
-        {/* Contact Info */}
-        <section className="bg-background-900 py-16 px-4 lg:px-16">
-          <AboutUsContact contactContent={contactContent} />
-        </section>
-      </main>
-    );
-  } catch (error) {
-    console.error("Error fetching home content:", error);
-    return (
-      <main className="space-y-6">
-        <h1>Error Loading Content</h1>
-        <p>There was an error loading the about page content. Please try again later.</p>
-      </main>
-    );
-  }
-};
-
-export default AboutUsPage;
+export default async function AboutPage() {
+  const templateId = await getActiveTemplate();
+  const template = await loadTemplate(templateId);
+  
+  return <template.AboutPage />;
+}

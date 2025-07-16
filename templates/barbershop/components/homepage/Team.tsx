@@ -1,7 +1,6 @@
 import { TeamContent } from "@/lib/wordpress.d";
 import Image from "next/image";
 import React from "react";
-import { Button } from "../ui/button";
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
 import {

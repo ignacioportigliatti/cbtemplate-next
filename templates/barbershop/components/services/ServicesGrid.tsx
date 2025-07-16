@@ -1,7 +1,7 @@
 import { ServicesContent } from '@/lib/wordpress.d';
 import Link from 'next/link';
 import React from 'react'
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 
 interface Props {

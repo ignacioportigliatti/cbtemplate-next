@@ -25,3 +25,6 @@ export {
 
 // About
 export { default as AboutPage, generateMetadata as aboutMetadata } from './pages/AboutPage';
+
+// Contact
+export { default as ContactPage, generateMetadata as contactMetadata } from './pages/ContactPage';

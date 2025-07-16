@@ -72,7 +72,7 @@ export const Location = ({ contactContent }: Props) => {
   return (
     <div className="space-y-4 flex flex-col justify-start h-full">
       {/* Map */}
-      <div className="w-full h-64 overflow-hidden">
+      <div className="w-full rounded-lg h-64 overflow-hidden">
         <iframe
           src={`https://maps.google.com/maps?q=${encodeURIComponent(
             contactContent.location.address,
@@ -93,7 +93,7 @@ export const Location = ({ contactContent }: Props) => {
           <div
             key={index}
             className={cn(
-              "p-2 border text-center opacity-80 min-h-20 hover:opacity-100 transition-all",
+              "p-2 border text-center rounded-lg opacity-80 min-h-20 hover:opacity-100 transition-all",
               dayInfo.isToday
                 ? "border-accent opacity-100 bg-accent/20"
                 : "border-gray-600 bg-background-500",

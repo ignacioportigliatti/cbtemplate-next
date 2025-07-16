@@ -8,16 +8,16 @@ interface Props {
 const AboutUsValues = ({ aboutUsContent }: Props) => {
   return (
     <div className="text-center md:text-left">
-      <h3 className="text-primary font-medium text-xl text-center md:text-left tracking-[0.2em] uppercase font-heading">
+      <h5 className="text-primary text-2xl text-center font-bold md:text-left font-heading">
         {aboutUsContent.values.title}
-      </h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      </h5>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         {aboutUsContent.values.list.map((value, index) => (
           <div
             key={index}
-            className="flex flex-col"
+            className="flex rounded-lg bg-background-900 hover:bg-background-800 transition-all duration-300 p-6 flex-col"
           >
-            <h4 className="text-text font-medium text-lg">{value.title}</h4>
+            <h4 className="text-text font-bold text-2xl mb-2 font-heading">{value.title}</h4>
             <p className="text-text">{value.description}</p>
           </div>
         ))}

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Next.js Revalidation
  * Description: Revalidates Next.js site when WordPress content changes
- * Version: 1.0.5
+ * Version: 1.0.6
  * Author: 9d8
  * Author URI: https://9d8.dev
  */
@@ -61,6 +61,20 @@ class Next_Revalidation {
         add_action('wp_update_nav_menu', array($this, 'on_menu_change'), 10);
         add_action('wp_create_nav_menu', array($this, 'on_menu_change'), 10);
         add_action('wp_delete_nav_menu', array($this, 'on_menu_change'), 10);
+        
+        // ACF Field changes - only if ACF is active and enabled in settings
+        if ($this->is_acf_active() && $this->is_acf_revalidation_enabled()) {
+            // ACF field update hooks
+            add_action('acf/save_post', array($this, 'on_acf_field_change'), 20, 1);
+            add_action('acf/update_value', array($this, 'on_acf_field_update'), 10, 4);
+            
+            // ACF Options page changes
+            add_action('acf/save_post', array($this, 'on_acf_options_change'), 20, 1);
+            
+            // ACF Field Group changes
+            add_action('acf/update_field_group', array($this, 'on_acf_field_group_change'), 10, 1);
+            add_action('acf/delete_field_group', array($this, 'on_acf_field_group_change'), 10, 1);
+        }
     }
 
     public function init() {
@@ -112,6 +126,14 @@ class Next_Revalidation {
             'next-revalidation-settings',
             'next_revalidation_section'
         );
+        
+        add_settings_field(
+            'enable_acf_revalidation',
+            'Enable ACF Revalidation',
+            array($this, 'enable_acf_revalidation_callback'),
+            'next-revalidation-settings',
+            'next_revalidation_section'
+        );
     }
 
     public function sanitize_settings($input) {
@@ -134,6 +156,10 @@ class Next_Revalidation {
         if(isset($input['revalidation_cooldown'])) {
             $cooldown = intval($input['revalidation_cooldown']);
             $new_input['revalidation_cooldown'] = max(0, min(60, $cooldown)); // Between 0 and 60 seconds
+        }
+        
+        if(isset($input['enable_acf_revalidation'])) {
+            $new_input['enable_acf_revalidation'] = (bool)$input['enable_acf_revalidation'];
         }
         
         return $new_input;
@@ -165,6 +191,20 @@ class Next_Revalidation {
         $value = isset($this->options['revalidation_cooldown']) ? intval($this->options['revalidation_cooldown']) : 2;
         echo '<input type="number" min="0" max="60" id="revalidation_cooldown" name="' . $this->option_name . '[revalidation_cooldown]" value="' . $value . '" class="small-text" />';
         echo '<p class="description">Minimum seconds between revalidation requests (0-60). Use higher values for busy sites.</p>';
+    }
+    
+    public function enable_acf_revalidation_callback() {
+        $value = isset($this->options['enable_acf_revalidation']) ? (bool)$this->options['enable_acf_revalidation'] : false;
+        $acf_active = $this->is_acf_active();
+        
+        echo '<input type="checkbox" id="enable_acf_revalidation" name="' . $this->option_name . '[enable_acf_revalidation]" ' . checked($value, true, false) . ($acf_active ? '' : ' disabled') . ' />';
+        echo '<label for="enable_acf_revalidation">Enable revalidation when ACF fields change</label>';
+        
+        if (!$acf_active) {
+            echo '<p class="description" style="color: #d63638;">Advanced Custom Fields plugin is not active. Install and activate ACF to use this feature.</p>';
+        } else {
+            echo '<p class="description">Trigger revalidation when any ACF field is updated, including options pages and field groups.</p>';
+        }
     }
 
     public function add_admin_menu() {
@@ -419,6 +459,77 @@ class Next_Revalidation {
     public function on_menu_change($menu_id) {
         error_log("Next.js Revalidation: Menu changed {$menu_id}");
         $this->send_revalidation_request('menu', $menu_id);
+    }
+    
+    /**
+     * Check if Advanced Custom Fields plugin is active
+     */
+    private function is_acf_active() {
+        return function_exists('acf_get_field_groups') || class_exists('ACF');
+    }
+    
+    /**
+     * Check if ACF revalidation is enabled in settings
+     */
+    private function is_acf_revalidation_enabled() {
+        return isset($this->options['enable_acf_revalidation']) && (bool)$this->options['enable_acf_revalidation'];
+    }
+    
+    /**
+     * Handle ACF field changes on posts/pages
+     */
+    public function on_acf_field_change($post_id) {
+        // Skip if it's a revision or autosave
+        if (wp_is_post_revision($post_id) || wp_is_post_autosave($post_id)) {
+            return;
+        }
+        
+        // Get post type
+        $post_type = get_post_type($post_id);
+        if (!$post_type) {
+            return;
+        }
+        
+        error_log("Next.js Revalidation: ACF fields changed for {$post_type} {$post_id}");
+        $this->send_revalidation_request($post_type, $post_id);
+    }
+    
+    /**
+     * Handle ACF field value updates
+     */
+    public function on_acf_field_update($value, $post_id, $field, $original) {
+        // Skip if it's a revision or autosave
+        if (wp_is_post_revision($post_id) || wp_is_post_autosave($post_id)) {
+            return;
+        }
+        
+        // Get post type
+        $post_type = get_post_type($post_id);
+        if (!$post_type) {
+            return;
+        }
+        
+        error_log("Next.js Revalidation: ACF field '{$field['name']}' updated for {$post_type} {$post_id}");
+        $this->send_revalidation_request($post_type, $post_id);
+    }
+    
+    /**
+     * Handle ACF options page changes
+     */
+    public function on_acf_options_change($post_id) {
+        // Check if this is an options page (ACF uses 'options' as post_id for options pages)
+        if ($post_id === 'options' || strpos($post_id, 'options_') === 0) {
+            error_log("Next.js Revalidation: ACF options page changed");
+            $this->send_revalidation_request('acf_options', null);
+        }
+    }
+    
+    /**
+     * Handle ACF field group changes
+     */
+    public function on_acf_field_group_change($field_group) {
+        error_log("Next.js Revalidation: ACF field group changed");
+        $this->send_revalidation_request('acf_field_group', null);
     }
     
     private function log_revalidation($content_type, $content_id, $success, $response = '') {

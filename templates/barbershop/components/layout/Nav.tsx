@@ -40,28 +40,7 @@ export const Nav = ({ className, children, id, themeOptions, contactContent }: N
             />
         </Link>
         {children}
-        <div className="flex items-center gap-2">
-          {/* <div className="mx-2 hidden md:flex">
-            {Object.entries(mainMenu).map(([key, href]) => (
-              <Button
-                key={href}
-                asChild
-                className="text-white hover:text-amber-400 hover:bg-amber-800"
-                variant="ghost"
-                size="sm"
-              >
-                <Link key={key} href={href}>{key.charAt(0).toUpperCase() + key.slice(1)}</Link>
-              </Button>
-            ))}
-          </div>
-          <Button
-            asChild
-            className="hidden sm:flex"
-          >
-            <Link href="#">Get Started</Link>
-          </Button> */}
           <MobileNav themeOptions={themeOptions as ThemeOptions} contactContent={contactContent as ContactContent} />
-        </div>
       </div>
     </nav>
   );

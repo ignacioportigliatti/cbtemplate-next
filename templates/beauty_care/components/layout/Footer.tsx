@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Container, Section } from "@/components/craft";
 import Link from "next/link";
-import { contentMenu, mainMenu } from "@/menu.config";
+import { contentMenu, mainMenu } from "@/templates/beauty_care/menu.config";
 import { ContactContent, ThemeOptions } from "@/lib/wordpress.d";
 
 interface FooterProps {
@@ -12,7 +12,7 @@ interface FooterProps {
 export const Footer = ({ themeOptions, contactContent }: FooterProps) => {
   return (
     <footer className="">
-      <Section className="bg-background-800 px-6 sm:px-8 py-8 lg:py-16">
+      <Section className="bg-background-950 px-6 sm:px-8 py-8 lg:py-16">
         <Container className="md:grid flex flex-col-reverse max-w-7xl mx-auto md:grid-cols-[1.5fr_0.5fr_0.5fr] gap-12">
           <div className="flex md:flex-col flex-col-reverse gap-2 justify-between items-center md:items-start not-prose">
             <Link href="/">

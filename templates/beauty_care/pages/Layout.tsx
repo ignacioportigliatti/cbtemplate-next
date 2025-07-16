@@ -1,4 +1,4 @@
-import { Inter as FontSans, Poppins as FontHeading } from "next/font/google";
+import { Raleway as FontSans, Cormorant_Garamond as FontHeading } from "next/font/google";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { ThemeWrapper } from "@/components/theme/theme-wrapper";
 import { Analytics } from "@vercel/analytics/react";

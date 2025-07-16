@@ -8,9 +8,9 @@ interface Props {
 const AboutUsMission = ({aboutUsContent}: Props) => {
     return (
         <div className="text-center md:text-left">
-              <h3 className="text-primary mt-8 font-medium text-xl text-center md:text-left tracking-[0.2em] uppercase font-heading">
+             <h5 className="text-primary text-2xl mt-8 text-center font-bold md:text-left font-heading">
                 {aboutUsContent.mission.title}
-              </h3>
+              </h5>
               <div
                 className="prose max-w-none text-text"
                 dangerouslySetInnerHTML={{ __html: aboutUsContent.mission.content }}

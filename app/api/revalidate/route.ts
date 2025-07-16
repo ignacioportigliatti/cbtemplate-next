@@ -66,6 +66,29 @@ export async function POST(request: NextRequest) {
           revalidateTag(`posts-author-${contentId}`);
           revalidateTag(`author-${contentId}`);
         }
+      } else if (contentType === "acf_options") {
+        // ACF options pages affect the entire site
+        revalidateTag("acf_options");
+        revalidateTag("wordpress");
+        console.log("Revalidated ACF options pages");
+      } else if (contentType === "acf_field_group") {
+        // ACF field group changes affect all content using those fields
+        revalidateTag("acf_field_groups");
+        revalidateTag("wordpress");
+        console.log("Revalidated ACF field groups");
+      } else if (contentType === "page") {
+        revalidateTag("pages");
+        if (contentId) {
+          revalidateTag(`page-${contentId}`);
+        }
+      } else if (contentType === "media" || contentType === "attachment") {
+        revalidateTag("media");
+        if (contentId) {
+          revalidateTag(`media-${contentId}`);
+        }
+      } else if (contentType === "menu") {
+        revalidateTag("menus");
+        revalidateTag("navigation");
       }
 
       // Also revalidate the entire layout for safety

@@ -14,6 +14,7 @@ import {
 
 interface Props {
   contactContent: ContactContent;
+  mapHeight?: string;
 }
 
 const socialMedia = [
@@ -65,14 +66,14 @@ const formatBusinessHoursCalendar = (timetable: ContactContent["location"]["time
   });
 };
 
-export const Location = ({ contactContent }: Props) => {
+export const Location = ({ contactContent, mapHeight = "100%" }: Props) => {
   // Use dynamic timetable if available, otherwise fallback to hardcoded hours
   const businessHours = formatBusinessHoursCalendar(contactContent.location.timetable);
 
   return (
     <div className="space-y-4 flex flex-col justify-start h-full">
       {/* Map */}
-      <div className="w-full h-64 overflow-hidden">
+      <div className="w-full h-64 overflow-hidden" style={{ height: mapHeight }}>
         <iframe
           src={`https://maps.google.com/maps?q=${encodeURIComponent(
             contactContent.location.address,

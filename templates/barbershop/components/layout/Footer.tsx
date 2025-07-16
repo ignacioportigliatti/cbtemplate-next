@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Container, Section } from "@/components/craft";
 import Link from "next/link";
-import { contentMenu, mainMenu } from "@/menu.config";
+import { contentMenu, mainMenu } from "@/templates/barbershop/menu.config";
 import { ContactContent, ThemeOptions } from "@/lib/wordpress.d";
 
 interface FooterProps {
@@ -37,30 +37,30 @@ export const Footer = ({ themeOptions, contactContent }: FooterProps) => {
             </div>
           </div>
           <div className="flex gap-24 text-sm">
-          <div className="flex flex-col gap-2 text-sm">
-            <h5 className="font-medium text-base">Website</h5>
-            {Object.entries(mainMenu).map(([key, href]) => (
-              <Link
-                className="hover:underline underline-offset-4"
-                key={href}
-                href={href}
-              >
-                {key.charAt(0).toUpperCase() + key.slice(1)}
-              </Link>
-            ))}
-          </div>
-          <div className="flex flex-col gap-2 text-sm">
-            <h5 className="font-medium text-base">Blog</h5>
-            {Object.entries(contentMenu).map(([key, href]) => (
-              <Link
-                className="hover:underline underline-offset-4"
-                key={href}
-                href={href}
-              >
-                {key.charAt(0).toUpperCase() + key.slice(1)}
-              </Link>
-            ))}
-          </div>
+            <div className="flex flex-col gap-2 text-sm">
+              <h5 className="font-medium text-base">Website</h5>
+              {Object.entries(mainMenu).map(([key, href]) => (
+                <Link
+                  className="hover:underline underline-offset-4"
+                  key={href}
+                  href={href}
+                >
+                  {key.charAt(0).toUpperCase() + key.slice(1)}
+                </Link>
+              ))}
+            </div>
+            <div className="flex flex-col gap-2 text-sm">
+              <h5 className="font-medium text-base">Blog</h5>
+              {Object.entries(contentMenu).map(([key, href]) => (
+                <Link
+                  className="hover:underline underline-offset-4"
+                  key={href}
+                  href={href}
+                >
+                  {key.charAt(0).toUpperCase() + key.slice(1)}
+                </Link>
+              ))}
+            </div>
           </div>
         </Container>
       </Section>

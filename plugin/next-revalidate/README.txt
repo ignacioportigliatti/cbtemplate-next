@@ -19,6 +19,7 @@ The plugin sends webhooks to your Next.js site's revalidation API endpoint, ensu
 **Key Features:**
 
 * Automatic revalidation when posts, pages, categories, tags, authors, or media are modified
+* Advanced Custom Fields (ACF) integration for field-level revalidation
 * Settings page to configure your Next.js site URL and webhook secret
 * Manual revalidation option for full site refresh
 * Support for custom post types and taxonomies
@@ -53,8 +54,24 @@ See the README in your Next.js project for more details.
 
 Yes, the plugin automatically detects and handles revalidation for custom post types and taxonomies.
 
+= Does this work with Advanced Custom Fields (ACF)? =
+
+Yes! The plugin includes full ACF integration. When enabled in settings, it will trigger revalidation whenever:
+* Any ACF field is updated on posts, pages, or custom post types
+* ACF options pages are modified
+* ACF field groups are created, updated, or deleted
+
+This ensures your Next.js site stays in sync with all your custom field content.
+
 == Changelog ==
 
+  = 1.0.5 =
+* Added: Advanced Custom Fields (ACF) integration
+* Added: ACF field-level revalidation support
+* Added: ACF options pages revalidation
+* Added: ACF field groups revalidation
+* Added: Settings option to enable/disable ACF revalidation
+* Enhanced: Better handling of different content types in Next.js API
   = 1.0.1 =
 * Fix: Register AJAX actions for manual revalidation
 * Fix: Normalize Next.js site URL in settings (remove trailing slash)

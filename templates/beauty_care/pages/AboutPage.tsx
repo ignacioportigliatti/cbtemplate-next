@@ -30,12 +30,12 @@ const AboutPage = async () => {
     return (
       <main>
         {/* About Us Content */}
-        <section className="pt-24 md:pt-32 bg-background-600 pb-16">
+        <section className="pt-24 md:pt-32 bg-background-950 pb-16">
           <div className="max-w-7xl mx-auto px-8 xl:px-0">
             <AboutUsInfo aboutUsContent={aboutUsContent} />
-            <AboutUsGallery aboutUsContent={aboutUsContent} />
             <AboutUsMission aboutUsContent={aboutUsContent} />
             <AboutUsValues aboutUsContent={aboutUsContent} />
+            <AboutUsGallery aboutUsContent={aboutUsContent} />
           </div>
         </section>
 

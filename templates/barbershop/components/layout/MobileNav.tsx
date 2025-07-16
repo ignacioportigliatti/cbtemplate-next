@@ -20,10 +20,8 @@ import {
   SheetHeader,
   SheetFooter,
 } from "@/components/ui/sheet";
-import { Separator } from "@/components/ui/separator";
 
-import { mainMenu, contentMenu } from "@/menu.config";
-import { siteConfig } from "@/site.config";
+import { mainMenu } from "@/templates/barbershop/menu.config";
 import { ContactContent, ThemeOptions } from "@/lib/wordpress.d";
 import Image from "next/image";
 import { FaEnvelope, FaMapPin, FaPhone } from "react-icons/fa";
@@ -92,9 +90,7 @@ export function MobileNav({ themeOptions, contactContent }: MobileNavProps) {
           <div className="flex flex-col gap-2 text-xs">
             <div className="flex items-center gap-2">
               <FaPhone className="w-4 h-4" />
-              <p className="text-muted-foreground/80">
-                {contactContent.location.phone_number}
-              </p>
+              <p className="text-muted-foreground/80">{contactContent.location.phone_number}</p>
             </div>
             <div className="flex items-center gap-2">
               <FaEnvelope className="w-4 h-4" />

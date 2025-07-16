@@ -1,10 +1,11 @@
 import { Container, Section } from "@/components/craft";
 import ServiceGallery from "@/templates/beauty_care/components/services/ServiceGallery";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
-import { getServicesContent } from "@/lib/wordpress";
+import { getContactContent, getServicesContent } from "@/lib/wordpress";
 import Image from "next/image";
 import React from "react";
 import { Metadata } from "next";
+import AboutUsContact from "@/templates/beauty_care/components/about/AboutUsContact";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -38,6 +39,7 @@ export async function generateStaticParams() {
 const ServiceDetailPage = async (props: Props) => {
   const { slug } = await props.params;
   const serviceContent = await getServicesContent();
+  const contactContent = await getContactContent();
   const service = serviceContent.services.find((service) => service.slug === slug);
 
   if (!service) {
@@ -51,11 +53,9 @@ const ServiceDetailPage = async (props: Props) => {
   ];
 
   return (
-    <Section className="pt-24 md:pt-32 bg-background-900 pb-16">
-      <Container className="max-w-7xl mx-auto px-8 xl:px-0">
-        
+    <Section className="pt-24 md:pt-32 bg-background-950">
+      <Container className="max-w-7xl mx-auto  pb-16 px-8 xl:px-0">
         <Breadcrumb items={breadcrumbItems} className="mb-8" />
-        
         <h1 className="text-4xl md:text-5xl font-heading text-primary text-center leading-[0.9] md:text-left font-bold">
           {service?.title}
         </h1>
@@ -81,6 +81,9 @@ const ServiceDetailPage = async (props: Props) => {
         {service.gallery && service.gallery.length > 0 && (
           <ServiceGallery service={service} />
         )}
+      </Container>
+      <Container className="py-16 px-8 xl:px-0 bg-background-900">  
+        <AboutUsContact contactContent={contactContent} />
       </Container>
     </Section>
   );

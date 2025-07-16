@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 
-import { mainMenu, contentMenu } from "@/menu.config";
+import { mainMenu, contentMenu } from "@/templates/beauty_care/menu.config";
 import { siteConfig } from "@/site.config";
 import { ContactContent, ThemeOptions } from "@/lib/wordpress.d";
 import Image from "next/image";

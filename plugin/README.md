@@ -36,9 +36,20 @@ WORDPRESS_WEBHOOK_SECRET="your-secret-key-here"
 3. The Next.js API validates the request using the secret and revalidates the appropriate cache tags
 4. Your Next.js site will fetch new content for the affected pages
 
+## Advanced Custom Fields (ACF) Integration
+
+The plugin includes full ACF integration that can be enabled in the settings. When enabled, it will trigger revalidation for:
+
+- **ACF Field Updates**: Any time an ACF field is modified on posts, pages, or custom post types
+- **ACF Options Pages**: When global options pages are updated
+- **ACF Field Groups**: When field group configurations are changed
+
+This ensures your Next.js site stays perfectly synchronized with all your custom field content.
+
 ## Features
 
 - Automatic revalidation for posts, pages, categories, tags, and media
+- Advanced Custom Fields (ACF) integration for field-level revalidation
 - Manual revalidation option through the admin interface
 - Secure webhook communication with your Next.js site
 - Optional admin notifications for revalidation events

@@ -67,7 +67,7 @@ export function FilterPosts({
         value={selectedTag || "all"}
         onValueChange={(value) => handleFilterChange("tag", value)}
       >
-        <SelectTrigger className="bg-background-600/50 rounded-none" disabled={!hasTags}>
+        <SelectTrigger className="bg-background-600/50 rounded-lg" disabled={!hasTags}>
           {hasTags ? <SelectValue placeholder="All Tags" /> : "No tags found"}
         </SelectTrigger>
         <SelectContent>
@@ -84,7 +84,7 @@ export function FilterPosts({
         value={selectedCategory || "all"}
         onValueChange={(value) => handleFilterChange("category", value)}
       >
-        <SelectTrigger className="bg-background-600/50 rounded-none" disabled={!hasCategories}>
+        <SelectTrigger className="bg-background-600/50 rounded-lg" disabled={!hasCategories}>
           {hasCategories ? (
             <SelectValue placeholder="All Categories" />
           ) : (
@@ -105,7 +105,7 @@ export function FilterPosts({
         value={selectedAuthor || "all"}
         onValueChange={(value) => handleFilterChange("author", value)}
       >
-        <SelectTrigger className="bg-background-600/50 text-center rounded-none" disabled={!hasAuthors}>
+        <SelectTrigger className="bg-background-600/50 text-center rounded-lg" disabled={!hasAuthors}>
           {hasAuthors ? (
             <SelectValue placeholder="All Authors" />
           ) : (
@@ -122,7 +122,7 @@ export function FilterPosts({
         </SelectContent>
       </Select>
 
-      <Button variant="outline" className="rounded-none bg-background-600/50" onClick={handleResetFilters}>
+      <Button variant="outline" className="rounded-lg bg-background-600/50" onClick={handleResetFilters}>
         Reset Filters
       </Button>
     </div>

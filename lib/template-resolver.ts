@@ -51,4 +51,5 @@ export interface TemplateModule {
   ServicesPage: React.ComponentType<any>
   ServiceDetailPage: React.ComponentType<any>
   AboutPage: React.ComponentType<any>
+  ContactPage: React.ComponentType<any>
 } 

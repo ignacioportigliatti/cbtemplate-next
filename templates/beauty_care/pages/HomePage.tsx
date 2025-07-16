@@ -21,13 +21,17 @@ import { siteConfig } from "@/site.config";
 import Location from "@/templates/beauty_care/components/homepage/Location";
 import Reviews from "@/templates/beauty_care/components/homepage/Reviews";
 import Team from "@/templates/beauty_care/components/homepage/Team";
+import AboutUsContact from "../components/about/AboutUsContact";
+import HeroCarousel from "../components/homepage/HeroCarousel";
+import Image from "next/image";
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
     const themeOptions = await getThemeOptions();
-    
+
     const title = themeOptions.general.site_name || "Barber Shop";
-    const description = themeOptions.general.site_description || 
+    const description =
+      themeOptions.general.site_description ||
       "Barber Shop Cuts is a California based barber shop that offers a variety of services to its customers.";
 
     return {
@@ -45,7 +49,9 @@ export async function generateMetadata(): Promise<Metadata> {
         siteName: title,
         images: [
           {
-            url: `${siteConfig.site_domain}/api/og?title=${encodeURIComponent(`Home | ${title}`)}&description=${encodeURIComponent(description)}`,
+            url: `${siteConfig.site_domain}/api/og?title=${encodeURIComponent(
+              `Home | ${title}`,
+            )}&description=${encodeURIComponent(description)}`,
             width: 1200,
             height: 630,
             alt: title,
@@ -56,7 +62,11 @@ export async function generateMetadata(): Promise<Metadata> {
         card: "summary_large_image",
         title: `Home | ${title}`,
         description: description,
-        images: [`${siteConfig.site_domain}/api/og?title=${encodeURIComponent(`Home | ${title}`)}&description=${encodeURIComponent(description)}`],
+        images: [
+          `${siteConfig.site_domain}/api/og?title=${encodeURIComponent(
+            `Home | ${title}`,
+          )}&description=${encodeURIComponent(description)}`,
+        ],
       },
     };
   } catch (error) {
@@ -64,7 +74,8 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fallback metadata
     return {
       title: "Home",
-      description: "Barber Shop Cuts is a California based barber shop that offers a variety of services to its customers.",
+      description:
+        "Barber Shop Cuts is a California based barber shop that offers a variety of services to its customers.",
       metadataBase: new URL(siteConfig.site_domain),
       alternates: {
         canonical: "/",
@@ -117,17 +128,29 @@ const HomePage = async () => {
         </section>
 
         {/* Service & Location Combined Section */}
-        <section className="bg-background-900 px-8 lg:px-16 text-foreground py-8 md:py-16">
-          <div className="max-w-7xl mx-auto">
+        <section className="bg-background-900 px-8 lg:px-16 text-foreground py-16 !pb-24 md:py-16">
+          <div className="max-w-7xl mx-auto flex">
             <div className="flex flex-col lg:flex-row items-stretch justify-between md:gap-12">
               {/* Left Side - About Us */}
               <div className="lg:w-1/2 py-4 md:py-8 rounded-lg">
                 <AboutUs aboutUsContent={aboutUsContent} />
               </div>
 
-              {/* Right Side - Location */}
-              <div className="lg:w-1/2 rounded-lg">
-                <Location contactContent={contactContent} />
+              {/* Right Side - Image Carousel */}
+              <div className="lg:w-1/2 relative h-[480px]">
+                <div className="overflow-hidden  rounded-lg">
+                  <HeroCarousel
+                    gallery={aboutUsContent.gallery}
+                    imageClassName="!h-[480px]"
+                  />
+                </div>
+                <Image
+                  src="/flowers2.webp"
+                  alt="Hero Decorative"
+                  width={300}
+                  height={100}
+                  className="pointer-events-none absolute lg:w-80 w-52 lg:-bottom-16 lg:-right-20 -right-8 -bottom-8 -hue-rotate-60 saturate-50 brightness-110"
+                />
               </div>
             </div>
           </div>
@@ -143,9 +166,7 @@ const HomePage = async () => {
 
         {/* Team Section */}
         <section>
-          <Team
-            teamContent={teamContent}
-          />
+          <Team teamContent={teamContent} />
         </section>
 
         {/* Reviews Section */}
@@ -159,6 +180,11 @@ const HomePage = async () => {
         {/* FAQ Section */}
         <section>
           <FAQ homeContent={homeContent} />
+        </section>
+
+        {/* Contact Section */}
+        <section className="bg-background-900 px-8 lg:px-16 text-foreground py-16 md:py-16">
+          <AboutUsContact contactContent={contactContent} />
         </section>
 
         {/* Blog Section */}
@@ -180,4 +206,3 @@ const HomePage = async () => {
     );
   }
 };
-

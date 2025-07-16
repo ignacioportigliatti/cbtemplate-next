@@ -1,38 +1,33 @@
 import AboutUsContact from "@/templates/beauty_care/components/about/AboutUsContact";
-import ServicesGrid from "@/templates/beauty_care/components/services/ServicesGrid";
-import { getContactContent, getServicesContent } from "@/lib/wordpress";
+import { getContactContent } from "@/lib/wordpress";
 import React from "react";
 import { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Services",
-    description: "Browse all our services",
+    title: "Contact",
+    description: "Contact us",
   };
 }
 
-const ServicesPage = async () => {
+const ContactPage = async () => {
   try {
-    const servicesContent = await getServicesContent();
     const contactContent = await getContactContent();
 
-    if (!servicesContent) {
+    if (!contactContent) {
       return (
         <main className="space-y-6">
           <h1>No content available</h1>
-          <p>Unable to load services page content.</p>
+          <p>Unable to load contact page content.</p>
         </main>
       );
     }
 
     return (
       <main>
-        <section className="pt-24 md:pt-32 bg-background-950 pb-16">
-          <ServicesGrid servicesContent={servicesContent} />
-        </section>
         
         {/* Contact Info */}
-        <section className="bg-background-800 py-16 px-4 lg:px-8">
+        <section className="bg-background-600 py-16 pt-32 px-4 lg:px-8">
           <AboutUsContact contactContent={contactContent} />
         </section>
       </main>
@@ -42,10 +37,10 @@ const ServicesPage = async () => {
     return (
       <main className="space-y-6">
         <h1>Error Loading Content</h1>
-        <p>There was an error loading the services page content. Please try again later.</p>
+        <p>There was an error loading the contact page content. Please try again later.</p>
       </main>
     );
   }
 };
 
-export default ServicesPage;
+export default ContactPage;

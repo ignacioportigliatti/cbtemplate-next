@@ -44,13 +44,15 @@ const ServicesGrid = ({servicesContent} : Props) => {
                       Learn More
                     </Button>
                   </div>
-                  <Image
-                    src={service.featured_image?.url as string}
-                    alt={service.featured_image?.alt as string}
-                    width={192}
-                    height={192}
-                    className="w-full h-full md:w-48 md:h-48 aspect-square object-cover rounded-none"
-                  />
+                  {service.featured_image && (
+                    <Image
+                      src={service.featured_image?.url as string}
+                      alt={service.featured_image?.alt as string}
+                      width={192}
+                      height={192}
+                      className="w-full h-full md:w-48 md:h-48 aspect-square object-cover rounded-none"
+                    />
+                  )}
                 </Link>
               ))}
             </div>

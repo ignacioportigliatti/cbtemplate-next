@@ -22,10 +22,10 @@ const FeaturedBlog = (props: Props) => {
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-12">
-          <h3 className="text-primary font-medium text-xl tracking-[0.2em] uppercase font-heading">
+          <h3 className="text-primary font-medium text-2xl font-heading">
             <Balancer>{homeContent.blog.subtitle}</Balancer>
           </h3>
-          <h2 className="text-4xl lg:text-5xl font-bold text-text mb-4 leading-tight font-heading">
+          <h2 className="text-4xl lg:text-5xl font-bold text-text mb-4 leading-tight font-heading mt-2">
             <Balancer>{homeContent.blog.title}</Balancer>
           </h2>
         </div>
@@ -40,7 +40,7 @@ const FeaturedBlog = (props: Props) => {
               >
                 <div className="p-1 h-full">
                   <div className="h-full">
-                    <PostCard className="rounded-none" post={post} />
+                    <PostCard className="rounded-lg" post={post} />
                   </div>
                 </div>
               </CarouselItem>

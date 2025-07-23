@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { ContactLocation } from "./wordpress.d"
 import { ThemeColors } from "./wordpress.d"
 
 export function cn(...inputs: ClassValue[]) {
@@ -231,4 +232,26 @@ export function generateThemeCSS(themeColors: ThemeColors): string {
 ${rootVars}
     }
   `;
+}
+
+// Location utilities
+export function generateLocationSlug(city: string, state: string): string {
+  return `${city.toLowerCase().replace(/\s+/g, '-')}-${state.toLowerCase()}`;
+}
+
+export function parseLocationSlug(locationSlug: string): { city: string; state: string } | null {
+  const parts = locationSlug.split('-');
+  if (parts.length < 2) return null;
+  
+  const state = parts[parts.length - 1].toUpperCase();
+  const city = parts.slice(0, -1).join(' ').replace(/\b\w/g, l => l.toUpperCase());
+  
+  return { city, state };
+}
+
+export function findLocationBySlug(locations: ContactLocation[], locationSlug: string): ContactLocation | null {
+  return locations.find(location => {
+    const expectedSlug = generateLocationSlug(location.address.city, location.address.state);
+    return expectedSlug === locationSlug;
+  }) || null;
 }

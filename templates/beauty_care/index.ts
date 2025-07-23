@@ -15,16 +15,12 @@ export { default as BlogAuthorsPage, generateMetadata as blogAuthorsMetadata } f
 export { default as BlogCategoriesPage, generateMetadata as blogCategoriesMetadata } from './pages/BlogCategoriesPage';
 export { default as BlogTagsPage, generateMetadata as blogTagsMetadata } from './pages/BlogTagsPage';
 
-// Services
-export { default as ServicesPage, generateMetadata as servicesMetadata } from './pages/ServicesPage';
-export { 
-  default as ServiceDetailPage, 
-  generateMetadata as serviceDetailMetadata,
-  generateStaticParams as serviceDetailStaticParams 
-} from './pages/ServiceDetailPage';
+// Location Services
+export { default as LocationServicesPage } from './pages/LocationServicesPage';
+export { default as LocationServiceDetailPage } from './pages/LocationServiceDetailPage';
 
-// About
-export { default as AboutPage, generateMetadata as aboutMetadata } from './pages/AboutPage';
+// Location About
+export { default as LocationAboutPage } from './pages/LocationAboutPage';
 
-// Contact
-export { default as ContactPage, generateMetadata as contactMetadata } from './pages/ContactPage';
+// Location Contact
+export { default as LocationContactPage } from './pages/LocationContactPage';

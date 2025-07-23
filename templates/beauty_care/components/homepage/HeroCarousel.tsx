@@ -33,7 +33,7 @@ const HeroCarousel = ({ gallery, imageClassName }: Props) => {
       className="w-full h-full"
     >
       <CarouselContent className="h-full">
-        {gallery.map((image, index) => (
+        {gallery && gallery.length > 0 && gallery.map((image, index) => (
           <CarouselItem
             key={index}
             className="h-full pl-0"

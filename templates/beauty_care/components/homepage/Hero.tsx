@@ -40,7 +40,7 @@ const Hero = ({ homeContent }: Props) => {
             </h1>
             
             {/* Description */}
-            <p className="text-text/80 text-lg leading-relaxed font-sans max-w-lg">
+            <p className="text-text/80 text-lg leading-relaxed font-sans">
              {homeContent.hero.description}
             </p>
             

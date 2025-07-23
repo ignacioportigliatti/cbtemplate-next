@@ -7,7 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import { FaCircle, FaPlus } from "react-icons/fa";
+import { FaCircle } from "react-icons/fa";
 
 interface Props {
   homeContent: HomePageContent;

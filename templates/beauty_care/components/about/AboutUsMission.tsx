@@ -12,7 +12,7 @@ const AboutUsMission = ({aboutUsContent}: Props) => {
                 {aboutUsContent.mission.title}
               </h5>
               <div
-                className="prose max-w-none text-text"
+                className="prose max-w-none text-text prose-p:!mb-0 prose-p:!mt-0"
                 dangerouslySetInnerHTML={{ __html: aboutUsContent.mission.content }}
               />
             </div>

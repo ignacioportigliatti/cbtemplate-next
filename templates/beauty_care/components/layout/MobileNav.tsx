@@ -90,20 +90,29 @@ export function MobileNav({ themeOptions, contactContent }: MobileNavProps) {
         </ScrollArea>
         <SheetFooter className="flex flex-col gap-1">
           <div className="flex flex-col gap-2 text-xs">
-            <div className="flex items-center gap-2">
-              <FaPhone className="w-4 h-4" />
-              <p className="text-muted-foreground/80">
-                {contactContent.location.phone_number}
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              <FaEnvelope className="w-4 h-4" />
-              <p className="text-muted-foreground/80">{contactContent.location.email}</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <FaMapPin className="w-4 h-4" />
-              <p className="text-muted-foreground/80">{contactContent.location.address}</p>
-            </div>
+            {contactContent.locations?.[0]?.phone_number && (
+              <div className="flex items-center gap-2">
+                <FaPhone className="w-4 h-4" />
+                <p className="text-muted-foreground/80">
+                  {contactContent.locations[0].phone_number}
+                </p>
+              </div>
+            )}
+            {contactContent.locations?.[0]?.email && (
+              <div className="flex items-center gap-2">
+                <FaEnvelope className="w-4 h-4" />
+                <p className="text-muted-foreground/80">{contactContent.locations[0].email}</p>
+              </div>
+            )}
+            {contactContent.locations?.[0]?.address && (
+              <div className="flex items-center gap-2">
+                <FaMapPin className="w-4 h-4" />
+                <p className="text-muted-foreground/80">
+                  {contactContent.locations[0].address.full_address || 
+                   `${contactContent.locations[0].address.street}, ${contactContent.locations[0].address.city}, ${contactContent.locations[0].address.state} ${contactContent.locations[0].address.zip_code}, ${contactContent.locations[0].address.country}`}
+                </p>
+              </div>
+            )}
           </div>
         </SheetFooter>
       </SheetContent>

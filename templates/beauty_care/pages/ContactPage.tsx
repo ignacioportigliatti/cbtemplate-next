@@ -27,7 +27,7 @@ const ContactPage = async () => {
       <main>
         
         {/* Contact Info */}
-        <section className="bg-background-600 py-16 pt-32 px-4 lg:px-8">
+        <section className="bg-background-950 py-16 pt-32 px-4 lg:px-8">
           <AboutUsContact contactContent={contactContent} />
         </section>
       </main>

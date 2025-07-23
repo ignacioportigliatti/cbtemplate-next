@@ -14,7 +14,7 @@ const PopularServices = (props: Props) => {
   const { homeContent, servicesContent } = props;
 
   return (
-    <div className="bg-background-950 py-16 px-8 lg:px-16">
+    <div className="bg-background-900 py-16 px-8 lg:px-16">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row-reverse items-start justify-between gap-8">
         {/* Header Section */}
         <div className="flex w-full md:w-5/12 flex-col lg:flex-row text-center md:text-left lg:items-center lg:justify-between">

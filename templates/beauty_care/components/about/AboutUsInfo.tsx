@@ -1,4 +1,5 @@
 import { AboutUsContent } from '@/lib/wordpress.d';
+import Image from 'next/image';
 import React from 'react'
 
 interface Props {

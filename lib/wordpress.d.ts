@@ -361,45 +361,70 @@ export interface ReviewsContent {
 }
 
 // Contact Content Types
-interface DaySchedule {
+interface ContactAddress {
+  street: string;
+  city: string;
+  state: string;
+  country: string;
+  zip_code: string;
+  full_address?: string;
+}
+
+interface ContactSocialMedia {
+  facebook?: string;
+  instagram?: string;
+  google?: string;
+  linkedin?: string;
+  pinterest?: string;
+}
+
+interface ContactTimetableDay {
   is_open: boolean;
   open_time: string;
   close_time: string;
 }
 
-interface WeeklyTimetable {
-  monday: DaySchedule;
-  tuesday: DaySchedule;
-  wednesday: DaySchedule;
-  thursday: DaySchedule;
-  friday: DaySchedule;
-  saturday: DaySchedule;
-  sunday: DaySchedule;
-}
-
-interface ContactSocialMedia {
-  facebook: string;
-  instagram: string;
-  google: string;
-  linkedin: string;
-  pinterest: string;
+interface ContactTimetable {
+  monday: ContactTimetableDay;
+  tuesday: ContactTimetableDay;
+  wednesday: ContactTimetableDay;
+  thursday: ContactTimetableDay;
+  friday: ContactTimetableDay;
+  saturday: ContactTimetableDay;
+  sunday: ContactTimetableDay;
 }
 
 interface ContactLocation {
-  address: string;
-  phone_number: string;
-  email: string;
+  id: string;
+  name: string;
+  address: ContactAddress;
+  phone_number?: string;
+  email?: string;
   social_media: ContactSocialMedia;
-  timetable: WeeklyTimetable;
+  timetable: ContactTimetable;
+}
+
+interface ContactPageInfo {
+  subtitle?: string;
+  title?: string;
+  description?: string;
 }
 
 export interface ContactContent {
-  page_info: {
-    subtitle: string;
-    title: string;
-    description: string;
-  };
-  location: ContactLocation;
+  page_info?: ContactPageInfo;
+  locations: ContactLocation[];
+}
+
+// Additional types for contact updates
+export interface ContactUpdateRequest {
+  page_info?: ContactPageInfo;
+  locations?: ContactLocation[];
+}
+
+export interface ContactUpdateResponse {
+  success: boolean;
+  message: string;
+  updated_fields: Record<string, any>;
 }
 
 export interface ThemeColors {

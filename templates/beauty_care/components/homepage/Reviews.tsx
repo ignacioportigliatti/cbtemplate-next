@@ -19,7 +19,7 @@ interface Props {
 
 const Reviews = ({ homeContent, reviewsContent }: Props) => {
   return (
-    <div className="bg-background-900 px-8 lg:px-16 xl:px-8 py-16">
+    <div className="bg-background-600 px-8 lg:px-16 xl:px-8 py-16">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-12">

@@ -5,6 +5,8 @@ import AboutUsMission from "@/templates/beauty_care/components/about/AboutUsMiss
 import AboutUsValues from "@/templates/beauty_care/components/about/AboutUsValues";
 import { getAboutUsContent, getContactContent } from "@/lib/wordpress";
 import { Metadata } from "next";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -31,11 +33,35 @@ const AboutPage = async () => {
       <main>
         {/* About Us Content */}
         <section className="pt-24 md:pt-32 bg-background-950 pb-16">
-          <div className="max-w-7xl mx-auto px-8 xl:px-0">
-            <AboutUsInfo aboutUsContent={aboutUsContent} />
-            <AboutUsMission aboutUsContent={aboutUsContent} />
+          <div className="max-w-7xl flex flex-col lg:flex-row lg:gap-12 mx-auto px-8 xl:px-0">
+            <div
+              className={cn(
+                "w-full",
+                aboutUsContent.gallery && aboutUsContent.gallery.length > 0
+                  ? "lg:w-7/12"
+                  : "lg:w-full",
+              )}
+            >
+              <AboutUsInfo aboutUsContent={aboutUsContent} />
+              <AboutUsMission aboutUsContent={aboutUsContent} />
+            </div>
+            {aboutUsContent.gallery && aboutUsContent.gallery.length > 0 && (
+              <div className="w-full mb-8 lg:mb-0 lg:w-5/12 lg:flex lg:items-stretch">
+                <Image
+                  src={aboutUsContent.gallery[0].url}
+                  alt={aboutUsContent.gallery[0].alt}
+                  width={600}
+                  height={600}
+                  className="w-full object-cover rounded-lg lg:h-full"
+                />
+              </div>
+            )}
+          </div>
+          <div className="max-w-7xl mx-auto px-8 xl:px-0 mt-12">
             <AboutUsValues aboutUsContent={aboutUsContent} />
-            <AboutUsGallery aboutUsContent={aboutUsContent} />
+            {aboutUsContent.gallery && aboutUsContent.gallery.length > 0 && (
+              <AboutUsGallery aboutUsContent={aboutUsContent} />
+            )}
           </div>
         </section>
 

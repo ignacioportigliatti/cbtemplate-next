@@ -18,7 +18,6 @@ import FeaturedBlog from "@/templates/beauty_care/components/homepage/FeaturedBl
 import FAQ from "@/templates/beauty_care/components/homepage/FAQ";
 import { Metadata } from "next";
 import { siteConfig } from "@/site.config";
-import Location from "@/templates/beauty_care/components/homepage/Location";
 import Reviews from "@/templates/beauty_care/components/homepage/Reviews";
 import Team from "@/templates/beauty_care/components/homepage/Team";
 import AboutUsContact from "../components/about/AboutUsContact";
@@ -128,7 +127,7 @@ const HomePage = async () => {
         </section>
 
         {/* Service & Location Combined Section */}
-        <section className="bg-background-900 px-8 lg:px-16 text-foreground py-16 !pb-24 md:py-16">
+        <section className="bg-background-950 px-8 lg:px-16 text-foreground py-16 !pb-24 md:py-16">
           <div className="max-w-7xl mx-auto flex">
             <div className="flex flex-col lg:flex-row items-stretch justify-between md:gap-12">
               {/* Left Side - About Us */}

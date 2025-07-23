@@ -32,7 +32,7 @@ const ServicesPage = async () => {
         </section>
         
         {/* Contact Info */}
-        <section className="bg-background-800 py-16 px-4 lg:px-8">
+        <section className="bg-background-900 py-16 px-4 lg:px-8">
           <AboutUsContact contactContent={contactContent} />
         </section>
       </main>

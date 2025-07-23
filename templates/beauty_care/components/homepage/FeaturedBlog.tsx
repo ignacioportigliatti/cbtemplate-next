@@ -18,7 +18,7 @@ interface Props {
 const FeaturedBlog = (props: Props) => {
   const { homeContent, blogContent } = props;
   return (
-    <div className="bg-background-800 px-8 lg:px-16 py-16">
+    <div className="bg-background-950 px-8 lg:px-16 py-16">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-12">

@@ -40,7 +40,7 @@ const socialMedia = [
 ];
 
 // Utility function to format business hours for calendar view
-const formatBusinessHoursCalendar = (timetable: ContactContent["location"]["timetable"]) => {
+const formatBusinessHoursCalendar = (timetable: any) => {
   const days = [
     "monday",
     "tuesday",
@@ -66,16 +66,33 @@ const formatBusinessHoursCalendar = (timetable: ContactContent["location"]["time
 };
 
 export const Location = ({ contactContent }: Props) => {
+  // Use the first location as default
+  const primaryLocation = contactContent.locations?.[0];
+  
+  if (!primaryLocation) {
+    return (
+      <div className="space-y-4 flex flex-col justify-start h-full">
+        <div className="w-full saturate-0 hover:saturate-100 transition-all duration-300 rounded-lg h-64 overflow-hidden bg-gray-200 flex items-center justify-center">
+          <p className="text-gray-500">No location information available</p>
+        </div>
+      </div>
+    );
+  }
+
   // Use dynamic timetable if available, otherwise fallback to hardcoded hours
-  const businessHours = formatBusinessHoursCalendar(contactContent.location.timetable);
+  const businessHours = formatBusinessHoursCalendar(primaryLocation.timetable);
+  
+  // Build address string for map
+  const addressString = primaryLocation.address.full_address || 
+    `${primaryLocation.address.street}, ${primaryLocation.address.city}, ${primaryLocation.address.state} ${primaryLocation.address.zip_code}, ${primaryLocation.address.country}`;
 
   return (
     <div className="space-y-4 flex flex-col justify-start h-full">
       {/* Map */}
-      <div className="w-full rounded-lg h-64 overflow-hidden">
+      <div className="w-full saturate-0 hover:saturate-100 transition-all duration-300 rounded-lg h-64 overflow-hidden">
         <iframe
           src={`https://maps.google.com/maps?q=${encodeURIComponent(
-            contactContent.location.address,
+            addressString,
           )}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
           width="100%"
           height="100%"

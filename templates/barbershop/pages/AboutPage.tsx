@@ -33,7 +33,7 @@ const AboutPage = async () => {
         <section className="pt-24 md:pt-32 bg-background-600 pb-16">
           <div className="max-w-7xl mx-auto px-8 xl:px-0">
             <AboutUsInfo aboutUsContent={aboutUsContent} />
-            <AboutUsGallery aboutUsContent={aboutUsContent} />
+            {aboutUsContent.gallery.length > 0 && <AboutUsGallery aboutUsContent={aboutUsContent} />}
             <AboutUsMission aboutUsContent={aboutUsContent} />
             <AboutUsValues aboutUsContent={aboutUsContent} />
           </div>

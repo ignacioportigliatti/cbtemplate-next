@@ -138,6 +138,7 @@ const HomePage = async () => {
           <PopularServices
             homeContent={homeContent}
             servicesContent={servicesContent}
+            contactContent={contactContent}
           />
         </section>
 

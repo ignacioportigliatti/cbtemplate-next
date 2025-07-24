@@ -46,13 +46,6 @@ const Team = ({ teamContent }: Props) => {
             </h2>
             <h4 className="text-text/80 mb-4">{teamContent.page_info.description}</h4>
           </div>
-          <Link
-            href={"/team"}
-            className="bg-transparent w-max border-2 font-heading border-border text-primary px-8 py-3 font-medium tracking-wide uppercase hover:bg-primary hover:text-primary-foreground transition-all duration-300 ease-in-out inline-flex items-center"
-          >
-            View All
-            <FaArrowRight className="w-4 h-4 -mt-1 ml-2" />
-          </Link>
         </div>
         <div className="w-full md:w-7/12">
           <Carousel

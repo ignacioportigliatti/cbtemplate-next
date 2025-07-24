@@ -1,6 +1,5 @@
-import { redirect } from "next/navigation";
-
+// This page should never be reached due to middleware redirection
+// But kept as fallback for safety
 export default async function LocationPage() {
-  // Redirect to home page since location pages should be specific
-  redirect("/");
+  return null;
 } 

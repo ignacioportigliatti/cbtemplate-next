@@ -1,4 +1,5 @@
-import { HomePageContent, ServicesContent } from "@/lib/wordpress.d";
+import { HomePageContent, ServicesContent, ContactContent } from "@/lib/wordpress.d";
+import { generateLocationSlug } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
 import Balancer from "react-wrap-balancer";
@@ -8,10 +9,20 @@ import { FaArrowRight } from "react-icons/fa";
 interface Props {
   homeContent: HomePageContent;
   servicesContent: ServicesContent;
+  contactContent: ContactContent;
 }
 
 const PopularServices = (props: Props) => {
-  const { homeContent, servicesContent } = props;
+  const { homeContent, servicesContent, contactContent } = props;
+
+  // Get main location (first location) and generate slug
+  const mainLocation = contactContent.locations[0];
+  const locationSlug = mainLocation 
+    ? generateLocationSlug(mainLocation.address.city, mainLocation.address.state)
+    : '';
+
+  // Generate the correct href for services page with location
+  const servicesHref = locationSlug ? `/${locationSlug}/services` : homeContent.popular_services.button.link;
 
   return (
     <div className="bg-background-800 py-16 px-8 lg:px-16">
@@ -29,7 +40,7 @@ const PopularServices = (props: Props) => {
                 {servicesContent.page_info.description}
               </h4>
             <Link
-              href={homeContent.popular_services.button.link}
+              href={servicesHref}
               className="bg-transparent border-2 font-heading border-border text-primary px-8 py-3 font-medium tracking-wide uppercase hover:bg-primary hover:text-primary-foreground transition-all duration-300 ease-in-out inline-flex items-center"
             >
               {homeContent.popular_services.button.label}

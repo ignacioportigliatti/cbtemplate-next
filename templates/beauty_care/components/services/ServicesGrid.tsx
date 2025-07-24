@@ -22,8 +22,14 @@ const ServicesGrid = ({servicesContent} : Props) => {
                 {servicesContent.page_info.description}
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-              {servicesContent.services.map((service) => (
+            
+            {!servicesContent.services || servicesContent.services.length === 0 ? (
+              <div className="mt-8 p-8 bg-muted rounded-lg text-center">
+                <p className="text-muted-foreground">No services available</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                {servicesContent.services.map((service) => (
                 <Link
                   key={service.title}
                   href={`/services/${service.slug}`}
@@ -54,8 +60,9 @@ const ServicesGrid = ({servicesContent} : Props) => {
                     />
                   )}
                 </Link>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
     )
 }

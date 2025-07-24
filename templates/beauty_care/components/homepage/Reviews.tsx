@@ -18,6 +18,23 @@ interface Props {
 }
 
 const Reviews = ({ homeContent, reviewsContent }: Props) => {
+  // Early return if no reviews
+  if (!reviewsContent.reviews || reviewsContent.reviews.length === 0) {
+    return (
+      <div className="bg-background-600 px-8 lg:px-16 xl:px-8 py-16">
+        <div className="max-w-7xl mx-auto text-center">
+          <span className="text-primary font-medium text-2xl font-heading">
+            {reviewsContent.page_info.subtitle}
+          </span>
+          <h2 className="text-4xl lg:text-5xl font-bold text-text mb-2 leading-tight font-heading mt-2">
+            <Balancer>{homeContent.reviews.title}</Balancer>
+          </h2>
+          <p className="text-muted-foreground">No reviews available</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-background-600 px-8 lg:px-16 xl:px-8 py-16">
       <div className="max-w-7xl mx-auto">

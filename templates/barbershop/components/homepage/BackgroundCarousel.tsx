@@ -13,8 +13,17 @@ interface BackgroundCarouselProps {
 const BackgroundCarousel = ({ images }: BackgroundCarouselProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  // Early return if no images
+  if (!images || images.length === 0) {
+    return (
+      <div className="absolute inset-0 z-0 bg-background-900/80">
+        {/* Fallback background */}
+      </div>
+    );
+  }
+
   useEffect(() => {
-    if (images.length > 1) {
+    if (images && images.length > 1) {
       const interval = setInterval(() => {
         setCurrentImageIndex((prevIndex) => 
           (prevIndex + 1) % images.length
@@ -23,7 +32,7 @@ const BackgroundCarousel = ({ images }: BackgroundCarouselProps) => {
 
       return () => clearInterval(interval);
     }
-  }, [images.length]);
+  }, [images?.length]);
 
   return (
     <div className="absolute inset-0 z-0">

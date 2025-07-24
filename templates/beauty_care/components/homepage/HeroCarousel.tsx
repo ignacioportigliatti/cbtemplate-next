@@ -23,6 +23,15 @@ const plugin = Autoplay({
   });
 
 const HeroCarousel = ({ gallery, imageClassName }: Props) => {
+  // Early return if no gallery
+  if (!gallery || gallery.length === 0) {
+    return (
+      <div className="w-full h-full bg-muted flex items-center justify-center">
+        <p className="text-muted-foreground">No images available</p>
+      </div>
+    );
+  }
+
   return (
     <Carousel
       plugins={[plugin]}
@@ -33,7 +42,7 @@ const HeroCarousel = ({ gallery, imageClassName }: Props) => {
       className="w-full h-full"
     >
       <CarouselContent className="h-full">
-        {gallery && gallery.length > 0 && gallery.map((image, index) => (
+        {gallery.map((image, index) => (
           <CarouselItem
             key={index}
             className="h-full pl-0"

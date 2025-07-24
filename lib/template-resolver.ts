@@ -7,7 +7,7 @@ import { cache } from 'react'
 export const getActiveTemplate = cache(async () => {
   try {
     const themeOptions = await getThemeOptions()
-    const templateId = themeOptions.templates.selected_template_details.id
+    const templateId = themeOptions?.templates?.selected_template_details?.id
     
     // Validate template exists
     if (!templateId) {

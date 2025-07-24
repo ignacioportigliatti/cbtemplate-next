@@ -16,6 +16,23 @@ interface Props {
 }
 
 const Team = ({ teamContent }: Props) => {
+  // Early return if no team members
+  if (!teamContent.members || teamContent.members.length === 0) {
+    return (
+      <div className="bg-background-900 py-16 px-8 lg:px-16">
+        <div className="max-w-7xl mx-auto text-center">
+          <h3 className="text-primary font-medium mb-1 tracking-[0.2em] uppercase font-heading">
+            {teamContent.page_info.subtitle}
+          </h3>
+          <h2 className="text-4xl lg:text-5xl mb-4 font-bold text-text leading-tight font-heading">
+            {teamContent.page_info.title}
+          </h2>
+          <p className="text-muted-foreground">No team members available</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-background-900 py-16 px-8 lg:px-16">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start justify-between gap-12 md:gap-0">

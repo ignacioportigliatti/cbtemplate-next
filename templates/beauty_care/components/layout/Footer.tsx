@@ -17,13 +17,15 @@ export const Footer = ({ themeOptions, contactContent }: FooterProps) => {
           <div className="flex md:flex-col flex-col-reverse gap-2 justify-between items-center md:items-start not-prose">
             <Link href="/">
               <h3 className="sr-only">{themeOptions?.general.site_name}</h3>
-              <Image
-                src={themeOptions?.general.site_logo.url as string}
-                alt="Logo"
-                className="w-[96px] h-[48px] md:w-[128px] md:h-[64px] object-contain"
-                width={128}
-                height={64}
-              ></Image>
+              {themeOptions?.general.site_logo && (
+                <Image
+                  src={themeOptions?.general.site_logo.url as string}
+                  alt="Logo"
+                  className="w-[96px] h-[48px] md:w-[128px] md:h-[64px] object-contain"
+                  width={128}
+                  height={64}
+                ></Image>
+              )}
             </Link>
 
             <div>

@@ -23,7 +23,7 @@ import type {
 const baseUrl = process.env.WORDPRESS_URL;
 
 if (!baseUrl) {
-  throw new Error("WORDPRESS_URL environment variable is not defined");
+  console.error("WORDPRESS_URL environment variable is not defined - using fallback data");
 }
 
 class WordPressAPIError extends Error {
@@ -49,6 +49,14 @@ async function wordpressFetch<T>(
   path: string,
   query?: Record<string, any>
 ): Promise<T> {
+  if (!baseUrl) {
+    throw new WordPressAPIError(
+      "WordPress URL not configured",
+      500,
+      path
+    );
+  }
+
   const url = `${baseUrl}${path}${
     query ? `?${querystring.stringify(query)}` : ""
   }`;
@@ -80,6 +88,14 @@ async function wordpressFetchWithPagination<T>(
   path: string,
   query?: Record<string, any>
 ): Promise<WordPressResponse<T>> {
+  if (!baseUrl) {
+    throw new WordPressAPIError(
+      "WordPress URL not configured",
+      500,
+      path
+    );
+  }
+
   const url = `${baseUrl}${path}${
     query ? `?${querystring.stringify(query)}` : ""
   }`;
@@ -194,36 +210,41 @@ export async function getAllPosts(filterParams?: {
   category?: string;
   search?: string;
 }): Promise<Post[]> {
-  const query: Record<string, any> = {
-    _embed: true,
-    per_page: 100,
-  };
+  try {
+    const query: Record<string, any> = {
+      _embed: true,
+      per_page: 100,
+    };
 
-  if (filterParams?.search) {
-    query.search = filterParams.search;
+    if (filterParams?.search) {
+      query.search = filterParams.search;
 
-    if (filterParams?.author) {
-      query.author = filterParams.author;
+      if (filterParams?.author) {
+        query.author = filterParams.author;
+      }
+      if (filterParams?.tag) {
+        query.tags = filterParams.tag;
+      }
+      if (filterParams?.category) {
+        query.categories = filterParams.category;
+      }
+    } else {
+      if (filterParams?.author) {
+        query.author = filterParams.author;
+      }
+      if (filterParams?.tag) {
+        query.tags = filterParams.tag;
+      }
+      if (filterParams?.category) {
+        query.categories = filterParams.category;
+      }
     }
-    if (filterParams?.tag) {
-      query.tags = filterParams.tag;
-    }
-    if (filterParams?.category) {
-      query.categories = filterParams.category;
-    }
-  } else {
-    if (filterParams?.author) {
-      query.author = filterParams.author;
-    }
-    if (filterParams?.tag) {
-      query.tags = filterParams.tag;
-    }
-    if (filterParams?.category) {
-      query.categories = filterParams.category;
-    }
+
+    return await wordpressFetch<Post[]>("/wp-json/wp/v2/posts", query);
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    return [];
   }
-
-  return wordpressFetch<Post[]>("/wp-json/wp/v2/posts", query);
 }
 
 export async function getPostById(id: number): Promise<Post> {
@@ -429,31 +450,178 @@ export async function getPostsByAuthorPaginated(
 }
 
 export async function getHomeContent(): Promise<HomePageContent> {
-  return wordpressFetch<HomePageContent>("wp-json/wp/v2/content/homepage");
+  try {
+    return await wordpressFetch<HomePageContent>("wp-json/wp/v2/content/homepage");
+  } catch (error) {
+    console.error('Error fetching home content:', error);
+    // Return fallback data for build time
+    return {
+      hero: {
+        title: "Welcome",
+        subtitle: "Your Business",
+        description: "Professional services you can trust",
+        gallery: [],
+        button: {
+          label: "Learn More",
+          link: "/about"
+        }
+      },
+      popular_services: {
+        subtitle: "Quality",
+        title: "Our Services",
+        button: {
+          label: "View All Services",
+          link: "/services"
+        },
+        services_to_display: 3
+      },
+      reviews: {
+        title: "What Our Clients Say",
+        reviews_to_display: 3
+      },
+      faq: {
+        title: "Frequently Asked Questions",
+        questions: []
+      },
+      blog: {
+        title: "Latest News",
+        subtitle: "Blog",
+        posts_to_display: 3
+      }
+    } as HomePageContent;
+  }
 }
 
 export async function getServicesContent(): Promise<ServicesContent> {
-  return wordpressFetch<ServicesContent>("wp-json/wp/v2/content/services");
+  try {
+    return await wordpressFetch<ServicesContent>("wp-json/wp/v2/content/services");
+  } catch (error) {
+    console.error('Error fetching services content:', error);
+    return {
+      page_info: {
+        subtitle: "Services",
+        title: "Our Services",
+        description: "Professional services for you",
+        button: {
+          label: "Contact Us",
+          link: "/contact"
+        }
+      },
+      services: []
+    } as ServicesContent;
+  }
 }
 
 export async function getReviewsContent(): Promise<ReviewsContent> {
-  return wordpressFetch<ReviewsContent>("wp-json/wp/v2/content/reviews");
+  try {
+    return await wordpressFetch<ReviewsContent>("wp-json/wp/v2/content/reviews");
+  } catch (error) {
+    console.error('Error fetching reviews content:', error);
+    return {
+      page_info: {
+        subtitle: "Reviews",
+        title: "What Our Clients Say",
+        description: "Client testimonials"
+      },
+      reviews: []
+    } as ReviewsContent;
+  }
 }
 
 export async function getContactContent(): Promise<ContactContent> {
-  return wordpressFetch<ContactContent>("wp-json/wp/v2/content/contact");
+  try {
+    return await wordpressFetch<ContactContent>("wp-json/wp/v2/content/contact");
+  } catch (error) {
+    console.error('Error fetching contact content:', error);
+    return {
+      page_info: {
+        subtitle: "Contact",
+        title: "Get in Touch",
+        description: "We'd love to hear from you"
+      },
+      locations: []
+    } as ContactContent;
+  }
 }
 
 export async function getThemeOptions(): Promise<ThemeOptions> {
-  return wordpressFetch<ThemeOptions>("wp-json/wp/v2/theme-options");
+  try {
+    return await wordpressFetch<ThemeOptions>("wp-json/wp/v2/theme-options");
+  } catch (error) {
+    console.error('Error fetching theme options:', error);
+    return {
+      general: {
+        site_name: "Your Business",
+        site_description: "Professional services",
+        site_logo: {} as any
+      },
+      colors: {
+        primary_color: "#007bff",
+        secondary_color: "#6c757d",
+        accent_color: "#28a745",
+        background_color: "#ffffff",
+        text_color: "#212529",
+        border_color: "#dee2e6",
+        muted_color: "#6c757d",
+        destructive_color: "#dc3545"
+      },
+      templates: {
+        available_templates: {},
+        selected_template: "barbershop",
+        selected_template_details: {
+          id: "barbershop",
+          name: "Barbershop",
+          description: "Default template",
+          preview_image: ""
+        }
+      }
+    } as ThemeOptions;
+  }
 }
 
 export async function getTeamContent(): Promise<TeamContent> {
-  return wordpressFetch<TeamContent>("wp-json/wp/v2/content/team");
+  try {
+    return await wordpressFetch<TeamContent>("wp-json/wp/v2/content/team");
+  } catch (error) {
+    console.error('Error fetching team content:', error);
+    return {
+      page_info: {
+        subtitle: "Team",
+        title: "Meet Our Team",
+        description: "Our professional team"
+      },
+      members: []
+    } as TeamContent;
+  }
 }
 
 export async function getAboutUsContent(): Promise<AboutUsContent> {
-  return wordpressFetch<AboutUsContent>("wp-json/wp/v2/content/about");
+  try {
+    return await wordpressFetch<AboutUsContent>("wp-json/wp/v2/content/about");
+  } catch (error) {
+    console.error('Error fetching about content:', error);
+    // Return fallback data for build time
+    return {
+      page_info: {
+        subtitle: "About",
+        title: "About Us",
+        description: "Learn more about our company"
+      },
+      story: {
+        title: "Our Story",
+        content: "We are a professional company dedicated to excellence"
+      },
+      mission: {
+        title: "Our Mission",
+        content: "We are committed to providing excellent service"
+      },
+      values: {
+        title: "Our Values", 
+        list: []
+      },
+      gallery: []
+    } as AboutUsContent;
+  }
 }
 
 export { WordPressAPIError };

@@ -7,6 +7,7 @@ import { NavProps } from "@/lib/types";
 import Image from "next/image";
 import { useScrollPosition } from "@/lib/hooks/useScrollPosition";
 import { ContactContent, ThemeOptions } from "@/lib/wordpress.d";
+import { siteConfig } from "@/site.config";
 
 export const Nav = ({ className, children, id, themeOptions, contactContent }: NavProps) => {
   const { isScrolled } = useScrollPosition();
@@ -30,14 +31,18 @@ export const Nav = ({ className, children, id, themeOptions, contactContent }: N
           className="hover:opacity-75 transition-all flex gap-4 items-center"
           href="/"
         >
-          <Image
-              src={themeOptions?.general.site_logo.url as string}
+          {themeOptions?.general?.site_logo?.url ? (
+            <Image
+              src={themeOptions?.general?.site_logo?.url as string}
               alt="Logo"
               loading="eager"
               className="w-[96px] h-[48px] md:w-[128px] md:h-[64px] object-contain"
               width={128}
               height={64}
             />
+          ) : (
+            <span className="text-2xl font-bold">{themeOptions?.general?.site_name || siteConfig.site_name}</span>
+          )}
         </Link>
         {children}
         <div className="flex items-center gap-2">

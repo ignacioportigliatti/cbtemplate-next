@@ -26,7 +26,7 @@ const HeroCarousel = ({ gallery, imageClassName }: Props) => {
   // Early return if no gallery
   if (!gallery || gallery.length === 0) {
     return (
-      <div className="w-full h-full bg-muted flex items-center justify-center">
+      <div className="w-full h-full min-h-[500px] bg-muted flex items-center justify-center">
         <p className="text-muted-foreground">No images available</p>
       </div>
     );

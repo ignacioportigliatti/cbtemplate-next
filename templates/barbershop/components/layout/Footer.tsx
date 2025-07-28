@@ -16,10 +16,10 @@ export const Footer = ({ themeOptions, contactContent }: FooterProps) => {
         <Container className="md:grid flex flex-col-reverse max-w-7xl mx-auto md:grid-cols-[1.5fr_0.5fr_0.5fr] gap-12">
           <div className="flex md:flex-col flex-col-reverse gap-2 justify-between items-center md:items-start not-prose">
             <Link href="/">
-              <h3 className="sr-only">{themeOptions?.general.site_name}</h3>
-              {themeOptions?.general.site_logo && (
+              <h3 className="sr-only">{themeOptions?.general?.site_name || "Site Name"}</h3>
+              {themeOptions?.general?.site_logo?.url && (
                 <Image
-                  src={themeOptions?.general.site_logo.url as string}
+                  src={themeOptions?.general?.site_logo?.url as string}
                   alt="Logo"
                   className="w-[96px] h-[48px] md:w-[128px] md:h-[64px] object-contain"
                   width={128}

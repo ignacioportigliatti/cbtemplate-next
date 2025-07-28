@@ -93,15 +93,15 @@ export function MobileNav({ themeOptions, contactContent }: MobileNavProps) {
               className="flex items-center"
               onOpenChange={setOpen}
             >
-              {themeOptions?.general.site_logo.url ? (
-                <Image
-                  src={themeOptions?.general.site_logo.url as string}
+                      {themeOptions?.general?.site_logo?.url ? (
+          <Image
+            src={themeOptions?.general?.site_logo?.url as string}
                   alt="Logo"
                   width={128}
                   height={64}
                 />
               ) : (
-                <span>{themeOptions?.general.site_name}</span>
+                <span>{themeOptions?.general?.site_name || "Site Name"}</span>
               )}
             </MobileLink>
           </SheetTitle>

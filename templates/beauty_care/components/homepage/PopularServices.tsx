@@ -30,13 +30,13 @@ const PopularServices = (props: Props) => {
         {/* Header Section */}
         <div className="flex w-full md:w-5/12 flex-col lg:flex-row text-center md:text-left lg:items-center lg:justify-between">
           <div className="pr-0 md:pr-8">
-            <h3 className="text-primary font-medium mb-1 text-2xl font-heading">
+            <span className="text-primary font-medium mb-1 text-2xl font-heading block">
               {homeContent.popular_services.subtitle}
-            </h3>
+            </span>
             <h2 className="text-4xl lg:text-5xl mb-4 font-bold text-text leading-tight font-heading">
               <Balancer>{homeContent.popular_services.title}</Balancer>
             </h2>
-            <h4 className="text-text/80 mb-4">{servicesContent.page_info.description}</h4>
+            <p className="text-text/80 mb-4">{servicesContent.page_info.description}</p>
             <Link
               href={servicesHref}
               className="bg-transparent border-2 rounded-lg font-heading border-border text-primary px-8 py-3 font-bold text-xl hover:bg-primary hover:text-primary-foreground transition-all duration-300 ease-in-out inline-flex items-center"

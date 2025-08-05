@@ -21,7 +21,7 @@ export default async function Page() {
     <Section>
       <Container className="space-y-6">
         <Prose className="mb-8">
-          <h2>All Authors</h2>
+          <h1>All Authors</h1>
           <ul className="grid">
             {authors.map((author: any) => (
               <li key={author.id}>

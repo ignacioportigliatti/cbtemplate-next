@@ -19,11 +19,11 @@ const Hero = ({ homeContent }: Props) => {
       <div className="relative z-10 max-w-7xl mx-auto min-h-screen flex items-center justify-center px-8">
         <div className="text-center text-white">
           {/* Subtitle */}
-          <h3 className="text-primary font-medium mb-4 tracking-[0.2em] uppercase font-heading">
+          <span className="text-primary font-medium mb-4 tracking-[0.2em] uppercase font-heading block">
             <Balancer>{homeContent.hero.subtitle}</Balancer>
-          </h3>
+          </span>
           
-          {/* Main Title */}
+          {/* Main Title - Primary H1 */}
           <h1 className="text-5xl text-text md:text-6xl max-w-2xl mx-auto lg:text-8xl font-bold uppercase !leading-[0.8] font-heading">
             <Balancer>{homeContent.hero.title}</Balancer>
           </h1>

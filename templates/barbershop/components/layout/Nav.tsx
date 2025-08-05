@@ -45,7 +45,7 @@ export const Nav = ({ className, children, id, themeOptions, contactContent }: N
           )}
         </Link>
         {children}
-          <MobileNav themeOptions={themeOptions as ThemeOptions} contactContent={contactContent as ContactContent} />
+        <MobileNav themeOptions={themeOptions as ThemeOptions} contactContent={contactContent as ContactContent} />
       </div>
     </nav>
   );

@@ -22,9 +22,9 @@ const Reviews = ({ homeContent, reviewsContent }: Props) => {
     return (
       <div className="bg-background-800 px-8 lg:px-16 xl:px-8 py-16">
         <div className="max-w-7xl mx-auto text-center">
-          <h3 className="text-primary font-medium text-xl tracking-[0.2em] uppercase font-heading">
+          <span className="text-primary font-medium text-xl tracking-[0.2em] uppercase font-heading block">
             {reviewsContent.page_info.subtitle}
-          </h3>
+          </span>
           <h2 className="text-4xl lg:text-5xl font-bold text-text mb-4 leading-tight font-heading">
             <Balancer>{homeContent.reviews.title}</Balancer>
           </h2>
@@ -39,9 +39,9 @@ const Reviews = ({ homeContent, reviewsContent }: Props) => {
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-12">
-          <h3 className="text-primary font-medium text-xl tracking-[0.2em] uppercase font-heading">
+          <span className="text-primary font-medium text-xl tracking-[0.2em] uppercase font-heading block">
             {reviewsContent.page_info.subtitle}
-          </h3>
+          </span>
           <h2 className="text-4xl lg:text-5xl font-bold text-text mb-4 leading-tight font-heading">
             <Balancer>{homeContent.reviews.title}</Balancer>
           </h2>

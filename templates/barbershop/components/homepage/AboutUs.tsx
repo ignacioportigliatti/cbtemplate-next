@@ -12,9 +12,9 @@ const AboutUs = (props: Props) => {
   return (
     <div className="justify-start flex flex-col h-full">
       <div>
-        <h3 className="text-primary text-center md:text-left font-medium mb-4 tracking-[0.2em] uppercase font-heading">
+        <span className="text-primary text-center md:text-left font-medium mb-4 tracking-[0.2em] uppercase font-heading block">
           <Balancer>{aboutUsContent.page_info.subtitle}</Balancer>
-        </h3>
+        </span>
         <h2 className="text-4xl lg:text-5xl font-bold text-text text-center md:text-left mb-4 leading-tight font-heading">
           <Balancer>{aboutUsContent.page_info.title}</Balancer>
         </h2>

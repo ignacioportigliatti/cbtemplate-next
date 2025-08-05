@@ -37,9 +37,9 @@ const LocationContactPage = async ({ locationData, contactContent }: Props) => {
         <Container className="max-w-7xl mx-auto px-8 lg:px-0">
           <Breadcrumb items={breadcrumbItems} className="mb-8" />
           
-          <h2 className="text-primary font-medium text-2xl text-center md:text-left mb-2 uppercase font-heading">
+          <span className="text-primary font-medium text-2xl text-center md:text-left mb-2 uppercase font-heading block">
             {contactContent.page_info?.subtitle || "Get in Touch"}
-          </h2>
+          </span>
           <h1 className="text-4xl md:text-5xl font-heading text-text text-center leading-[0.9] md:text-left font-bold">
             {contactContent.page_info?.title || "Contact Us"} in {locationData.address.city}
           </h1>
@@ -54,14 +54,14 @@ const LocationContactPage = async ({ locationData, contactContent }: Props) => {
             </div>
             <div className="flex flex-col w-full lg:w-4/12 justify-between">
               <div className="pt-4 md:py-8 rounded-lg">
-                <h3 className="text-primary font-medium text-xl text-center md:text-left tracking-[0.2em] uppercase font-heading">
+                <h2 className="text-primary font-medium text-xl text-center md:text-left tracking-[0.2em] uppercase font-heading">
                   {locationData.name || "Contact Info"}
-                </h3>
+                </h2>
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col mt-2 group">
                     <div className="flex items-center gap-2 text-text group-hover:text-primary transition-all duration-300 ease-in-out">
                       <FaMapMarker className="w-4 h-4 -mt-1" />
-                      <h4 className="font-medium tracking-[0.2em] uppercase font-heading">Address</h4>
+                      <h3 className="font-medium tracking-[0.2em] uppercase font-heading">Address</h3>
                     </div>
                     <p className="text-text">
                       {locationData.address.full_address || 
@@ -72,7 +72,7 @@ const LocationContactPage = async ({ locationData, contactContent }: Props) => {
                     <div className="flex flex-col mt-2 group">
                       <div className="flex items-center gap-1 text-text group-hover:text-primary transition-all duration-300 ease-in-out">
                         <FaPhone className="w-4 h-4 -mt-1 mr-1" />
-                        <h4 className="font-medium tracking-[0.2em] uppercase font-heading">Phone</h4>
+                        <h3 className="font-medium tracking-[0.2em] uppercase font-heading">Phone</h3>
                       </div>
                       <p className="text-text">{locationData.phone_number}</p>
                     </div>
@@ -81,7 +81,7 @@ const LocationContactPage = async ({ locationData, contactContent }: Props) => {
                     <div className="flex flex-col mt-2 group">
                       <div className="flex items-center gap-2 text-text group-hover:text-primary transition-all duration-300 ease-in-out">
                         <FaEnvelope className="w-4 h-4 -mt-1" />
-                        <h4 className="font-medium tracking-[0.2em] uppercase font-heading">Email</h4>
+                        <h3 className="font-medium tracking-[0.2em] uppercase font-heading">Email</h3>
                       </div>
                       <p className="text-text">{locationData.email}</p>
                     </div>

@@ -9,18 +9,18 @@ interface Props {
 const AboutUsInfo = ({aboutUsContent}: Props) => {
     return (
         <div>
-           <h2 className="text-primary font-medium text-3xl text-center md:text-left font-heading">
+           <span className="text-primary font-medium text-3xl text-center md:text-left font-heading block">
               {aboutUsContent.page_info.subtitle}
-            </h2>
+            </span>
             <h1 className="text-4xl md:text-5xl font-heading text-text text-center md:text-left mb-2 font-bold">
               {aboutUsContent.page_info.title}
             </h1>
             <div className="flex flex-col text-center md:text-left gap-4">
               <p className="text-text mb-4 w-full">{aboutUsContent.page_info.description}</p>
               <div className="flex flex-col">
-                <h5 className="text-primary text-2xl text-center font-bold md:text-left font-heading">
+                <h2 className="text-primary text-2xl text-center font-bold md:text-left font-heading">
                   {aboutUsContent.story.title}
-                </h5>
+                </h2>
                 <div
                   className="prose max-w-none text-text"
                   dangerouslySetInnerHTML={{ __html: aboutUsContent.story.content }}

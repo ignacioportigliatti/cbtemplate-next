@@ -14,12 +14,12 @@ const Hero = ({ homeContent }: Props) => {
   return (
     <div className="relative min-h-screen bg-background">
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto min-h-screen py-24 pt-32 lg:pt-24 flex items-center px-8">
+      <div className="relative z-10 max-w-7xl mx-auto min-h-screen py-24 pt-32 flex items-center px-8">
         <div className="flex flex-col lg:flex-row gap-24 items-center w-full">
           
           {/* Left Side - Image Carousel */}
           <div className="relative w-full lg:w-5/12">
-            <div className="relative w-full h-[500px] shadow-[15px_15px_0px_0px] shadow-text lg:h-[600px] rounded-xl rounded-tl-[180px] rounded-tr-none overflow-hidden">
+            <div className="relative w-full h-[500px] shadow-[15px_15px_0px_0px] shadow-text lg:h-[500px] rounded-xl rounded-tl-[180px] rounded-tr-none overflow-hidden">
               <HeroCarousel gallery={homeContent.hero.gallery} />
             </div>
             {/* Decorative elements - similar to the reference image */}
@@ -30,11 +30,11 @@ const Hero = ({ homeContent }: Props) => {
           {/* Right Side - Text Content */}
           <div className="text-center md:text-left ml-4 w-full lg:w-7/12">
             {/* Subtitle */}
-            <span className="text-primary text-3xl font-heading">
+            <span className="text-primary text-3xl font-heading block">
               <Balancer>{homeContent.hero.subtitle}</Balancer>
             </span>
             
-            {/* Main Title */}
+            {/* Main Title - Primary H1 */}
             <h1 className="text-5xl md:text-5xl lg:text-6xl mb-4 mt-2 font-bold font-heading leading-tight">
               <Balancer>{homeContent.hero.title}</Balancer>
             </h1>

@@ -20,9 +20,9 @@ const FAQ = (props: Props) => {
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-12">
-          <h3 className="text-primary font-medium text-2xl font-heading">
+          <span className="text-primary font-medium text-2xl font-heading block">
             Common Questions
-          </h3>
+          </span>
           <h2 className="text-4xl lg:text-5xl font-bold text-text mb-4 leading-tight font-heading mt-2">
             <Balancer>{homeContent.faq.title}</Balancer>
           </h2>

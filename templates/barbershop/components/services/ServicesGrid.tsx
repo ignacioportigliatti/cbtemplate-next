@@ -12,9 +12,9 @@ const ServicesGrid = ({servicesContent} : Props) => {
     return (
         <div className="max-w-7xl mx-auto px-8 xl:px-0">
             <div className="space-y-2">
-              <h2 className="text-primary font-heading text-center md:text-left text-2xl uppercase w-full">
+              <span className="text-primary font-heading text-center md:text-left text-2xl uppercase w-full block">
                 {servicesContent.page_info.subtitle}
-              </h2>
+              </span>
               <h1 className="text-4xl md:text-5xl font-heading text-text text-center leading-[0.9] md:text-left mt-1 font-bold">
                 {servicesContent.page_info.title}
               </h1>

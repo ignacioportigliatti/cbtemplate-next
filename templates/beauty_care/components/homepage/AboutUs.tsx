@@ -12,14 +12,14 @@ const AboutUs = (props: Props) => {
   return (
     <div className="justify-start flex flex-col h-full">
       <div>
-        <h3 className="text-primary text-center md:text-left font-medium mb-2 text-2xl font-heading">
+        <span className="text-primary text-center md:text-left font-medium mb-2 text-2xl font-heading block">
           <Balancer>{aboutUsContent.page_info.subtitle}</Balancer>
-        </h3>
+        </span>
         <h2 className="text-4xl lg:text-5xl font-bold text-text text-center md:text-left mb-4 leading-tight font-heading">
           <Balancer>{aboutUsContent.page_info.title}</Balancer>
         </h2>
         <p className="text-text text-center md:text-left mb-8 leading-relaxed">{aboutUsContent.page_info.description}</p>
-        <h4 className="text-text text-center md:text-left leading-relaxed font-bold font-heading text-2xl">{aboutUsContent.mission.title}</h4>
+        <h3 className="text-text text-center md:text-left leading-relaxed font-bold font-heading text-2xl">{aboutUsContent.mission.title}</h3>
         <div dangerouslySetInnerHTML={{ __html: aboutUsContent.mission.content }} />
       </div>
       <div></div>

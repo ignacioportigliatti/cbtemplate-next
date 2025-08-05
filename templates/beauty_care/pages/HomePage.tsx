@@ -121,12 +121,12 @@ const HomePage = async () => {
 
     return (
       <main>
-        {/* Hero Section */}
+        {/* Hero Section - Main H1 */}
         <section>
           <Hero homeContent={homeContent} />
         </section>
 
-        {/* Service & Location Combined Section */}
+        {/* About Us & Image Carousel Section */}
         <section className="bg-background-950 px-8 lg:px-16 text-foreground py-16 !pb-24 md:py-16">
           <div className="max-w-7xl mx-auto flex">
             <div className="flex flex-col lg:flex-row items-stretch justify-between md:gap-12">

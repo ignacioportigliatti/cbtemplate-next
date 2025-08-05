@@ -43,12 +43,12 @@ const LocationContactPage = async ({ locationData, contactContent }: Props) => {
           <h1 className="text-4xl md:text-5xl font-heading text-text text-center leading-[0.9] md:text-left font-bold">
             {contactContent.page_info?.title || "Contact Us"} in {locationData.address.city}
           </h1>
-          <p className="text-text text-center text-sm md:text-left w-full">
+          <p className="text-text text-center text-sm mt-2 md:text-left w-full">
             {contactContent.page_info?.description || "We would love to hear from you!"}
           </p>
           
           {/* Show specific location */}
-          <div className="pt-2 flex flex-col lg:flex-row md:gap-12 mt-8">
+          <div className="pt-2 flex flex-col lg:flex-row md:gap-12">
             <div className="lg:w-8/12 pt-4 md:py-8 rounded-lg">
               <Location contactContent={contactContent} />
             </div>

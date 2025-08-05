@@ -21,12 +21,6 @@ import {
   SheetHeader,
   SheetFooter,
 } from "@/components/ui/sheet";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 
 import { mainMenu } from "@/templates/barbershop/menu.config";
 import { ContactContent, ThemeOptions } from "@/lib/wordpress.d";
@@ -41,32 +35,26 @@ interface MobileNavProps {
 export function MobileNav({ themeOptions, contactContent }: MobileNavProps) {
   const [open, setOpen] = React.useState(false);
 
-  // Generate location-based menu items
+  // Get the main location (index 0)
+  const mainLocation = contactContent.locations?.[0];
+  
+  // Generate location-based menu items using only the main location
   const generateLocationMenu = () => {
-    const locations = contactContent.locations || [];
-    
-    if (locations.length === 0) {
+    if (!mainLocation) {
       return mainMenu; // Fallback to original menu
     }
 
-    if (locations.length === 1) {
-      // Single location - direct links
-      const locationSlug = generateLocationSlug(locations[0].address.city, locations[0].address.state);
-      return {
-        home: "/",
-        about: `/${locationSlug}/about`,
-        services: `/${locationSlug}/services`,
-        contact: `/${locationSlug}/contact`,
-        blog: "/blog",
-      };
-    }
-
-    // Multiple locations - return original menu for mobile (will be handled by accordion)
-    return mainMenu;
+    const locationSlug = generateLocationSlug(mainLocation.address.city, mainLocation.address.state);
+    return {
+      home: "/",
+      about: `/${locationSlug}/about`,
+      services: `/${locationSlug}/services`,
+      contact: `/${locationSlug}/contact`,
+      blog: "/blog",
+    };
   };
 
   const locationMenu = generateLocationMenu();
-  const hasMultipleLocations = (contactContent.locations || []).length > 1;
 
   return (
     <Sheet
@@ -108,88 +96,39 @@ export function MobileNav({ themeOptions, contactContent }: MobileNavProps) {
         </SheetHeader>
         <ScrollArea className="my-4 h-[calc(100vh-20rem)] pb-10 pl-2">
           <div className="flex flex-col space-y-1">
-            {hasMultipleLocations ? (
-              // Multiple locations - use accordion
-              <Accordion type="single" collapsible className="w-full">
-                {Object.entries(mainMenu).map(([key, href]) => {
-                  if (key === 'home' || key === 'blog') {
-                    // Direct links for home and blog
-                    return (
-                      <MobileLink
-                        key={key}
-                        href={href}
-                        onOpenChange={setOpen}
-                        className="text-3xl hover:text-primary transition-all duration-300 font-heading text-text"
-                      >
-                        {key.charAt(0).toUpperCase() + key.slice(1)}
-                      </MobileLink>
-                    );
-                  }
-
-                  // Location-based items with accordion
-                  return (
-                    <AccordionItem key={key} value={key} className="border-none">
-                      <AccordionTrigger className="text-3xl hover:text-primary transition-all duration-300 font-heading text-text py-2">
-                        {key.charAt(0).toUpperCase() + key.slice(1)}
-                      </AccordionTrigger>
-                      <AccordionContent>
-                        <div className="flex flex-col space-y-2 pl-4">
-                          {contactContent.locations.map((location) => {
-                            const locationSlug = generateLocationSlug(location.address.city, location.address.state);
-                            const locationHref = `/${locationSlug}/${key}`;
-                            
-                            return (
-                              <MobileLink
-                                key={location.id}
-                                href={locationHref}
-                                onOpenChange={setOpen}
-                                className="text-xl hover:text-primary transition-all duration-300 font-heading text-text"
-                              >
-                                {location.address.city}, {location.address.state}
-                              </MobileLink>
-                            );
-                          })}
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  );
-                })}
-              </Accordion>
-            ) : (
-              // Single location - direct links
-              Object.entries(locationMenu).map(([key, href]) => (
-                <MobileLink
-                  key={key}
-                  href={href}
-                  onOpenChange={setOpen}
-                  className="text-3xl hover:text-primary transition-all duration-300 font-heading text-text"
-                >
-                  {key.charAt(0).toUpperCase() + key.slice(1)}
-                </MobileLink>
-              ))
-            )}
+            {/* Direct links for all menu items */}
+            {Object.entries(locationMenu).map(([key, href]) => (
+              <MobileLink
+                key={key}
+                href={href}
+                onOpenChange={setOpen}
+                className="text-3xl hover:text-primary transition-all duration-300 font-heading text-text"
+              >
+                {key.charAt(0).toUpperCase() + key.slice(1)}
+              </MobileLink>
+            ))}
           </div>
         </ScrollArea>
         <SheetFooter className="flex flex-col gap-1">
           <div className="flex flex-col gap-2 text-xs">
-            {contactContent.locations?.[0]?.phone_number && (
+            {mainLocation?.phone_number && (
               <div className="flex items-center gap-2">
                 <FaPhone className="w-4 h-4" />
-                <p className="text-muted-foreground/80">{contactContent.locations[0].phone_number}</p>
+                <p className="text-muted-foreground/80">{mainLocation.phone_number}</p>
               </div>
             )}
-            {contactContent.locations?.[0]?.email && (
+            {mainLocation?.email && (
               <div className="flex items-center gap-2">
                 <FaEnvelope className="w-4 h-4" />
-                <p className="text-muted-foreground/80">{contactContent.locations[0].email}</p>
+                <p className="text-muted-foreground/80">{mainLocation.email}</p>
               </div>
             )}
-            {contactContent.locations?.[0]?.address && (
+            {mainLocation?.address && (
               <div className="flex items-center gap-2">
                 <FaMapPin className="w-4 h-4" />
                 <p className="text-muted-foreground/80">
-                  {contactContent.locations[0].address.full_address || 
-                   `${contactContent.locations[0].address.street}, ${contactContent.locations[0].address.city}, ${contactContent.locations[0].address.state} ${contactContent.locations[0].address.zip_code}, ${contactContent.locations[0].address.country}`}
+                  {mainLocation.address.full_address || 
+                   `${mainLocation.address.street}, ${mainLocation.address.city}, ${mainLocation.address.state} ${mainLocation.address.zip_code}, ${mainLocation.address.country}`}
                 </p>
               </div>
             )}

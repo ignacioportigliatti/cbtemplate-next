@@ -85,9 +85,9 @@ export default async function Page({
       <Section className="bg-background-950">
         <Container>
           <div className="pt-32 pb-16 max-w-7xl mx-auto">
-            <h2 className="text-primary !text-5xl text-center md:text-left font-bold font-heading">
+            <h1 className="text-primary !text-5xl text-center md:text-left font-bold font-heading">
               {blogContent.title}
-            </h2>
+            </h1>
             <p className="text-muted-foreground/80 mb-8">
               {total} {total === 1 ? "post" : "posts"} found
               {search && " matching your search"}

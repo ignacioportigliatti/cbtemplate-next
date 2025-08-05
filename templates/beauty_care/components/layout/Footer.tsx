@@ -3,6 +3,7 @@ import { Container, Section } from "@/components/craft";
 import Link from "next/link";
 import { contentMenu, mainMenu } from "@/templates/beauty_care/menu.config";
 import { ContactContent, ThemeOptions } from "@/lib/wordpress.d";
+import { generateLocationSlug } from "@/lib/utils";
 
 interface FooterProps {
   themeOptions: ThemeOptions;
@@ -10,6 +11,27 @@ interface FooterProps {
 }
 
 export const Footer = ({ themeOptions, contactContent }: FooterProps) => {
+  // Get the main location (index 0)
+  const mainLocation = contactContent.locations?.[0];
+  
+  // Generate location-based menu items using only the main location
+  const generateLocationMenu = () => {
+    if (!mainLocation) {
+      return mainMenu; // Fallback to original menu
+    }
+
+    const locationSlug = generateLocationSlug(mainLocation.address.city, mainLocation.address.state);
+    return {
+      home: "/",
+      about: `/${locationSlug}/about`,
+      services: `/${locationSlug}/services`,
+      contact: `/${locationSlug}/contact`,
+      blog: "/blog",
+    };
+  };
+
+  const locationMenu = generateLocationMenu();
+
   return (
     <footer className="">
       <Section className="bg-background-800 px-6 sm:px-8 py-8 lg:py-16">
@@ -41,7 +63,7 @@ export const Footer = ({ themeOptions, contactContent }: FooterProps) => {
           <div className="flex gap-24 text-sm">
           <div className="flex flex-col gap-2 text-sm">
             <h5 className="font-medium text-base">Website</h5>
-            {Object.entries(mainMenu).map(([key, href]) => (
+            {Object.entries(locationMenu).map(([key, href]) => (
               <Link
                 className="hover:underline underline-offset-4"
                 key={href}

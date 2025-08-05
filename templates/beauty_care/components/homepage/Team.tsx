@@ -21,9 +21,9 @@ const Team = ({ teamContent }: Props) => {
     return (
       <div className="bg-background-800 py-16 px-8 lg:px-16">
         <div className="max-w-7xl mx-auto text-center">
-          <h3 className="text-primary font-medium mb-1 text-2xl font-heading">
+          <span className="text-primary font-medium mb-1 text-2xl font-heading block">
             {teamContent.page_info.subtitle}
-          </h3>
+          </span>
           <h2 className="text-4xl lg:text-5xl mb-4 font-bold text-text leading-tight font-heading">
             {teamContent.page_info.title}
           </h2>
@@ -38,13 +38,13 @@ const Team = ({ teamContent }: Props) => {
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start justify-between gap-12 md:gap-0">
         <div className="flex w-full md:w-5/12 flex-col justify-between text-center items-center md:items-start md:text-left ">
           <div className="pr-0 md:pr-20">
-            <h3 className="text-primary font-medium mb-1 text-2xl font-heading">
+            <span className="text-primary font-medium mb-1 text-2xl font-heading block">
               {teamContent.page_info.subtitle}
-            </h3>
+            </span>
             <h2 className="text-4xl lg:text-5xl mb-4 font-bold text-text leading-tight font-heading">
               {teamContent.page_info.title}
             </h2>
-            <h4 className="text-text/80 mb-4">{teamContent.page_info.description}</h4>
+            <p className="text-text/80 mb-4">{teamContent.page_info.description}</p>
           </div>
         </div>
         <div className="w-full md:w-7/12">
@@ -70,7 +70,7 @@ const Team = ({ teamContent }: Props) => {
                       )}
                     </div>
                     <div className="mt-4 text-center">
-                      <h5 className="text-text font-medium">{member.member_name}</h5>
+                      <h3 className="text-text font-medium">{member.member_name}</h3>
                       <p className="text-text/80 text-sm">{member.member_position}</p>
                     </div>
                   </div>

@@ -21,7 +21,7 @@ export default async function Page() {
     <Section>
       <Container className="space-y-6">
         <Prose className="mb-8">
-          <h2>All Categories</h2>
+          <h1>All Categories</h1>
           <ul className="grid">
             {categories.map((category: any) => (
               <li key={category.id}>

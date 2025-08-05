@@ -94,14 +94,14 @@ export default async function BlogPostPage({
             </Balancer>
           </h1>
           <div className="flex justify-between items-center gap-4 text-sm mb-4">
-            <h5>
+            <p>
               Published {date} by{" "}
               {author.name && (
                 <span>
                   <a href={`/blog/?author=${author.id}`}>{author.name}</a>{" "}
                 </span>
               )}
-            </h5>
+            </p>
 
             <Link
               href={`/blog/?category=${category.id}`}

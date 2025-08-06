@@ -15,9 +15,9 @@ const ServicesGrid = ({servicesContent} : Props) => {
               <span className="text-primary font-heading text-center md:text-left text-2xl font-bold w-full block">
                 {servicesContent.page_info.subtitle}
               </span>
-              <h1 className="text-4xl md:text-5xl font-heading text-text text-center leading-[0.9] md:text-left mt-1 font-bold">
+              <h2 className="text-4xl md:text-5xl font-heading text-text text-center leading-[0.9] md:text-left mt-1 font-bold">
                 {servicesContent.page_info.title}
-              </h1>
+              </h2>
               <p className="text-muted-foreground/80 text-center md:text-left mt-1 w-full">
                 {servicesContent.page_info.description}
               </p>

@@ -37,11 +37,11 @@ const LocationContactPage = async ({ locationData, contactContent }: Props) => {
         {/* Contact Info */}
         <Section className="bg-background-950 py-16 pt-32 px-4 lg:px-8">
           <Container className="max-w-7xl mx-auto px-8 lg:px-0">
-            <Breadcrumb items={breadcrumbItems} className="mb-8 scroll-animate" />
+            <Breadcrumb items={breadcrumbItems} className="py-4 scroll-animate" />
             
-            <h2 className="text-primary font-medium text-3xl text-center md:text-left mb-2 font-heading scroll-animate">
+            <h3 className="text-primary font-medium text-3xl text-center md:text-left mb-2 font-heading scroll-animate">
               {contactContent.page_info?.subtitle || "Get in Touch"}
-            </h2>
+            </h3>
             <h1 className="text-4xl md:text-5xl font-heading text-text text-center leading-[0.9] md:text-left font-bold scroll-animate">
               {contactContent.page_info?.title || "Contact Us"} in {locationData.address.city}
             </h1>

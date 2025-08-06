@@ -38,8 +38,8 @@ const LocationServicesPage = async ({ locationData, servicesContent, contactCont
     <ScrollAnimations>
       <main>
         <Section className="pt-24 md:pt-32 bg-background-900 pb-16">
-          <Container className="max-w-7xl mx-auto px-8 xl:px-0">
-            <Breadcrumb items={breadcrumbItems} className="mb-8 scroll-animate" />
+          <Container className="max-w-7xl mx-auto">
+            <Breadcrumb items={breadcrumbItems} className="scroll-animate py-4" />
             <LocationServicesGrid servicesContent={servicesContent} locationSlug={locationSlug} />
           </Container>
         </Section>

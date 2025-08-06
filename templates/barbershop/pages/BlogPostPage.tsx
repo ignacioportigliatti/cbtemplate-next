@@ -124,7 +124,7 @@ export default async function BlogPostPage({
 
   return (
     <ScrollAnimations>
-      <Section className="mt-32 pb-16 max-w-7xl mx-auto">
+      <Section className="mt-32 pb-16 px-8 xl:px-0 max-w-7xl mx-auto">
         <Container>
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Main Article - 2/3 width */}

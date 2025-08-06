@@ -27,7 +27,7 @@ const LocationServiceDetailPage = async ({ locationData, serviceData }: Props) =
       <Section className="pt-24 md:pt-32 bg-background-900 pb-16">
         <Container className="max-w-7xl mx-auto px-8 xl:px-0">
           
-          <Breadcrumb items={breadcrumbItems} className="mb-8 scroll-animate" />
+          <Breadcrumb items={breadcrumbItems} className="py-4 scroll-animate" />
           
           <h1 className="text-4xl md:text-5xl font-heading text-primary text-center leading-[0.9] md:text-left font-bold scroll-animate">
             {serviceData.title} in {locationData.address.city}

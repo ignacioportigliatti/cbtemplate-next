@@ -28,9 +28,9 @@ const AboutUsContact = ({ contactContent }: Props) => {
           <span className="text-primary font-medium text-3xl text-center md:text-left mb-2 font-heading">
             {contactContent.page_info?.subtitle || "Get in Touch"}
           </span>
-          <h1 className="text-4xl md:text-5xl font-heading text-text text-center md:text-left mb-2 font-bold">
+          <h2 className="text-4xl md:text-5xl font-heading text-text text-center md:text-left mb-2 font-bold">
             {contactContent.page_info?.title || "Contact Us"}
-          </h1>
+          </h2>
           <p className="text-text text-center text-sm md:text-left w-full">
             {contactContent.page_info?.description || "We would love to hear from you!"}
           </p>
@@ -46,9 +46,9 @@ const AboutUsContact = ({ contactContent }: Props) => {
         <span className="text-primary font-medium text-3xl text-center md:text-left mb-2 font-heading scroll-animate">
           {contactContent.page_info?.subtitle || "Get in Touch"}
         </span>
-        <h1 className="text-4xl md:text-5xl font-heading text-text text-center md:text-left mb-2 font-bold scroll-animate">
+        <h2 className="text-4xl md:text-5xl font-heading text-text text-center md:text-left mb-2 font-bold scroll-animate">
           {contactContent.page_info?.title || "Contact Us"}
-        </h1>
+        </h2>
         <p className="text-text text-center text-sm md:text-left w-full scroll-animate">
           {contactContent.page_info?.description || "We would love to hear from you!"}
         </p>

@@ -39,7 +39,7 @@ const LocationAboutPage = async ({ locationData, aboutUsContent, contactContent 
         {/* About Us Content */}
         <Section className="pt-24 md:pt-32 bg-background-950 pb-16">
           <Container className="max-w-7xl mx-auto px-8 xl:px-0">
-            <Breadcrumb items={breadcrumbItems} className="mb-8 scroll-animate" />
+            <Breadcrumb items={breadcrumbItems} className="py-4 scroll-animate" />
             <AboutUsInfo aboutUsContent={aboutUsContent} />
             {aboutUsContent.gallery.length > 0 && <AboutUsGallery aboutUsContent={aboutUsContent} />}
             <AboutUsMission aboutUsContent={aboutUsContent} />

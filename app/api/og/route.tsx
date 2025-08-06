@@ -42,8 +42,8 @@ export async function GET(request: NextRequest) {
                 src={logoUrl}
                 alt="Logo"
                 style={{
-                  width: "80px",
-                  height: "80px",
+                  width: "160px",
+                  height: "160px",
                   objectFit: "contain",
                 }}
               />

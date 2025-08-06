@@ -43,7 +43,7 @@ const ServiceGallery = ({ service }: Props) => {
       )
 
     return (
-        <div className="mt-8">
+        <div className="mt-8 scroll-animate">
             <Carousel
                 plugins={[plugin.current]}
                 onMouseEnter={plugin.current.stop}
@@ -57,7 +57,7 @@ const ServiceGallery = ({ service }: Props) => {
                 <CarouselContent className="-ml-2 md:-ml-4">
                     {service.gallery.map((image, index) => (
                         <CarouselItem key={image.id} className="pl-2 md:pl-4 basis-full md:basis-1/3">
-                            <div className="p-1">
+                            <div className="p-1 scroll-animate" style={{ animationDelay: `${(index + 1) * 0.025}s` }}>
                                 <Image 
                                     src={image.url} 
                                     alt={image.alt || 'Gallery image'} 

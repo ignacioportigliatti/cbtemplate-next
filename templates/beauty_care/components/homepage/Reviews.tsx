@@ -39,25 +39,25 @@ const Reviews = ({ homeContent, reviewsContent }: Props) => {
     <div className="bg-background-600 px-8 lg:px-16 xl:px-8 py-16">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
-        <div className="text-center mb-12">
-          <span className="text-primary font-medium text-2xl font-heading">
+        <div className="text-center mb-12 scroll-animate">
+          <span className="text-primary font-medium text-2xl font-heading scroll-animate">
             {reviewsContent.page_info.subtitle}
           </span>
-          <h2 className="text-4xl lg:text-5xl font-bold text-text mb-2 leading-tight font-heading mt-2">
+          <h2 className="text-4xl lg:text-5xl font-bold text-text mb-2 leading-tight font-heading mt-2 scroll-animate">
             <Balancer>{homeContent.reviews.title}</Balancer>
           </h2>
-          <p className="text-text/80 leading-relaxed font-sans">{reviewsContent.page_info.description}</p>
+          <p className="text-text/80 leading-relaxed font-sans scroll-animate">{reviewsContent.page_info.description}</p>
         </div>
 
         {/* Reviews Carousel */}
-        <Carousel className="w-full max-w-7xl mx-auto">
+        <Carousel className="w-full max-w-7xl mx-auto scroll-animate">
           <CarouselContent className="-ml-4">
             {reviewsContent.reviews.map((review, index) => (
               <CarouselItem
                 key={index}
                 className="pl-4 md:basis-1/2 lg:basis-1/3"
               >
-                <div className="p-1 h-full">
+                <div className="p-1 h-full scroll-animate" style={{ animationDelay: `${(index + 1) * 0.1}s` }}>
                   <Card className="bg-background-900 hover:bg-background-800 transition-all duration-300 border border-border/20 hover:border-border rounded-lg hover:shadow-xl h-full min-h-[180px] flex flex-col">
                     <CardHeader className="pb-2">
                     <p className="text-text/80 leading-relaxed font-sans">{review.review}</p>

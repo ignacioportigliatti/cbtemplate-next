@@ -19,17 +19,17 @@ const FAQ = (props: Props) => {
     <div className="bg-background-950 px-8 lg:px-16 py-16">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
-        <div className="text-center mb-12">
-          <span className="text-primary font-medium text-2xl font-heading block">
+        <div className="text-center mb-12 scroll-animate">
+          <span className="text-primary font-medium text-2xl font-heading block scroll-animate">
             Common Questions
           </span>
-          <h2 className="text-4xl lg:text-5xl font-bold text-text mb-4 leading-tight font-heading mt-2">
+          <h2 className="text-4xl lg:text-5xl font-bold text-text mb-4 leading-tight font-heading mt-2 scroll-animate">
             <Balancer>{homeContent.faq.title}</Balancer>
           </h2>
         </div>
 
         {/* FAQ Accordion */}
-        <div className="">
+        <div className="scroll-animate">
           <Accordion
             type="single"
             collapsible
@@ -37,7 +37,7 @@ const FAQ = (props: Props) => {
             defaultValue="item-0"
           >
             {homeContent.faq.questions.map((item, index) => (
-              <AccordionItem key={index} className="border border-border/20 bg-background-900 rounded-lg mb-1" value={`item-${index}`}>
+              <AccordionItem key={index} className="border border-border/20 bg-background-900 rounded-lg mb-1 scroll-animate" value={`item-${index}`} style={{ animationDelay: `${(index + 1) * 0.1}s` }}>
                 <AccordionTrigger className="px-4">
                   <div className="flex h-full font-heading text-lg lg:text-2xl items-center gap-2">
                     <FaCircle className="w-4 h-4 text-primary" />

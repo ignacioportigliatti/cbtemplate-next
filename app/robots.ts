@@ -1,7 +1,9 @@
 import { MetadataRoute } from "next";
-import { siteConfig } from "@/site.config";
+import { getSiteConfig } from "@/site.config";
 
-export default function robots(): MetadataRoute.Robots {
+export default async function robots(): Promise<MetadataRoute.Robots> {
+  const siteConfig = await getSiteConfig();
+  
   return {
     rules: [
       {

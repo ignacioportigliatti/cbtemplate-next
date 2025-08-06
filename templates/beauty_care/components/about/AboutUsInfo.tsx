@@ -8,21 +8,21 @@ interface Props {
 
 const AboutUsInfo = ({aboutUsContent}: Props) => {
     return (
-        <div>
-           <span className="text-primary font-medium text-3xl text-center md:text-left font-heading block">
+        <div className="scroll-animate">
+           <span className="text-primary font-medium text-3xl text-center md:text-left font-heading block scroll-animate">
               {aboutUsContent.page_info.subtitle}
             </span>
-            <h1 className="text-4xl md:text-5xl font-heading text-text text-center md:text-left mb-2 font-bold">
+            <h1 className="text-4xl md:text-5xl font-heading text-text text-center md:text-left mb-2 font-bold scroll-animate">
               {aboutUsContent.page_info.title}
             </h1>
             <div className="flex flex-col text-center md:text-left gap-4">
-              <p className="text-text mb-4 w-full">{aboutUsContent.page_info.description}</p>
-              <div className="flex flex-col">
-                <h2 className="text-primary text-2xl text-center font-bold md:text-left font-heading">
+              <p className="text-text mb-4 w-full scroll-animate">{aboutUsContent.page_info.description}</p>
+              <div className="flex flex-col scroll-animate">
+                <h2 className="text-primary text-2xl text-center font-bold md:text-left font-heading scroll-animate">
                   {aboutUsContent.story.title}
                 </h2>
                 <div
-                  className="prose max-w-none text-text"
+                  className="prose max-w-none text-text scroll-animate"
                   dangerouslySetInnerHTML={{ __html: aboutUsContent.story.content }}
                 />
               </div>

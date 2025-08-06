@@ -18,17 +18,17 @@ const FAQ = (props: Props) => {
     <div className="bg-background-900 px-8 lg:px-16 py-16">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
-        <div className="text-center mb-12">
-          <span className="text-primary font-medium text-xl tracking-[0.2em] uppercase font-heading block">
+        <div className="text-center mb-12 scroll-animate">
+          <span className="text-primary font-medium text-xl tracking-[0.2em] uppercase font-heading block scroll-animate">
             Common Questions
           </span>
-          <h2 className="text-4xl lg:text-5xl font-bold text-text mb-4 leading-tight font-heading">
+          <h2 className="text-4xl lg:text-5xl font-bold text-text mb-4 leading-tight font-heading scroll-animate">
             <Balancer>{homeContent.faq.title}</Balancer>
           </h2>
         </div>
 
         {/* FAQ Accordion */}
-        <div className="">
+        <div className="scroll-animate">
           <Accordion
             type="single"
             collapsible
@@ -36,7 +36,7 @@ const FAQ = (props: Props) => {
             defaultValue="item-0"
           >
             {homeContent.faq.questions.map((item, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
+              <AccordionItem key={index} value={`item-${index}`} className="scroll-animate" style={{ animationDelay: `${(index + 1) * 0.1}s` }}>
                 <AccordionTrigger>
                   <div className="flex border-l-4 h-full font-heading text-xl border-primary items-center gap-2">
                     <p className="ml-3">{item.question}</p>

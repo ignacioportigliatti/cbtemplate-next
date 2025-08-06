@@ -21,24 +21,24 @@ const FeaturedBlog = (props: Props) => {
     <div className="bg-background-800 px-8 lg:px-16 py-16">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
-        <div className="text-center mb-12">
-          <span className="text-primary font-medium text-xl tracking-[0.2em] uppercase font-heading block">
+        <div className="text-center mb-12 scroll-animate">
+          <span className="text-primary font-medium text-xl tracking-[0.2em] uppercase font-heading block scroll-animate">
             <Balancer>{homeContent.blog.subtitle}</Balancer>
           </span>
-          <h2 className="text-4xl lg:text-5xl font-bold text-text mb-4 leading-tight font-heading">
+          <h2 className="text-4xl lg:text-5xl font-bold text-text mb-4 leading-tight font-heading scroll-animate">
             <Balancer>{homeContent.blog.title}</Balancer>
           </h2>
         </div>
 
         {/* Blog Posts Carousel */}
-        <Carousel className="w-full max-w-7xl mx-auto">
+        <Carousel className="w-full max-w-7xl mx-auto scroll-animate">
           <CarouselContent className="-ml-4">
-            {blogContent.map((post) => (
+            {blogContent.map((post, index) => (
               <CarouselItem
                 key={post.id}
                 className="pl-4 md:basis-1/2 lg:basis-1/3"
               >
-                <div className="p-1 h-full">
+                <div className="p-1 h-full scroll-animate" style={{ animationDelay: `${(index + 1) * 0.1}s` }}>
                   <div className="h-full">
                     <PostCard className="rounded-none" post={post} />
                   </div>

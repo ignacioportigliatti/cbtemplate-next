@@ -30,18 +30,18 @@ const PopularServices = (props: Props) => {
         {/* Header Section */}
         <div className="flex w-full md:w-5/12 flex-col lg:flex-row text-center md:text-left lg:items-center lg:justify-between">
           <div className="pr-0 md:pr-8">
-            <span className="text-primary font-medium mb-1 tracking-[0.2em] uppercase font-heading block">
+            <span className="text-primary font-medium mb-1 tracking-[0.2em] uppercase font-heading block scroll-animate">
               {homeContent.popular_services.subtitle}
             </span>
-            <h2 className="text-4xl lg:text-5xl mb-4 font-bold text-text leading-tight font-heading">
+            <h2 className="text-4xl lg:text-5xl mb-4 font-bold text-text leading-tight font-heading scroll-animate">
               <Balancer>{homeContent.popular_services.title}</Balancer>
             </h2>
-            <p className="text-text/80 mb-4">
+            <p className="text-text/80 mb-4 scroll-animate">
                 {servicesContent.page_info.description}
               </p>
             <Link
               href={servicesHref}
-              className="bg-transparent border-2 font-heading border-border text-primary px-8 py-3 font-medium tracking-wide uppercase hover:bg-primary hover:text-primary-foreground transition-all duration-300 ease-in-out inline-flex items-center"
+              className="bg-transparent border-2 font-heading border-border text-primary px-8 py-3 font-medium tracking-wide uppercase hover:bg-primary hover:text-primary-foreground transition-all duration-300 ease-in-out inline-flex items-center scroll-animate"
             >
               {homeContent.popular_services.button.label}
               <FaArrowRight className="w-4 h-4 -mt-1 ml-2" />
@@ -54,7 +54,7 @@ const PopularServices = (props: Props) => {
           {servicesContent.services
             .slice(0, homeContent.popular_services.services_to_display)
             .map((service, index) => (
-              <div key={index} className="flex items-start space-x-2 group">
+              <div key={index} className="flex items-start space-x-2 group scroll-animate" style={{ animationDelay: `${(index + 1) * 0.1}s` }}>
                 <div className="flex items-center justify-center p-2 rounded-full ">
                 <GiHairStrands className="flex-shrink-0 group-hover:scale-105 group-hover:text-primary transition-all ease-in-out duration-200 text-text w-6 h-6" />
                 </div>

@@ -7,12 +7,12 @@ interface Props {
 
 const AboutUsMission = ({aboutUsContent}: Props) => {
     return (
-        <div className="text-center md:text-left">
-             <h3 className="text-primary text-2xl mt-8 text-center font-bold md:text-left font-heading">
+        <div className="text-center md:text-left scroll-animate">
+             <h3 className="text-primary text-2xl mt-8 text-center font-bold md:text-left font-heading scroll-animate">
                 {aboutUsContent.mission.title}
               </h3>
               <div
-                className="prose max-w-none text-text prose-p:!mb-0 prose-p:!mt-0"
+                className="prose max-w-none text-text prose-p:!mb-0 prose-p:!mt-0 scroll-animate"
                 dangerouslySetInnerHTML={{ __html: aboutUsContent.mission.content }}
               />
             </div>

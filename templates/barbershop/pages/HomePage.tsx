@@ -21,14 +21,17 @@ import { siteConfig } from "@/site.config";
 import Location from "@/templates/barbershop/components/homepage/Location";
 import Reviews from "@/templates/barbershop/components/homepage/Reviews";
 import Team from "@/templates/barbershop/components/homepage/Team";
+import ScrollAnimations from "@/templates/barbershop/components/layout/ScrollAnimations";
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
+    const { getSiteConfig } = await import("@/site.config");
+    const siteConfig = await getSiteConfig();
     const themeOptions = await getThemeOptions();
     
-    const title = themeOptions.general.site_name || "Barber Shop";
-    const description = themeOptions.general.site_description || 
-      "Barber Shop Cuts is a California based barber shop that offers a variety of services to its customers.";
+    const title = siteConfig.site_name;
+    const description = siteConfig.site_description;
+    const logoUrl = themeOptions.general.site_logo?.url;
 
     return {
       title: `Home | ${title}`,
@@ -45,7 +48,7 @@ export async function generateMetadata(): Promise<Metadata> {
         siteName: title,
         images: [
           {
-            url: `${siteConfig.site_domain}/api/og?title=${encodeURIComponent(`Home | ${title}`)}&description=${encodeURIComponent(description)}`,
+            url: `${siteConfig.site_domain}/api/og?title=${encodeURIComponent(`Home | ${title}`)}&description=${encodeURIComponent(description)}${logoUrl ? `&logo=${encodeURIComponent(logoUrl)}` : ''}`,
             width: 1200,
             height: 630,
             alt: title,
@@ -56,7 +59,7 @@ export async function generateMetadata(): Promise<Metadata> {
         card: "summary_large_image",
         title: `Home | ${title}`,
         description: description,
-        images: [`${siteConfig.site_domain}/api/og?title=${encodeURIComponent(`Home | ${title}`)}&description=${encodeURIComponent(description)}`],
+        images: [`${siteConfig.site_domain}/api/og?title=${encodeURIComponent(`Home | ${title}`)}&description=${encodeURIComponent(description)}${logoUrl ? `&logo=${encodeURIComponent(logoUrl)}` : ''}`],
       },
     };
   } catch (error) {
@@ -64,8 +67,8 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fallback metadata
     return {
       title: "Home",
-      description: "Barber Shop Cuts is a California based barber shop that offers a variety of services to its customers.",
-      metadataBase: new URL(siteConfig.site_domain),
+      description: "Professional services",
+      metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
       alternates: {
         canonical: "/",
       },
@@ -110,66 +113,68 @@ const HomePage = async () => {
     }
 
     return (
-      <main>
-        {/* Hero Section - Main H1 */}
-        <section>
-          <Hero homeContent={homeContent} />
-        </section>
+      <ScrollAnimations>
+        <main>
+          {/* Hero Section - Main H1 */}
+          <section>
+            <Hero homeContent={homeContent} />
+          </section>
 
-        {/* About Us & Location Section */}
-        <section className="bg-background-900 px-8 lg:px-16 text-foreground py-8 md:py-16">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col lg:flex-row items-stretch justify-between md:gap-12">
-              {/* Left Side - About Us */}
-              <div className="lg:w-1/2 py-4 md:py-8 rounded-lg">
-                <AboutUs aboutUsContent={aboutUsContent} />
-              </div>
+          {/* About Us & Location Section */}
+          <section className="bg-background-900 px-8 lg:px-16 text-foreground py-8 md:py-16">
+            <div className="max-w-7xl mx-auto">
+              <div className="flex flex-col lg:flex-row items-stretch justify-between md:gap-12">
+                {/* Left Side - About Us */}
+                <div className="lg:w-1/2 py-4 md:py-8 rounded-lg scroll-animate-left">
+                  <AboutUs aboutUsContent={aboutUsContent} />
+                </div>
 
-              {/* Right Side - Location */}
-              <div className="lg:w-1/2 rounded-lg">
-                <Location contactContent={contactContent} />
+                {/* Right Side - Location */}
+                <div className="lg:w-1/2 rounded-lg scroll-animate-right">
+                  <Location contactContent={contactContent} />
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* Popular Services Section */}
-        <section>
-          <PopularServices
-            homeContent={homeContent}
-            servicesContent={servicesContent}
-            contactContent={contactContent}
-          />
-        </section>
+          {/* Popular Services Section */}
+          <section>
+            <PopularServices
+              homeContent={homeContent}
+              servicesContent={servicesContent}
+              contactContent={contactContent}
+            />
+          </section>
 
-        {/* Team Section */}
-        <section>
-          <Team
-            teamContent={teamContent}
-          />
-        </section>
+          {/* Team Section */}
+          <section>
+            <Team
+              teamContent={teamContent}
+            />
+          </section>
 
-        {/* Reviews Section */}
-        <section>
-          <Reviews
-            homeContent={homeContent}
-            reviewsContent={reviewsContent}
-          />
-        </section>
+          {/* Reviews Section */}
+          <section>
+            <Reviews
+              homeContent={homeContent}
+              reviewsContent={reviewsContent}
+            />
+          </section>
 
-        {/* FAQ Section */}
-        <section>
-          <FAQ homeContent={homeContent} />
-        </section>
+          {/* FAQ Section */}
+          <section>
+            <FAQ homeContent={homeContent} />
+          </section>
 
-        {/* Blog Section */}
-        <section>
-          <FeaturedBlog
-            homeContent={homeContent}
-            blogContent={blogContent}
-          />
-        </section>
-      </main>
+          {/* Blog Section */}
+          <section>
+            <FeaturedBlog
+              homeContent={homeContent}
+              blogContent={blogContent}
+            />
+          </section>
+        </main>
+      </ScrollAnimations>
     );
   } catch (error) {
     console.error("Error fetching home content:", error);

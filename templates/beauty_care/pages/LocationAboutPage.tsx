@@ -3,6 +3,7 @@ import AboutUsGallery from "@/templates/beauty_care/components/about/AboutUsGall
 import AboutUsInfo from "@/templates/beauty_care/components/about/AboutUsInfo";
 import AboutUsMission from "@/templates/beauty_care/components/about/AboutUsMission";
 import AboutUsValues from "@/templates/beauty_care/components/about/AboutUsValues";
+import ScrollAnimations from "@/templates/beauty_care/components/layout/ScrollAnimations";
 import { AboutUsContent, ContactContent, ContactLocation } from "@/lib/wordpress.d";
 import { generateLocationSlug } from "@/lib/utils";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
@@ -33,23 +34,25 @@ const LocationAboutPage = async ({ locationData, aboutUsContent, contactContent 
   }
 
   return (
-    <main>
-      {/* About Us Content */}
-      <Section className="pt-24 md:pt-32 bg-background-950 pb-16">
-        <Container className="max-w-7xl mx-auto px-8 xl:px-0">
-          <Breadcrumb items={breadcrumbItems} className="mb-8" />
-          <AboutUsInfo aboutUsContent={aboutUsContent} />
-          {aboutUsContent.gallery.length > 0 && <AboutUsGallery aboutUsContent={aboutUsContent} />}
-          <AboutUsMission aboutUsContent={aboutUsContent} />
-          <AboutUsValues aboutUsContent={aboutUsContent} />
-        </Container>
-      </Section>
+    <ScrollAnimations>
+      <main>
+        {/* About Us Content */}
+        <Section className="pt-24 md:pt-32 bg-background-950 pb-16">
+          <Container className="max-w-7xl mx-auto px-8 xl:px-0">
+            <Breadcrumb items={breadcrumbItems} className="mb-8 scroll-animate" />
+            <AboutUsInfo aboutUsContent={aboutUsContent} />
+            {aboutUsContent.gallery.length > 0 && <AboutUsGallery aboutUsContent={aboutUsContent} />}
+            <AboutUsMission aboutUsContent={aboutUsContent} />
+            <AboutUsValues aboutUsContent={aboutUsContent} />
+          </Container>
+        </Section>
 
-      {/* Contact Info */}
-      <section className="bg-background-900 py-16 px-4 lg:px-16">
-        <AboutUsContact contactContent={contactContent} />
-      </section>
-    </main>
+        {/* Contact Info */}
+        <section className="bg-background-900 py-16 px-4 lg:px-16">
+          <AboutUsContact contactContent={contactContent} />
+        </section>
+      </main>
+    </ScrollAnimations>
   );
 };
 

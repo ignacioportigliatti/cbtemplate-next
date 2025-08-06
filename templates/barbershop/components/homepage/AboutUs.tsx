@@ -12,13 +12,13 @@ const AboutUs = (props: Props) => {
   return (
     <div className="justify-start flex flex-col h-full">
       <div>
-        <span className="text-primary text-center md:text-left font-medium mb-4 tracking-[0.2em] uppercase font-heading block">
+        <span className="text-primary text-center md:text-left font-medium mb-4 tracking-[0.2em] uppercase font-heading block scroll-animate">
           <Balancer>{aboutUsContent.page_info.subtitle}</Balancer>
         </span>
-        <h2 className="text-4xl lg:text-5xl font-bold text-text text-center md:text-left mb-4 leading-tight font-heading">
+        <h2 className="text-4xl lg:text-5xl font-bold text-text text-center md:text-left mb-4 leading-tight font-heading scroll-animate">
           <Balancer>{aboutUsContent.page_info.title}</Balancer>
         </h2>
-        <p className="text-text text-center md:text-left mb-8 leading-relaxed">{aboutUsContent.page_info.description}</p>
+        <p className="text-text text-center md:text-left mb-8 leading-relaxed scroll-animate">{aboutUsContent.page_info.description}</p>
       </div>
       <div></div>
     </div>

@@ -18,7 +18,7 @@ const Hero = ({ homeContent }: Props) => {
         <div className="flex flex-col lg:flex-row gap-24 items-center w-full">
           
           {/* Left Side - Image Carousel */}
-          <div className="relative w-full lg:w-5/12">
+          <div className="relative w-full lg:w-5/12 animate-scale-in animate-delay-400">
             <div className="relative w-full h-[500px] shadow-[15px_15px_0px_0px] shadow-text lg:h-[500px] rounded-xl rounded-tl-[180px] rounded-tr-none overflow-hidden">
               <HeroCarousel gallery={homeContent.hero.gallery} />
             </div>
@@ -30,22 +30,22 @@ const Hero = ({ homeContent }: Props) => {
           {/* Right Side - Text Content */}
           <div className="text-center md:text-left ml-4 w-full lg:w-7/12">
             {/* Subtitle */}
-            <span className="text-primary text-3xl font-heading block">
+            <span className="text-primary text-3xl font-heading block animate-fade-in-up animate-delay-200">
               <Balancer>{homeContent.hero.subtitle}</Balancer>
             </span>
             
             {/* Main Title - Primary H1 */}
-            <h1 className="text-5xl md:text-5xl lg:text-6xl mb-4 mt-2 font-bold font-heading leading-tight">
+            <h1 className="text-5xl md:text-5xl lg:text-6xl mb-4 mt-2 font-bold font-heading leading-tight animate-fade-in-up animate-delay-400">
               <Balancer>{homeContent.hero.title}</Balancer>
             </h1>
             
             {/* Description */}
-            <p className="text-text/80 text-lg leading-relaxed font-sans">
+            <p className="text-text/80 text-lg leading-relaxed font-sans animate-fade-in-up animate-delay-600">
              {homeContent.hero.description}
             </p>
             
             {/* CTA Button */}
-            <div className="pt-4">
+            <div className="pt-4 animate-fade-in-up animate-delay-800">
               <Link
                 href={homeContent.hero.button.link}
                 className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 text-lg font-medium hover:bg-primary/90 transition-all duration-300 ease-in-out font-heading rounded-lg"

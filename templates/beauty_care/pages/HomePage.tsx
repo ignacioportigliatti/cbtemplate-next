@@ -23,15 +23,17 @@ import Team from "@/templates/beauty_care/components/homepage/Team";
 import AboutUsContact from "../components/about/AboutUsContact";
 import HeroCarousel from "../components/homepage/HeroCarousel";
 import Image from "next/image";
+import ScrollAnimations from "../components/layout/ScrollAnimations";
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
+    const { getSiteConfig } = await import("@/site.config");
+    const siteConfig = await getSiteConfig();
     const themeOptions = await getThemeOptions();
-
-    const title = themeOptions.general.site_name || "Barber Shop";
-    const description =
-      themeOptions.general.site_description ||
-      "Barber Shop Cuts is a California based barber shop that offers a variety of services to its customers.";
+    
+    const title = siteConfig.site_name;
+    const description = siteConfig.site_description;
+    const logoUrl = themeOptions.general.site_logo?.url;
 
     return {
       title: `Home | ${title}`,
@@ -48,9 +50,7 @@ export async function generateMetadata(): Promise<Metadata> {
         siteName: title,
         images: [
           {
-            url: `${siteConfig.site_domain}/api/og?title=${encodeURIComponent(
-              `Home | ${title}`,
-            )}&description=${encodeURIComponent(description)}`,
+            url: `${siteConfig.site_domain}/api/og?title=${encodeURIComponent(`Home | ${title}`)}&description=${encodeURIComponent(description)}${logoUrl ? `&logo=${encodeURIComponent(logoUrl)}` : ''}`,
             width: 1200,
             height: 630,
             alt: title,
@@ -61,11 +61,7 @@ export async function generateMetadata(): Promise<Metadata> {
         card: "summary_large_image",
         title: `Home | ${title}`,
         description: description,
-        images: [
-          `${siteConfig.site_domain}/api/og?title=${encodeURIComponent(
-            `Home | ${title}`,
-          )}&description=${encodeURIComponent(description)}`,
-        ],
+        images: [`${siteConfig.site_domain}/api/og?title=${encodeURIComponent(`Home | ${title}`)}&description=${encodeURIComponent(description)}${logoUrl ? `&logo=${encodeURIComponent(logoUrl)}` : ''}`],
       },
     };
   } catch (error) {
@@ -73,9 +69,8 @@ export async function generateMetadata(): Promise<Metadata> {
     // Fallback metadata
     return {
       title: "Home",
-      description:
-        "Barber Shop Cuts is a California based barber shop that offers a variety of services to its customers.",
-      metadataBase: new URL(siteConfig.site_domain),
+      description: "Professional services",
+      metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
       alternates: {
         canonical: "/",
       },
@@ -90,6 +85,7 @@ export default function Home() {
     </Section>
   );
 }
+
 const HomePage = async () => {
   try {
     const [
@@ -120,81 +116,83 @@ const HomePage = async () => {
     }
 
     return (
-      <main>
-        {/* Hero Section - Main H1 */}
-        <section>
-          <Hero homeContent={homeContent} />
-        </section>
+      <ScrollAnimations>
+        <main>
+          {/* Hero Section - Main H1 */}
+          <section>
+            <Hero homeContent={homeContent} />
+          </section>
 
-        {/* About Us & Image Carousel Section */}
-        <section className="bg-background-950 px-8 lg:px-16 text-foreground py-16 !pb-24 md:py-16">
-          <div className="max-w-7xl mx-auto flex">
-            <div className="flex flex-col lg:flex-row items-stretch justify-between md:gap-12">
-              {/* Left Side - About Us */}
-              <div className="lg:w-1/2 py-4 md:py-8 rounded-lg">
-                <AboutUs aboutUsContent={aboutUsContent} />
-              </div>
+          {/* About Us & Image Carousel Section */}
+          <section className="bg-background-950 px-8 lg:px-16 text-foreground py-16 !pb-24 md:py-16">
+            <div className="max-w-7xl mx-auto flex">
+              <div className="flex flex-col lg:flex-row items-stretch justify-between md:gap-12">
+                {/* Left Side - About Us */}
+                <div className="lg:w-1/2 py-4 md:py-8 rounded-lg scroll-animate-left">
+                  <AboutUs aboutUsContent={aboutUsContent} />
+                </div>
 
-              {/* Right Side - Image Carousel */}
-              <div className="lg:w-1/2 relative h-[480px]">
-                <div className="overflow-hidden  rounded-lg">
-                  <HeroCarousel
-                    gallery={aboutUsContent.gallery}
-                    imageClassName="!h-[480px]"
+                {/* Right Side - Image Carousel */}
+                <div className="lg:w-1/2 relative h-[480px] scroll-animate-right">
+                  <div className="overflow-hidden  rounded-lg">
+                    <HeroCarousel
+                      gallery={aboutUsContent.gallery}
+                      imageClassName="!h-[480px]"
+                    />
+                  </div>
+                  <Image
+                    src="/flowers2.webp"
+                    alt="Hero Decorative"
+                    width={300}
+                    height={100}
+                    className="pointer-events-none absolute lg:w-80 w-52 lg:-bottom-16 lg:-right-20 -right-8 -bottom-8 -hue-rotate-60 saturate-50 brightness-110"
                   />
                 </div>
-                <Image
-                  src="/flowers2.webp"
-                  alt="Hero Decorative"
-                  width={300}
-                  height={100}
-                  className="pointer-events-none absolute lg:w-80 w-52 lg:-bottom-16 lg:-right-20 -right-8 -bottom-8 -hue-rotate-60 saturate-50 brightness-110"
-                />
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* Popular Services Section */}
-        <section>
-          <PopularServices
-            homeContent={homeContent}
-            servicesContent={servicesContent}
-            contactContent={contactContent}
-          />
-        </section>
+          {/* Popular Services Section */}
+          <section>
+            <PopularServices
+              homeContent={homeContent}
+              servicesContent={servicesContent}
+              contactContent={contactContent}
+            />
+          </section>
 
-        {/* Team Section */}
-        <section>
-          <Team teamContent={teamContent} />
-        </section>
+          {/* Team Section */}
+          <section>
+            <Team teamContent={teamContent} />
+          </section>
 
-        {/* Reviews Section */}
-        <section>
-          <Reviews
-            homeContent={homeContent}
-            reviewsContent={reviewsContent}
-          />
-        </section>
+          {/* Reviews Section */}
+          <section>
+            <Reviews
+              homeContent={homeContent}
+              reviewsContent={reviewsContent}
+            />
+          </section>
 
-        {/* FAQ Section */}
-        <section>
-          <FAQ homeContent={homeContent} />
-        </section>
+          {/* FAQ Section */}
+          <section>
+            <FAQ homeContent={homeContent} />
+          </section>
 
-        {/* Contact Section */}
-        <section className="bg-background-900 px-8 lg:px-16 text-foreground py-16 md:py-16">
-          <AboutUsContact contactContent={contactContent} />
-        </section>
+          {/* Contact Section */}
+          <section className="bg-background-900 px-8 lg:px-16 text-foreground py-16 md:py-16">
+            <AboutUsContact contactContent={contactContent} />
+          </section>
 
-        {/* Blog Section */}
-        <section>
-          <FeaturedBlog
-            homeContent={homeContent}
-            blogContent={blogContent}
-          />
-        </section>
-      </main>
+          {/* Blog Section */}
+          <section>
+            <FeaturedBlog
+              homeContent={homeContent}
+              blogContent={blogContent}
+            />
+          </section>
+        </main>
+      </ScrollAnimations>
     );
   } catch (error) {
     console.error("Error fetching home content:", error);

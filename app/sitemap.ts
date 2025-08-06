@@ -1,14 +1,15 @@
 import { MetadataRoute } from "next";
 import { getAllPosts, getContactContent, getServicesContent, getAboutUsContent } from "@/lib/wordpress";
-import { siteConfig } from "@/site.config";
+import { getSiteConfig } from "@/site.config";
 import { generateLocationSlug } from "@/lib/utils";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [posts, contactContent, servicesContent, aboutUsContent] = await Promise.all([
+  const [posts, contactContent, servicesContent, aboutUsContent, siteConfig] = await Promise.all([
     getAllPosts(),
     getContactContent(),
     getServicesContent(),
     getAboutUsContent(),
+    getSiteConfig(),
   ]);
 
   // Get main location (index 0) - SEO focused on primary location

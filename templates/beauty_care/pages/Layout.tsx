@@ -23,11 +23,13 @@ const fontHeading = FontHeading({
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
+    const { getSiteConfig } = await import("@/site.config");
+    const siteConfig = await getSiteConfig();
     const themeOptions = await getThemeOptions();
     
-    const title = themeOptions.general.site_name || "Chilled Butter Template";
-    const description = themeOptions.general.site_description || 
-      "A starter template for Next.js with WordPress as a headless CMS.";
+    const title = siteConfig.site_name;
+    const description = siteConfig.site_description;
+    const logoUrl = themeOptions.general.site_logo?.url;
 
     return {
       title: {
@@ -47,7 +49,7 @@ export async function generateMetadata(): Promise<Metadata> {
         siteName: title,
         images: [
           {
-            url: `${siteConfig.site_domain}/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`,
+            url: `${siteConfig.site_domain}/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}${logoUrl ? `&logo=${encodeURIComponent(logoUrl)}` : ''}`,
             width: 1200,
             height: 630,
             alt: title,
@@ -58,16 +60,16 @@ export async function generateMetadata(): Promise<Metadata> {
         card: "summary_large_image",
         title: title,
         description: description,
-        images: [`${siteConfig.site_domain}/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`],
+        images: [`${siteConfig.site_domain}/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}${logoUrl ? `&logo=${encodeURIComponent(logoUrl)}` : ''}`],
       },
     };
   } catch (error) {
     console.error("Error generating metadata:", error);
     // Fallback metadata
     return {
-      title: "Chilled Butter Template",
-      description: "A starter template for Next.js with WordPress as a headless CMS.",
-      metadataBase: new URL(siteConfig.site_domain),
+      title: "Your Business",
+      description: "Professional services",
+      metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
       alternates: {
         canonical: "/",
       },

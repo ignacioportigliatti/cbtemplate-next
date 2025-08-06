@@ -7,9 +7,10 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
 
-    // Get title and description from the URL query params
+    // Get title, description and logo from the URL query params
     const title = searchParams.get("title");
     const description = searchParams.get("description");
+    const logoUrl = searchParams.get("logo");
 
     return new ImageResponse(
       (
@@ -28,6 +29,28 @@ export async function GET(request: NextRequest) {
             backgroundSize: "100px 100px",
           }}
         >
+          {/* Logo section */}
+          {logoUrl && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginBottom: "40px",
+              }}
+            >
+              <img
+                src={logoUrl}
+                alt="Logo"
+                style={{
+                  width: "80px",
+                  height: "80px",
+                  objectFit: "contain",
+                }}
+              />
+            </div>
+          )}
+          
+          {/* Title */}
           <div
             style={{
               display: "flex",
@@ -38,10 +61,13 @@ export async function GET(request: NextRequest) {
               whiteSpace: "pre-wrap",
               lineHeight: 1.2,
               maxWidth: "800px",
+              fontWeight: "bold",
             }}
           >
             {title}
           </div>
+          
+          {/* Description */}
           {description && (
             <div
               style={{

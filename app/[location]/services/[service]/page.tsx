@@ -3,6 +3,10 @@ import { getContactContent, getServicesContent, getThemeOptions } from "@/lib/wo
 import { generateLocationSlug, findLocationBySlug } from "@/lib/utils";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import { ServiceSchema, LocalBusinessSchema } from "@/components/StructuredData";
+import { transformContactToBusiness, transformServicesToSchema } from "@/lib/structured-data-helpers";
+import { getSiteConfig } from "@/site.config";
+import { ServiceItem } from "@/lib/wordpress.d";
 
 export async function generateStaticParams() {
   const [contactContent, servicesContent] = await Promise.all([
@@ -35,7 +39,7 @@ export async function generateMetadata({ params }: { params: Promise<{ location:
     ]);
     
     const locationData = findLocationBySlug(contactContent.locations, location);
-    const serviceData = servicesContent.services.find(s => s.slug === service);
+    const serviceData = servicesContent.services.find((s: ServiceItem) => s.slug === service);
     const { getSiteConfig } = await import("@/site.config");
     const siteConfig = await getSiteConfig();
     const themeOptions = await getThemeOptions();
@@ -97,17 +101,61 @@ export default async function LocationServiceDetailPage({ params }: { params: Pr
   const templateId = await getActiveTemplate();
   const template = await loadTemplate(templateId);
   
-  const [contactContent, servicesContent] = await Promise.all([
-    getContactContent(),
-    getServicesContent()
-  ]);
-  
-  const locationData = findLocationBySlug(contactContent.locations, location);
-  const serviceData = servicesContent.services.find(s => s.slug === service);
-  
-  if (!locationData || !serviceData) {
-    return notFound();
+  try {
+    const [contactContent, servicesContent, themeOptions, siteConfig] = await Promise.all([
+      getContactContent(),
+      getServicesContent(),
+      getThemeOptions(),
+      getSiteConfig()
+    ]);
+    
+    const locationData = findLocationBySlug(contactContent.locations, location);
+    const serviceData = servicesContent.services.find((s: ServiceItem) => s.slug === service);
+    
+    if (!locationData || !serviceData) {
+      return notFound();
+    }
+    
+    // Transform data for structured data
+    const business = transformContactToBusiness(contactContent, themeOptions, siteConfig.site_domain);
+    const services = transformServicesToSchema(servicesContent);
+    
+    // Create service schema
+    const serviceSchema = {
+      name: serviceData.title,
+      description: serviceData.description,
+      image: serviceData.featured_image?.url || undefined,
+      price: undefined,
+      duration: undefined
+    };
+    
+    const businessSchema = {
+      name: themeOptions.general.site_name,
+      url: siteConfig.site_domain
+    };
+    
+    return (
+      <>
+        {/* Structured Data for Service Page */}
+        <ServiceSchema 
+          service={serviceSchema}
+          business={businessSchema}
+        />
+        
+        {business && (
+          <LocalBusinessSchema 
+            business={business}
+            services={services}
+          />
+        )}
+        
+        {/* Template Component */}
+        <template.LocationServiceDetailPage locationData={locationData} serviceData={serviceData} />
+      </>
+    );
+  } catch (error) {
+    console.error('Error in LocationServiceDetailPage:', error);
+    // Return template without structured data if there's an error
+    return <template.LocationServiceDetailPage locationData={null} serviceData={null} />;
   }
-  
-  return <template.LocationServiceDetailPage locationData={locationData} serviceData={serviceData} />;
 } 

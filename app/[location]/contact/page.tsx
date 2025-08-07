@@ -3,6 +3,9 @@ import { getContactContent, getThemeOptions } from "@/lib/wordpress";
 import { generateLocationSlug, findLocationBySlug } from "@/lib/utils";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import { LocalBusinessSchema } from "@/components/StructuredData";
+import { transformContactToBusiness } from "@/lib/structured-data-helpers";
+import { getSiteConfig } from "@/site.config";
 
 export async function generateStaticParams() {
   const contactContent = await getContactContent();
@@ -78,12 +81,38 @@ export default async function LocationContactPage({ params }: { params: Promise<
   const templateId = await getActiveTemplate();
   const template = await loadTemplate(templateId);
   
-  const contactContent = await getContactContent();
-  const locationData = findLocationBySlug(contactContent.locations, location);
-  
-  if (!locationData) {
-    return notFound();
+  try {
+    const [contactContent, themeOptions, siteConfig] = await Promise.all([
+      getContactContent(),
+      getThemeOptions(),
+      getSiteConfig()
+    ]);
+    
+    const locationData = findLocationBySlug(contactContent.locations, location);
+    
+    if (!locationData) {
+      return notFound();
+    }
+    
+    // Transform data for structured data
+    const business = transformContactToBusiness(contactContent, themeOptions, siteConfig.site_domain);
+    
+    return (
+      <>
+        {/* Structured Data for Contact Page */}
+        {business && (
+          <LocalBusinessSchema 
+            business={business}
+          />
+        )}
+        
+        {/* Template Component */}
+        <template.LocationContactPage locationData={locationData} contactContent={contactContent} />
+      </>
+    );
+  } catch (error) {
+    console.error('Error in LocationContactPage:', error);
+    // Return template without structured data if there's an error
+    return <template.LocationContactPage locationData={null} contactContent={null} />;
   }
-  
-  return <template.LocationContactPage locationData={locationData} contactContent={contactContent} />;
 } 

@@ -3,6 +3,9 @@ import { getAboutUsContent, getContactContent, getThemeOptions } from "@/lib/wor
 import { generateLocationSlug, findLocationBySlug } from "@/lib/utils";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import { LocalBusinessSchema } from "@/components/StructuredData";
+import { transformContactToBusiness } from "@/lib/structured-data-helpers";
+import { getSiteConfig } from "@/site.config";
 
 export async function generateStaticParams() {
   const contactContent = await getContactContent();
@@ -78,16 +81,39 @@ export default async function LocationAboutPage({ params }: { params: Promise<{ 
   const templateId = await getActiveTemplate();
   const template = await loadTemplate(templateId);
   
-  const [aboutUsContent, contactContent] = await Promise.all([
-    getAboutUsContent(),
-    getContactContent()
-  ]);
-  
-  const locationData = findLocationBySlug(contactContent.locations, location);
-  
-  if (!locationData) {
-    return notFound();
+  try {
+    const [aboutUsContent, contactContent, themeOptions, siteConfig] = await Promise.all([
+      getAboutUsContent(),
+      getContactContent(),
+      getThemeOptions(),
+      getSiteConfig()
+    ]);
+    
+    const locationData = findLocationBySlug(contactContent.locations, location);
+    
+    if (!locationData) {
+      return notFound();
+    }
+    
+    // Transform data for structured data
+    const business = transformContactToBusiness(contactContent, themeOptions, siteConfig.site_domain);
+    
+    return (
+      <>
+        {/* Structured Data for About Page */}
+        {business && (
+          <LocalBusinessSchema 
+            business={business}
+          />
+        )}
+        
+        {/* Template Component */}
+        <template.LocationAboutPage locationData={locationData} aboutUsContent={aboutUsContent} contactContent={contactContent} />
+      </>
+    );
+  } catch (error) {
+    console.error('Error in LocationAboutPage:', error);
+    // Return template without structured data if there's an error
+    return <template.LocationAboutPage locationData={null} aboutUsContent={null} contactContent={null} />;
   }
-  
-  return <template.LocationAboutPage locationData={locationData} aboutUsContent={aboutUsContent} contactContent={contactContent} />;
 } 

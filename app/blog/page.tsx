@@ -1,4 +1,8 @@
 import { getActiveTemplate, loadTemplate } from "@/lib/template-resolver";
+import { OrganizationSchema } from "@/components/StructuredData";
+import { transformToOrganizationSchema } from "@/lib/structured-data-helpers";
+import { getContactContent, getThemeOptions } from "@/lib/wordpress";
+import { getSiteConfig } from "@/site.config";
 
 export async function generateMetadata() {
   const templateId = await getActiveTemplate();
@@ -25,5 +29,30 @@ export default async function BlogPage({
   const templateId = await getActiveTemplate();
   const template = await loadTemplate(templateId);
   
-  return <template.BlogPage searchParams={searchParams} />;
+  try {
+    const [contactContent, themeOptions, siteConfig] = await Promise.all([
+      getContactContent(),
+      getThemeOptions(),
+      getSiteConfig()
+    ]);
+    
+    // Transform data for structured data
+    const organization = transformToOrganizationSchema(themeOptions, contactContent, siteConfig.site_domain);
+    
+    return (
+      <>
+        {/* Structured Data for Blog Page */}
+        {organization && (
+          <OrganizationSchema organization={organization} />
+        )}
+        
+        {/* Template Component */}
+        <template.BlogPage searchParams={searchParams} />
+      </>
+    );
+  } catch (error) {
+    console.error('Error in BlogPage:', error);
+    // Return template without structured data if there's an error
+    return <template.BlogPage searchParams={searchParams} />;
+  }
 }

@@ -136,6 +136,13 @@ export function ServiceSchema({
   business: {
     name: string;
     url: string;
+    address: {
+      street: string;
+      city: string;
+      state: string;
+      zipCode: string;
+      country: string;
+    };
   };
 }) {
   const schema = {
@@ -149,7 +156,15 @@ export function ServiceSchema({
     "provider": {
       "@type": "LocalBusiness",
       "name": business.name,
-      "url": business.url
+      "url": business.url,
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": business.address.street,
+        "addressLocality": business.address.city,
+        "addressRegion": business.address.state,
+        "postalCode": business.address.zipCode,
+        "addressCountry": business.address.country
+      }
     }
   };
 

@@ -131,7 +131,14 @@ export default async function LocationServiceDetailPage({ params }: { params: Pr
     
     const businessSchema = {
       name: themeOptions.general.site_name,
-      url: siteConfig.site_domain
+      url: siteConfig.site_domain,
+      address: business?.address || {
+        street: locationData.address.street,
+        city: locationData.address.city,
+        state: locationData.address.state,
+        zipCode: locationData.address.zip_code,
+        country: locationData.address.country
+      }
     };
     
     return (

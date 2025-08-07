@@ -59,9 +59,15 @@ const PopularServices = (props: Props) => {
                 <GiHairStrands className="flex-shrink-0 group-hover:scale-105 group-hover:text-primary transition-all ease-in-out duration-200 text-text w-6 h-6" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-2xl font-bold text-text group-hover:text-primary transition-colors duration-200 font-heading">
-                    {service.title}
-                  </h3>
+                  {index < 2 ? (
+                    <h3 className="text-2xl font-bold text-text group-hover:text-primary transition-colors duration-200 font-heading">
+                      {service.title}
+                    </h3>
+                  ) : (
+                    <div className="text-2xl font-bold text-text group-hover:text-primary transition-colors duration-200 font-heading">
+                      {service.title}
+                    </div>
+                  )}
                   <p className="text-text mt leading-relaxed font-sans text-sm">
                     {service.description}
                   </p>

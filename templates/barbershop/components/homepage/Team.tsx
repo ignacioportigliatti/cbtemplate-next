@@ -70,7 +70,11 @@ const Team = ({ teamContent }: Props) => {
                       )}
                     </div>
                     <div className="mt-4 text-center">
-                      <h3 className="text-text font-medium">{member.member_name}</h3>
+                      {index < 2 ? (
+                        <h3 className="text-text font-medium">{member.member_name}</h3>
+                      ) : (
+                        <div className="text-text font-medium">{member.member_name}</div>
+                      )}
                       <p className="text-text/80 text-sm">{member.member_position}</p>
                     </div>
                   </div>

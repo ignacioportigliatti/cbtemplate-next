@@ -74,9 +74,15 @@ const Reviews = ({ homeContent, reviewsContent }: Props) => {
                           ))}
                         </div>
                       )}
-                      <CardTitle className="text-2xl font-bold text-text font-heading">
-                        {review.reviewer_name}
-                      </CardTitle>
+                       {index < 2 ? (
+                         <CardTitle className="text-2xl font-bold text-text font-heading">
+                           {review.reviewer_name}
+                         </CardTitle>
+                       ) : (
+                         <div className="text-2xl font-bold text-text font-heading">
+                           {review.reviewer_name}
+                         </div>
+                       )}
                     </CardFooter>
                   </Card>
                 </div>

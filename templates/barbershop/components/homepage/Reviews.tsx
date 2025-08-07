@@ -58,9 +58,15 @@ const Reviews = ({ homeContent, reviewsContent }: Props) => {
                 <div className="p-1 h-full scroll-animate" style={{ animationDelay: `${(index + 1) * 0.1}s` }}>
                   <Card className="bg-background-300 rounded-none shadow-lg hover:shadow-xl transition-shadow duration-300 border-0 h-full min-h-[200px] flex flex-col">
                     <CardHeader className="pb-2">
-                      <CardTitle className="text-2xl font-bold text-text font-heading">
-                        {review.reviewer_name}
-                      </CardTitle>
+                      {index < 2 ? (
+                        <CardTitle className="text-2xl font-bold text-text font-heading">
+                          {review.reviewer_name}
+                        </CardTitle>
+                      ) : (
+                        <div className="text-2xl font-bold text-text font-heading">
+                          {review.reviewer_name}
+                        </div>
+                      )}
                     </CardHeader>
                     <CardContent className="pb-4 flex-1">
                       <p className="text-text/80 leading-relaxed text-sm font-sans">{review.review}</p>

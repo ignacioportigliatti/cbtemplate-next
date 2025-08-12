@@ -36,7 +36,14 @@ export function transformContactToBusiness(
         email: mainLocation.email || ''
       },
       hours: transformTimetableToHours(mainLocation.timetable),
-      priceRange: '$$' // Puede ser configurable desde WordPress
+      priceRange: '$$', // Puede ser configurable desde WordPress
+      socialMedia: mainLocation?.social_media ? {
+        facebook: mainLocation.social_media.facebook,
+        instagram: mainLocation.social_media.instagram,
+        google: mainLocation.social_media.google,
+        linkedin: mainLocation.social_media.linkedin,
+        pinterest: mainLocation.social_media.pinterest
+      } : undefined
     };
   } catch (error) {
     console.error('Error transforming contact to business:', error);
@@ -135,7 +142,8 @@ export function transformToOrganizationSchema(
       facebook: mainLocation.social_media.facebook,
       instagram: mainLocation.social_media.instagram,
       google: mainLocation.social_media.google,
-      linkedin: mainLocation.social_media.linkedin
+      linkedin: mainLocation.social_media.linkedin,
+      pinterest: mainLocation.social_media.pinterest
     } : undefined
   };
 }

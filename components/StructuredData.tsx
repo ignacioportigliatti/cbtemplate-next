@@ -43,6 +43,13 @@ export function LocalBusinessSchema({
       };
     };
     priceRange?: string;
+    socialMedia?: {
+      facebook?: string;
+      instagram?: string;
+      google?: string;
+      linkedin?: string;
+      pinterest?: string;
+    };
   };
   services?: Array<{
     name: string;
@@ -76,6 +83,9 @@ export function LocalBusinessSchema({
     ...(business.contact.email && { "email": business.contact.email }),
     "openingHours": formatOpeningHours(business.hours),
     ...(business.priceRange && { "priceRange": business.priceRange }),
+    ...(business.socialMedia && {
+      "sameAs": Object.values(business.socialMedia).filter(Boolean)
+    }),
     ...(services && services.length > 0 && {
       "hasOfferCatalog": {
         "@type": "OfferCatalog",
@@ -220,8 +230,9 @@ export function OrganizationSchema({
     socialMedia?: {
       facebook?: string;
       instagram?: string;
-      twitter?: string;
+      google?: string;
       linkedin?: string;
+      pinterest?: string;
     };
   };
 }) {

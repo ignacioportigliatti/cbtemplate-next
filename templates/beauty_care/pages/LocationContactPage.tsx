@@ -76,7 +76,9 @@ const LocationContactPage = async ({ locationData, contactContent }: Props) => {
                           <FaPhone className="w-4 h-4 -mt-1 mr-1" />
                           <h3 className="font-medium  font-heading">Phone</h3>
                         </div>
-                        <p className="text-text">{locationData.phone_number}</p>
+                        <Link href={`tel:${locationData.phone_number}`} className="text-text hover:text-primary transition-all duration-300 ease-in-out">
+                          {locationData.phone_number}
+                        </Link>
                       </div>
                     )}
                     {locationData.email && (
@@ -85,7 +87,9 @@ const LocationContactPage = async ({ locationData, contactContent }: Props) => {
                           <FaEnvelope className="w-4 h-4 -mt-1" />
                           <h3 className="font-medium  font-heading">Email</h3>
                         </div>
-                        <p className="text-text">{locationData.email}</p>
+                        <Link href={`mailto:${locationData.email}`} className="text-text hover:text-primary transition-all duration-300 ease-in-out">
+                          {locationData.email}
+                        </Link>
                       </div>
                     )}
                     <div className="grid grid-cols-2 gap-2 mt-2 scroll-animate" style={{ animationDelay: "0.4s" }}>

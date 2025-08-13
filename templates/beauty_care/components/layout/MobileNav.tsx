@@ -114,20 +114,24 @@ export function MobileNav({ themeOptions, contactContent }: MobileNavProps) {
             {mainLocation?.phone_number && (
               <div className="flex items-center gap-2">
                 <FaPhone className="w-4 h-4" />
-                <p className="text-muted-foreground/80">{mainLocation.phone_number}</p>
+                <Link href={`tel:${mainLocation.phone_number}`} className="text-muted-foreground/80 hover:text-primary transition-all duration-300 ease-in-out">
+                  {mainLocation.phone_number}
+                </Link>
               </div>
             )}
             {mainLocation?.email && (
               <div className="flex items-center gap-2">
                 <FaEnvelope className="w-4 h-4" />
-                <p className="text-muted-foreground/80">{mainLocation.email}</p>
+                <Link href={`mailto:${mainLocation.email}`} className="text-muted-foreground/80 hover:text-primary transition-all duration-300 ease-in-out">
+                  {mainLocation.email}
+                </Link>
               </div>
             )}
             {mainLocation?.address && (
               <div className="flex items-center gap-2">
                 <FaMapPin className="w-4 h-4" />
                 <p className="text-muted-foreground/80">
-                  {mainLocation.address.full_address || 
+                  {
                    `${mainLocation.address.street}, ${mainLocation.address.city}, ${mainLocation.address.state} ${mainLocation.address.zip_code}`}
                 </p>
               </div>

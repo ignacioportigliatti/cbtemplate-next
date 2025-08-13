@@ -67,7 +67,7 @@ const AboutUsContact = ({ contactContent }: Props) => {
                   <h4 className="font-medium tracking-[0.2em] uppercase font-heading">Address</h4>
                 </div>
                 <p className="text-text">
-                  {mainLocation.address.full_address || 
+                  {
                    `${mainLocation.address.street}, ${mainLocation.address.city}, ${mainLocation.address.state} ${mainLocation.address.zip_code}`}
                 </p>
               </div>
@@ -77,16 +77,20 @@ const AboutUsContact = ({ contactContent }: Props) => {
                     <FaPhone className="w-4 h-4 -mt-1" />
                     <h4 className="font-medium tracking-[0.2em] uppercase font-heading">Phone</h4>
                   </div>
-                  <p className="text-text">{mainLocation.phone_number}</p>
+                  <Link href={`tel:${mainLocation.phone_number}`} className="text-text hover:text-primary transition-all duration-300 ease-in-out">
+                    {mainLocation.phone_number}
+                  </Link>
                 </div>
               )}
               {mainLocation.email && (
                 <div className="flex flex-col mt-2 group">
+                  <Link href={`mailto:${mainLocation.email}`} className="text-text hover:text-primary transition-all duration-300 ease-in-out">
                   <div className="flex items-center gap-2 text-text group-hover:text-primary transition-all duration-300 ease-in-out">
                     <FaEnvelope className="w-4 h-4 -mt-1" />
                     <h4 className="font-medium tracking-[0.2em] uppercase font-heading">Email</h4>
                   </div>
-                  <p className="text-text">{mainLocation.email}</p>
+                    {mainLocation.email}
+                  </Link>
                 </div>
               )}
               <div className="grid grid-cols-2 gap-2 mt-2">

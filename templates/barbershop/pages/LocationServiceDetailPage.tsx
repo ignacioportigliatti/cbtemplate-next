@@ -24,7 +24,7 @@ const LocationServiceDetailPage = async ({ locationData, serviceData }: Props) =
 
   return (
     <ScrollAnimations>
-      <Section className="pt-24 md:pt-32 bg-background-900 pb-16">
+      <Section className="pt-36 bg-background-900 pb-16">
         <Container className="max-w-7xl mx-auto px-8 xl:px-0">
           
           <Breadcrumb items={breadcrumbItems} className="py-4 scroll-animate" />

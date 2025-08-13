@@ -37,7 +37,7 @@ const LocationAboutPage = async ({ locationData, aboutUsContent, contactContent 
     <ScrollAnimations>
       <main>
         {/* About Us Content */}
-        <Section className="pt-24 md:pt-32 bg-background-600 pb-16">
+        <Section className="pt-36 bg-background-600 pb-16">
           <Container className="max-w-7xl mx-auto px-8 xl:px-0">
             <Breadcrumb items={breadcrumbItems} className="py-4 scroll-animate" />
             <AboutUsInfo aboutUsContent={aboutUsContent} />

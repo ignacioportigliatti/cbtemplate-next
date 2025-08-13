@@ -37,7 +37,7 @@ export const CTAHeader = ({ contactContent, themeOptions }: CTAHeaderProps) => {
   return (
     <div
       className={cn(
-        "fixed w-full z-40 top-0 transition-all duration-300 ease-in-out bg-accent text-accent-foreground h-12",
+        "fixed w-full z-40 top-0 transition-all duration-300 ease-in-out bg-background-800 text-accent-foreground h-12",
         isScrolled ? "-translate-y-full opacity-0" : "translate-y-0 opacity-100"
       )}
     >

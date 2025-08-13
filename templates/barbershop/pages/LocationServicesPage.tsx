@@ -37,7 +37,7 @@ const LocationServicesPage = async ({ locationData, servicesContent, contactCont
   return (
     <ScrollAnimations>
       <main>
-        <Section className="pt-24 md:pt-32 bg-background-900 pb-16">
+        <Section className="pt-36 bg-background-900 pb-16">
           <Container className="max-w-7xl mx-auto">
             <Breadcrumb items={breadcrumbItems} className="scroll-animate py-4" />
             <LocationServicesGrid servicesContent={servicesContent} locationSlug={locationSlug} />

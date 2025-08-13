@@ -26,9 +26,6 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
           "/wp-includes/",
           "/wp-content/plugins/",
           "/wp-content/themes/",
-          "/*.json$",
-          "/*.xml$",
-          "/*.txt$",
           "/search?*",
           "/temp/",
           "/cache/",
@@ -41,8 +38,6 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
           "/.env",
           "/.git",
           "/.htaccess",
-          "/robots.txt",
-          "/sitemap.xml",
         ],
       },
       {

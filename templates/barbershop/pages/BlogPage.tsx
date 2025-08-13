@@ -127,7 +127,7 @@ export default async function Page({
   return (
     <Section className="bg-background-900">
       <Container>
-        <div className="pt-32 pb-16 max-w-7xl mx-auto">
+        <div className="pt-40 pb-16 max-w-7xl mx-auto">
           
             <h1 className="text-primary font-medium !text-5xl text-center md:text-left uppercase font-heading">{blogContent.title}</h1>
             <p className="text-muted-foreground mb-8">

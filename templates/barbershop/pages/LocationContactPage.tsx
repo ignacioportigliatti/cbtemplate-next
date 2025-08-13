@@ -33,9 +33,9 @@ const LocationContactPage = async ({ locationData, contactContent }: Props) => {
   return (
     <main>
       {/* Contact Info */}
-      <Section className="bg-background-600 py-16 pt-32 px-4 lg:px-8">
+      <Section className="bg-background-600 py-16 pt-36 px-4 lg:px-8">
         <Container className="max-w-7xl mx-auto px-8 lg:px-0">
-          <Breadcrumb items={breadcrumbItems} className="mb-8" />
+          <Breadcrumb items={breadcrumbItems} className="mb-2" />
           
           <span className="text-primary font-medium text-2xl text-center md:text-left mb-2 uppercase font-heading block">
             {contactContent.page_info?.subtitle || "Get in Touch"}
@@ -74,7 +74,9 @@ const LocationContactPage = async ({ locationData, contactContent }: Props) => {
                         <FaPhone className="w-4 h-4 -mt-1 mr-1" />
                         <h3 className="font-medium tracking-[0.2em] uppercase font-heading">Phone</h3>
                       </div>
-                      <p className="text-text">{locationData.phone_number}</p>
+                      <Link href={`tel:${locationData.phone_number}`} className="text-text hover:text-primary transition-all duration-300 ease-in-out">
+                        {locationData.phone_number}
+                      </Link>
                     </div>
                   )}
                   {locationData.email && (
@@ -83,7 +85,9 @@ const LocationContactPage = async ({ locationData, contactContent }: Props) => {
                         <FaEnvelope className="w-4 h-4 -mt-1" />
                         <h3 className="font-medium tracking-[0.2em] uppercase font-heading">Email</h3>
                       </div>
-                      <p className="text-text">{locationData.email}</p>
+                      <Link href={`mailto:${locationData.email}`} className="text-text hover:text-primary transition-all duration-300 ease-in-out">
+                        {locationData.email}
+                      </Link>
                     </div>
                   )}
                   <div className="grid grid-cols-2 gap-2 mt-2">

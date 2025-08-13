@@ -71,8 +71,8 @@ export function MobileNav({ themeOptions, contactContent }: MobileNavProps) {
         </Button>
       </SheetTrigger>
       <SheetContent
-        side="left"
-        className="flex flex-col justify-between w-full min-w-[480px]"
+        side="right"
+        className="flex flex-col justify-between w-full min-w-[320px]"
       >
         <SheetHeader>
           <SheetTitle className="text-left">
@@ -128,7 +128,7 @@ export function MobileNav({ themeOptions, contactContent }: MobileNavProps) {
                 <FaMapPin className="w-4 h-4" />
                 <p className="text-muted-foreground/80">
                   {mainLocation.address.full_address || 
-                   `${mainLocation.address.street}, ${mainLocation.address.city}, ${mainLocation.address.state} ${mainLocation.address.zip_code}, ${mainLocation.address.country}`}
+                   `${mainLocation.address.street}, ${mainLocation.address.city}, ${mainLocation.address.state} ${mainLocation.address.zip_code}`}
                 </p>
               </div>
             )}

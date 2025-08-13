@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn, convertTo12HourFormat } from "@/lib/utils";
 import { ContactContent } from "@/lib/wordpress.d";
 import Link from "next/link";
 import React from "react";
@@ -58,8 +58,8 @@ const formatBusinessHoursCalendar = (timetable: any) => {
       day: dayNames[index],
       fullDay: day,
       isOpen: schedule?.is_open || false,
-      openTime: schedule?.open_time?.replace(":00", "") || "",
-      closeTime: schedule?.close_time?.replace(":00", "") || "",
+      openTime: convertTo12HourFormat(schedule?.open_time || ""),
+      closeTime: convertTo12HourFormat(schedule?.close_time || ""),
       isToday: new Date().getDay() === (index + 1) % 7,
     };
   });
@@ -84,7 +84,7 @@ export const Location = ({ contactContent }: Props) => {
   
   // Build address string for map
   const addressString = primaryLocation.address.full_address || 
-    `${primaryLocation.address.street}, ${primaryLocation.address.city}, ${primaryLocation.address.state} ${primaryLocation.address.zip_code}, ${primaryLocation.address.country}`;
+    `${primaryLocation.address.street}, ${primaryLocation.address.city}, ${primaryLocation.address.state} ${primaryLocation.address.zip_code}`;
 
   return (
     <div className="space-y-4 flex flex-col justify-start h-full">
@@ -123,8 +123,8 @@ export const Location = ({ contactContent }: Props) => {
             <div className="text-text/80 text-xs">
               {dayInfo.isOpen ? (
                 <div className="space-y-0.5">
-                  <div>{dayInfo.openTime}h</div>
-                  <div>{dayInfo.closeTime}h</div>
+                  <div>{dayInfo.openTime}</div>
+                  <div>{dayInfo.closeTime}</div>
                 </div>
               ) : (
                 <div className="text-red-400">Closed</div>

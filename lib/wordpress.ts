@@ -553,7 +553,10 @@ export async function getThemeOptions(): Promise<ThemeOptions> {
       general: {
         site_name: "Your Business",
         site_description: "Professional services",
-        site_logo: {} as any
+        site_logo: {} as any,
+        ctaHeader: true,
+        cta_type: "default_form",
+        cta_client_id: ""
       },
       colors: {
         primary_color: "#007bff",

@@ -1,4 +1,4 @@
-import { HomePageContent, ServicesContent, ContactContent } from "@/lib/wordpress.d";
+import { HomePageContent, ServicesContent, ContactContent, ThemeOptions } from "@/lib/wordpress.d";
 import { generateLocationSlug } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
@@ -10,10 +10,11 @@ interface Props {
   homeContent: HomePageContent;
   servicesContent: ServicesContent;
   contactContent: ContactContent;
+  themeOptions?: ThemeOptions;
 }
 
 const PopularServices = (props: Props) => {
-  const { homeContent, servicesContent, contactContent } = props;
+  const { homeContent, servicesContent, contactContent, themeOptions } = props;
 
   // Get main location (first location) and generate slug
   const mainLocation = contactContent.locations[0];
@@ -23,6 +24,10 @@ const PopularServices = (props: Props) => {
 
   // Generate the correct href for services page with location
   const servicesHref = locationSlug ? `/${locationSlug}/services` : homeContent.popular_services.button.link;
+
+  // Determine CTA button text based on theme options
+  const ctaType = themeOptions?.general?.cta_type || "default_form";
+  const ctaButtonText = ctaType === "chilled_butter_widget" ? "Book Now" : "Get Started";
 
   return (
     <div className="bg-background-800 py-16 px-8 lg:px-16">
@@ -39,13 +44,21 @@ const PopularServices = (props: Props) => {
             <p className="text-text/80 mb-4 scroll-animate">
                 {servicesContent.page_info.description}
               </p>
-            <Link
-              href={servicesHref}
-              className="bg-transparent border-2 font-heading border-border text-primary px-8 py-3 font-medium tracking-wide uppercase hover:bg-primary hover:text-primary-foreground transition-all duration-300 ease-in-out inline-flex items-center scroll-animate"
-            >
-              {homeContent.popular_services.button.label}
-              <FaArrowRight className="w-4 h-4 -mt-1 ml-2" />
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-4 scroll-animate">
+              <Link
+                href={servicesHref}
+                className="bg-transparent border-2 font-heading border-border text-primary px-8 py-3 font-medium tracking-wide uppercase hover:bg-primary hover:text-primary-foreground transition-all duration-300 ease-in-out inline-flex items-center justify-center"
+              >
+                {homeContent.popular_services.button.label}
+                <FaArrowRight className="w-4 h-4 -mt-1 ml-2" />
+              </Link>
+              <Link
+                href="/contact"
+                className="bg-primary text-primary-foreground font-heading px-8 py-3 font-medium tracking-wide uppercase hover:bg-primary/90 transition-all duration-300 ease-in-out inline-flex items-center justify-center"
+              >
+                {ctaButtonText}
+              </Link>
+            </div>
           </div>
         </div>
 
@@ -53,8 +66,13 @@ const PopularServices = (props: Props) => {
         <div className="w-full md:w-7/12 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           {servicesContent.services
             .slice(0, homeContent.popular_services.services_to_display)
-            .map((service, index) => (
-              <div key={index} className="flex items-start space-x-2 group scroll-animate" style={{ animationDelay: `${(index + 1) * 0.1}s` }}>
+            .map((service, index) => {
+              // Generate service page URL
+              const serviceSlug = service.slug || service.title.toLowerCase().replace(/\s+/g, '-');
+              const serviceHref = locationSlug ? `/${locationSlug}/services/${serviceSlug}` : `/services/${serviceSlug}`;
+              
+              return (
+                <Link key={index} href={serviceHref} className="flex items-start space-x-2 group scroll-animate cursor-pointer" style={{ animationDelay: `${(index + 1) * 0.1}s` }}>
                 <div className="flex items-center justify-center p-2 rounded-full ">
                 <GiHairStrands className="flex-shrink-0 group-hover:scale-105 group-hover:text-primary transition-all ease-in-out duration-200 text-text w-6 h-6" />
                 </div>
@@ -72,8 +90,9 @@ const PopularServices = (props: Props) => {
                     {service.description}
                   </p>
                 </div>
-              </div>
-            ))}
+              </Link>
+            );
+            })}
           
         </div>
       </div>

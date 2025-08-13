@@ -93,6 +93,7 @@ const HomePage = async () => {
       contactContent,
       teamContent,
       aboutUsContent,
+      themeOptions,
     ] = await Promise.all([
       getHomeContent(),
       getServicesContent(),
@@ -101,6 +102,7 @@ const HomePage = async () => {
       getContactContent(),
       getTeamContent(),
       getAboutUsContent(),
+      getThemeOptions(),
     ]);
 
     if (!homeContent) {
@@ -117,7 +119,7 @@ const HomePage = async () => {
         <main>
           {/* Hero Section - Main H1 */}
           <section>
-            <Hero homeContent={homeContent} />
+            <Hero homeContent={homeContent} themeOptions={themeOptions} />
           </section>
 
           {/* About Us & Location Section */}
@@ -143,6 +145,7 @@ const HomePage = async () => {
               homeContent={homeContent}
               servicesContent={servicesContent}
               contactContent={contactContent}
+              themeOptions={themeOptions}
             />
           </section>
 

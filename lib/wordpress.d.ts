@@ -443,6 +443,9 @@ export interface ThemeOptions {
     site_name: string;
     site_description: string;
     site_logo: WordpressImageInfo;
+    ctaHeader?: boolean;
+    cta_type?: "chilled_butter_widget" | "default_form";
+    cta_client_id?: string;
   };
   colors: ThemeColors;
   templates: ThemeTemplates;

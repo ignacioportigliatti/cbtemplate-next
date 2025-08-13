@@ -1,4 +1,4 @@
-import { HomePageContent } from "@/lib/wordpress.d";
+import { HomePageContent, ThemeOptions } from "@/lib/wordpress.d";
 import Link from "next/link";
 import React from "react";
 import Balancer from "react-wrap-balancer";
@@ -7,9 +7,15 @@ import Image from "next/image";
 
 interface Props {
   homeContent: HomePageContent;
+  themeOptions?: ThemeOptions;
 }
 
-const Hero = ({ homeContent }: Props) => {
+const Hero = ({ homeContent, themeOptions }: Props) => {
+  // Determine button text based on CTA type
+  const ctaType = themeOptions?.general?.cta_type || "default_form";
+  const buttonText = ctaType === "chilled_butter_widget" 
+    ? homeContent.hero.button.label 
+    : "Get Started";
 
   return (
     <div className="relative min-h-screen bg-background">
@@ -50,7 +56,7 @@ const Hero = ({ homeContent }: Props) => {
                 href={homeContent.hero.button.link}
                 className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 text-lg font-medium hover:bg-primary/90 transition-all duration-300 ease-in-out font-heading rounded-lg"
               >
-                {homeContent.hero.button.label}
+                {buttonText}
                 <svg 
                   width="20" 
                   height="20" 

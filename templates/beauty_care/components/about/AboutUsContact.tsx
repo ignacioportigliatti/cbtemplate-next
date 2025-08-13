@@ -69,7 +69,7 @@ const AboutUsContact = ({ contactContent }: Props) => {
                 </div>
                 <p className="text-text">
                   {mainLocation.address.full_address || 
-                   `${mainLocation.address.street}, ${mainLocation.address.city}, ${mainLocation.address.state} ${mainLocation.address.zip_code}, ${mainLocation.address.country}`}
+                   `${mainLocation.address.street}, ${mainLocation.address.city}, ${mainLocation.address.state} ${mainLocation.address.zip_code}`}
                 </p>
               </div>
               {mainLocation.phone_number && (

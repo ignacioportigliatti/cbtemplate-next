@@ -1,4 +1,4 @@
-import { HomePageContent } from "@/lib/wordpress.d";
+import { HomePageContent, ThemeOptions } from "@/lib/wordpress.d";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -7,9 +7,16 @@ import BackgroundCarousel from "./BackgroundCarousel";
 
 interface Props {
   homeContent: HomePageContent;
+  themeOptions?: ThemeOptions;
 }
 
-const Hero = ({ homeContent }: Props) => {
+const Hero = ({ homeContent, themeOptions }: Props) => {
+  // Determine button text based on CTA type
+  const ctaType = themeOptions?.general?.cta_type || "default_form";
+  const buttonText = ctaType === "chilled_butter_widget" 
+    ? homeContent.hero.button.label 
+    : "Get Started";
+
   return (
     <div className="relative min-h-screen overflow-hidden">
       {/* Background Images Carousel */}
@@ -38,7 +45,7 @@ const Hero = ({ homeContent }: Props) => {
             href={homeContent.hero.button.link}
             className="inline-block bg-transparent border-2 border-border text-border px-8 py-4 text-lg font-medium tracking-wide uppercase hover:bg-border hover:text-background transition-all duration-300 ease-in-out font-heading animate-fade-in-up animate-delay-800"
           >
-            {homeContent.hero.button.label}
+            {buttonText}
           </Link>
         </div>
       </div>

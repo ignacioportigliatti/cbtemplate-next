@@ -65,7 +65,7 @@ const LocationContactPage = async ({ locationData, contactContent }: Props) => {
                     </div>
                     <p className="text-text">
                       {locationData.address.full_address || 
-                       `${locationData.address.street}, ${locationData.address.city}, ${locationData.address.state} ${locationData.address.zip_code}, ${locationData.address.country}`}
+                       `${locationData.address.street}, ${locationData.address.city}, ${locationData.address.state} ${locationData.address.zip_code}`}
                     </p>
                   </div>
                   {locationData.phone_number && (

@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { MobileNav } from "./MobileNav";
+import { CTAHeader } from "./CTAHeader";
 import { NavProps } from "@/lib/types";
 import Image from "next/image";
 import { useScrollPosition } from "@/lib/hooks/useScrollPosition";
@@ -14,6 +15,7 @@ import { generateLocationSlug } from "@/lib/utils";
 
 export const Nav = ({ className, children, id, themeOptions, contactContent }: NavProps) => {
   const { isScrolled } = useScrollPosition();
+  const showCTAHeader = themeOptions?.general?.ctaHeader !== false; // Default to true
 
   // Get the main location (index 0)
   const mainLocation = contactContent?.locations?.[0];
@@ -37,16 +39,21 @@ export const Nav = ({ className, children, id, themeOptions, contactContent }: N
   const locationMenu = generateLocationMenu();
 
   return (
-    <nav
-      className={cn(
-        "fixed w-full z-50 top-0 transition-all duration-300 ease-in-out",
-        isScrolled 
-          ? "bg-background-900/95 backdrop-blur-sm border-b border-border/50 shadow-sm" 
-          : "bg-transparent border-b border-transparent",
-        className
+    <>
+      {showCTAHeader && contactContent && (
+        <CTAHeader contactContent={contactContent} themeOptions={themeOptions} />
       )}
-      id={id}
-    >
+      <nav
+        className={cn(
+          "fixed w-full z-50 transition-all duration-300 ease-in-out",
+          showCTAHeader && !isScrolled ? "top-12" : "top-0",
+          isScrolled 
+            ? "bg-background-900/95 backdrop-blur-sm border-b border-border/50 shadow-sm" 
+            : "bg-transparent border-b border-transparent",
+          className
+        )}
+        id={id}
+      >
       <div
         id="nav-container"
         className="max-w-7xl mx-auto px-8 xl:px-0 py-4 flex justify-between items-center"
@@ -74,5 +81,6 @@ export const Nav = ({ className, children, id, themeOptions, contactContent }: N
           <MobileNav themeOptions={themeOptions as ThemeOptions} contactContent={contactContent as ContactContent} />
       </div>
     </nav>
+    </>
   );
 };

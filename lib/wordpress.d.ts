@@ -349,6 +349,9 @@ interface ReviewItem {
   stars: string;
   reviewer_name: string;
   review: string;
+  google_verified?: boolean;
+  profile_photo_url?: string;
+  review_date?: string;
 }
 
 export interface ReviewsContent {

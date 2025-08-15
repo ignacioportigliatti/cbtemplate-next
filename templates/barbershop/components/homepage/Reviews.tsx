@@ -10,6 +10,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { FaStar } from "react-icons/fa";
+import { FaGoogle } from "react-icons/fa";
 
 interface Props {
   homeContent: HomePageContent;
@@ -57,17 +58,39 @@ const Reviews = ({ homeContent, reviewsContent }: Props) => {
               >
                 <div className="p-1 h-full scroll-animate" style={{ animationDelay: `${(index + 1) * 0.1}s` }}>
                   <Card className="bg-background-300 rounded-none shadow-lg hover:shadow-xl transition-shadow duration-300 border-0 h-full min-h-[200px] flex flex-col">
-                    <CardHeader className="pb-2">
-                      {index < 2 ? (
-                        <CardTitle className="text-2xl font-bold text-text font-heading">
-                          {review.reviewer_name}
-                        </CardTitle>
-                      ) : (
-                        <div className="text-2xl font-bold text-text font-heading">
-                          {review.reviewer_name}
-                        </div>
-                      )}
-                    </CardHeader>
+                                         <CardHeader className="pb-2">
+                       <div className="flex items-start gap-3">
+                         {review.profile_photo_url && (
+                           <img 
+                             src={review.profile_photo_url} 
+                             alt={`${review.reviewer_name} profile`}
+                             className="w-12 h-12 rounded-full object-cover border-2 border-primary/20 flex-shrink-0"
+                           />
+                         )}
+                         <div className="flex-1 min-h-0">
+                           <div className="flex items-center">
+                             {index < 2 ? (
+                               <CardTitle className="text-2xl font-bold text-text font-heading">
+                                 {review.reviewer_name}
+                               </CardTitle>
+                             ) : (
+                               <div className="text-2xl font-bold text-text font-heading">
+                                 {review.reviewer_name}
+                               </div>
+                             )}
+                             {review.google_verified && (
+                               <div className="flex items-center gap-1 ml-2">
+                                 <FaGoogle className="w-4 h-4 text-green-500" />
+                                 <span className="text-xs text-green-500 font-medium">Verified</span>
+                               </div>
+                             )}
+                           </div>
+                           {review.review_date && (
+                             <p className="text-xs text-muted-foreground -mt-1">{review.review_date}</p>
+                           )}
+                         </div>
+                       </div>
+                     </CardHeader>
                     <CardContent className="pb-4 flex-1">
                       <p className="text-text/80 leading-relaxed text-sm font-sans">{review.review}</p>
                     </CardContent>

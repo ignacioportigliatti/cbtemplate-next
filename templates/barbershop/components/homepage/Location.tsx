@@ -83,18 +83,29 @@ export const Location = ({ contactContent, mapHeight = "100%" }: Props) => {
   // Use dynamic timetable if available, otherwise fallback to hardcoded hours
   const businessHours = formatBusinessHoursCalendar(primaryLocation.timetable);
   
-  // Build address string for map
-  const addressString = primaryLocation.address.full_address || 
-    `${primaryLocation.address.street}, ${primaryLocation.address.city}, ${primaryLocation.address.state} ${primaryLocation.address.zip_code}`;
+  // Generate Google Maps URL with business name + address for better SEO
+  const generateMapUrl = () => {
+    // Try with business name + address first
+    const businessNameAddress = `${primaryLocation.name} ${primaryLocation.address.street}, ${primaryLocation.address.city}, ${primaryLocation.address.state} ${primaryLocation.address.zip_code}`;
+    
+    // Fallback to address only if business name is not available
+    const addressOnly = primaryLocation.address.full_address || 
+      `${primaryLocation.address.street}, ${primaryLocation.address.city}, ${primaryLocation.address.state} ${primaryLocation.address.zip_code}`;
+    
+    // Use business name + address if name exists, otherwise fallback to address only
+    const searchQuery = primaryLocation.name ? businessNameAddress : addressOnly;
+
+    return `https://maps.google.com/maps?q=${encodeURIComponent(searchQuery)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+  };
+  
+  const mapUrl = generateMapUrl();
 
   return (
     <div className="space-y-4 flex flex-col justify-start h-full">
       {/* Map */}
       <div className="w-full h-64 overflow-hidden" style={{ height: mapHeight }}>
         <iframe
-          src={`https://maps.google.com/maps?q=${encodeURIComponent(
-            addressString,
-          )}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+          src={mapUrl}
           width="100%"
           height="100%"
           style={{ border: 0 }}

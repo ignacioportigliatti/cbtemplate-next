@@ -52,12 +52,20 @@ const PopularServices = (props: Props) => {
                 {homeContent.popular_services.button.label}
                 <FaArrowRight className="w-4 h-4 -mt-1 ml-2" />
               </Link>
-              <Link
-                href="/contact"
-                className="bg-primary text-primary-foreground font-heading px-8 py-3 font-medium tracking-wide uppercase hover:bg-primary/90 transition-all duration-300 ease-in-out inline-flex items-center justify-center"
-              >
-                {ctaButtonText}
-              </Link>
+                             {ctaType === "chilled_butter_widget" ? (
+                 <button
+                   className="bg-primary text-primary-foreground font-heading px-8 py-3 font-medium tracking-wide uppercase hover:bg-primary/90 transition-all duration-300 ease-in-out inline-flex items-center justify-center cb-widget-btn"
+                 >
+                   {ctaButtonText}
+                 </button>
+              ) : (
+                <Link
+                  href="/contact"
+                  className="bg-primary text-primary-foreground font-heading px-8 py-3 font-medium tracking-wide uppercase hover:bg-primary/90 transition-all duration-300 ease-in-out inline-flex items-center justify-center"
+                >
+                  {ctaButtonText}
+                </Link>
+              )}
             </div>
           </div>
         </div>

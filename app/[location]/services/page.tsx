@@ -110,7 +110,7 @@ export default async function LocationServicesPage({ params }: { params: Promise
         )}
         
         {/* Template Component */}
-        <template.LocationServicesPage locationData={locationData} servicesContent={servicesContent} contactContent={contactContent} />
+        <template.LocationServicesPage locationData={locationData} servicesContent={servicesContent} contactContent={contactContent} themeOptions={themeOptions} />
       </>
     );
   } catch (error) {

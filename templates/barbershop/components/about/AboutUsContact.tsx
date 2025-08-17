@@ -1,4 +1,4 @@
-import { ContactContent } from "@/lib/wordpress.d";
+import { ContactContent, ThemeOptions } from "@/lib/wordpress.d";
 import React from "react";
 import Location from "../homepage/Location";
 import {
@@ -15,9 +15,13 @@ import Link from "next/link";
 
 interface Props {
   contactContent: ContactContent;
+  themeOptions?: ThemeOptions;
 }
 
-const AboutUsContact = ({ contactContent }: Props) => {
+const AboutUsContact = ({ contactContent, themeOptions }: Props) => {
+  // Determine CTA type and button text
+  const ctaType = themeOptions?.general?.cta_type || "default_form";
+  const buttonText = ctaType === "chilled_butter_widget" ? "Book Now" : "Get Started";
   // Use only the main location (index 0)
   const mainLocation = contactContent.locations?.[0];
   
@@ -122,6 +126,24 @@ const AboutUsContact = ({ contactContent }: Props) => {
                       </div>
                     );
                   })}
+              </div>
+              
+              {/* CTA Button */}
+              <div className="">
+                {ctaType === "chilled_butter_widget" ? (
+                  <button
+                    className="w-full bg-primary text-primary-foreground font-heading px-6 py-3 font-medium tracking-wide  hover:bg-primary/90 transition-all duration-300 ease-in-out rounded-lg cb-widget-btn"
+                  >
+                    {buttonText}
+                  </button>
+                ) : (
+                  <Link
+                    href="/contact"
+                    className="w-full bg-primary text-primary-foreground font-heading px-6 py-3 font-medium tracking-wide  hover:bg-primary/90 transition-all duration-300 ease-in-out rounded-lg inline-block text-center"
+                  >
+                    {buttonText}
+                  </Link>
+                )}
               </div>
             </div>
           </div>

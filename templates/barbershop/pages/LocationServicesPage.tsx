@@ -1,6 +1,6 @@
 import AboutUsContact from "@/templates/barbershop/components/about/AboutUsContact";
 import ServicesGrid from "@/templates/barbershop/components/services/ServicesGrid";
-import { ServicesContent, ContactContent, ContactLocation } from "@/lib/wordpress.d";
+import { ServicesContent, ContactContent, ContactLocation, ThemeOptions } from "@/lib/wordpress.d";
 import { generateLocationSlug } from "@/lib/utils";
 import React from "react";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
@@ -14,9 +14,10 @@ interface Props {
   locationData: ContactLocation;
   servicesContent: ServicesContent;
   contactContent: ContactContent;
+  themeOptions?: ThemeOptions;
 }
 
-const LocationServicesPage = async ({ locationData, servicesContent, contactContent }: Props) => {
+const LocationServicesPage = async ({ locationData, servicesContent, contactContent, themeOptions }: Props) => {
   const locationSlug = generateLocationSlug(locationData.address.city, locationData.address.state);
 
   const breadcrumbItems = [
@@ -46,7 +47,7 @@ const LocationServicesPage = async ({ locationData, servicesContent, contactCont
         
         {/* Contact Info */}
         <section className="bg-background-600 py-16 px-4 lg:px-8">
-          <AboutUsContact contactContent={contactContent} />
+          <AboutUsContact contactContent={contactContent} themeOptions={themeOptions} />
         </section>
       </main>
     </ScrollAnimations>

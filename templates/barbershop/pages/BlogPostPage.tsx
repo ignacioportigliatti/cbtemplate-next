@@ -13,6 +13,8 @@ import { badgeVariants } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { getSiteConfig } from "@/site.config";
 import ScrollAnimations from "@/templates/barbershop/components/layout/ScrollAnimations";
+import BlogTableOfContents from "@/components/BlogTableOfContents";
+import BlogContentWithTOC from "@/components/BlogContentWithTOC";
 
 import Link from "next/link";
 import Balancer from "react-wrap-balancer";
@@ -126,9 +128,9 @@ export default async function BlogPostPage({
     <ScrollAnimations>
       <Section className="mt-32 pb-16 px-8 xl:px-0 max-w-7xl mx-auto">
         <Container>
-          <div className="flex flex-col lg:flex-row gap-8">
-            {/* Main Article - 2/3 width */}
-            <div className="lg:w-2/3">
+                     <div className="flex flex-col lg:flex-row gap-8 items-start">
+             {/* Main Article - 2/3 width */}
+             <div className="lg:w-2/3">
               <Prose className="!max-w-none !w-full scroll-animate">
                 <h1>
                   <Balancer>
@@ -169,15 +171,36 @@ export default async function BlogPostPage({
                 )}
               </Prose>
 
-              <Article dangerouslySetInnerHTML={{ __html: post.content.rendered }} className="!max-w-none !w-full scroll-animate" />
+              <BlogContentWithTOC content={post.content.rendered} className="!max-w-none !w-full scroll-animate" />
             </div>
 
-            {/* Related Posts Sidebar - 1/3 width */}
-            <div className="lg:w-1/3">
-              <div className="sticky top-32">
-                <h3 className="text-2xl font-heading text-text font-bold mb-6 scroll-animate">
-                  Related Posts
-                </h3>
+                         {/* Blog Table of Contents Sidebar - 1/3 width */}
+             <div className="lg:w-1/3">
+               <div className="sticky top-24">
+              <BlogTableOfContents
+                title={post.title.rendered}
+                content={post.content.rendered}
+                author={{
+                  id: author.id,
+                  name: author.name,
+                  avatar_url: author.avatar_urls?.['96'],
+                  bio: author.description,
+                  website: author.url
+                }}
+                publishedDate={post.date}
+                category={category.name}
+                tags={[]} // You can add tags here if available
+                showAuthorInfo={true}
+                showReadingTime={true}
+                showShareButtons={true}
+                className="scroll-animate"
+              />
+              
+                             {/* Related Posts Section */}
+               <div className="mt-8 pt-8 border-t border-border/50">
+                 <h3 className="text-2xl font-heading text-text font-bold mb-6 scroll-animate">
+                   Related Posts
+                 </h3>
                 <div className="space-y-6">
                   {relatedPostsWithMedia.map((relatedPost, index) => (
                     <Link
@@ -215,11 +238,12 @@ export default async function BlogPostPage({
                     </Link>
                   ))}
                 </div>
-              </div>
-            </div>
-          </div>
-        </Container>
-      </Section>
-    </ScrollAnimations>
-  );
-}
+                               </div>
+               </div>
+             </div>
+           </div>
+         </Container>
+       </Section>
+     </ScrollAnimations>
+   );
+ }

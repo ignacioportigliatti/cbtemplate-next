@@ -126,6 +126,7 @@ export default async function Page({
 
   const blogContent = (await getHomeContent()).blog;
   const contactContent = (await getContactContent());
+  const themeOptions = (await getThemeOptions());
   
   return (
     <>
@@ -223,7 +224,7 @@ export default async function Page({
       </Section>
       {/* Contact Info */}
       <section className="bg-background-900 py-16 px-4 lg:px-8">
-        <AboutUsContact contactContent={contactContent} />
+        <AboutUsContact contactContent={contactContent} themeOptions={themeOptions} />
       </section>
     </>
   );

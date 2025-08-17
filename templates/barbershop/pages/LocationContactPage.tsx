@@ -6,6 +6,7 @@ import { FaEnvelope, FaFacebook, FaGoogle, FaInstagram, FaLinkedin, FaMapMarker,
 import Location from "@/templates/barbershop/components/homepage/Location";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Container, Section } from "@/components/craft";
+import ContactForm from "@/components/ContactForm";
 
 interface Props {
   locationData: ContactLocation;
@@ -124,6 +125,13 @@ const LocationContactPage = async ({ locationData, contactContent }: Props) => {
               </div>
             </div>
           </div>
+        </Container>
+      </Section>
+      
+      {/* Contact Form Section */}
+      <Section className="bg-background-900 py-16 px-4 lg:px-8">
+        <Container className="max-w-7xl mx-auto">
+          <ContactForm />
         </Container>
       </Section>
     </main>

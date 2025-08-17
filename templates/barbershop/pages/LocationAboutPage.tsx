@@ -3,7 +3,7 @@ import AboutUsGallery from "@/templates/barbershop/components/about/AboutUsGalle
 import AboutUsInfo from "@/templates/barbershop/components/about/AboutUsInfo";
 import AboutUsMission from "@/templates/barbershop/components/about/AboutUsMission";
 import AboutUsValues from "@/templates/barbershop/components/about/AboutUsValues";
-import { AboutUsContent, ContactContent, ContactLocation } from "@/lib/wordpress.d";
+import { AboutUsContent, ContactContent, ContactLocation, ThemeOptions } from "@/lib/wordpress.d";
 import { generateLocationSlug } from "@/lib/utils";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Container, Section } from "@/components/craft";
@@ -13,9 +13,10 @@ interface Props {
   locationData: ContactLocation;
   aboutUsContent: AboutUsContent;
   contactContent: ContactContent;
+  themeOptions?: ThemeOptions;
 }
 
-const LocationAboutPage = async ({ locationData, aboutUsContent, contactContent }: Props) => {
+const LocationAboutPage = async ({ locationData, aboutUsContent, contactContent, themeOptions }: Props) => {
   const locationSlug = generateLocationSlug(locationData.address.city, locationData.address.state);
 
   const breadcrumbItems = [
@@ -49,7 +50,7 @@ const LocationAboutPage = async ({ locationData, aboutUsContent, contactContent 
 
         {/* Contact Info */}
         <section className="bg-background-900 py-16 px-4 lg:px-16">
-          <AboutUsContact contactContent={contactContent} />
+          <AboutUsContact contactContent={contactContent} themeOptions={themeOptions} />
         </section>
       </main>
     </ScrollAnimations>

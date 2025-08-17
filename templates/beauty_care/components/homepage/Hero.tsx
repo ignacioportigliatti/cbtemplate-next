@@ -52,25 +52,46 @@ const Hero = ({ homeContent, themeOptions }: Props) => {
             
             {/* CTA Button */}
             <div className="pt-4 animate-fade-in-up animate-delay-800">
-              <Link
-                href={homeContent.hero.button.link}
-                className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 text-lg font-medium hover:bg-primary/90 transition-all duration-300 ease-in-out font-heading rounded-lg"
-              >
-                {buttonText}
-                <svg 
-                  width="20" 
-                  height="20" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="2" 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round"
+              {ctaType === "chilled_butter_widget" ? (
+                <button
+                  className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 text-lg font-medium hover:bg-primary/90 transition-all duration-300 ease-in-out font-heading rounded-lg cb-widget-btn"
                 >
-                  <path d="M5 12h14"/>
-                  <path d="m12 5 7 7-7 7"/>
-                </svg>
-              </Link>
+                  {buttonText}
+                  <svg 
+                    width="20" 
+                    height="20" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                  >
+                    <path d="M5 12h14"/>
+                    <path d="m12 5 7 7-7 7"/>
+                  </svg>
+                </button>
+              ) : (
+                <Link
+                  href={homeContent.hero.button.link}
+                  className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 text-lg font-medium hover:bg-primary/90 transition-all duration-300 ease-in-out font-heading rounded-lg"
+                >
+                  {buttonText}
+                  <svg 
+                    width="20" 
+                    height="20" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                  >
+                    <path d="M5 12h14"/>
+                    <path d="m12 5 7 7-7 7"/>
+                  </svg>
+                </Link>
+              )}
             </div>
           </div>
         </div>

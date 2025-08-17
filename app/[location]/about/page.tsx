@@ -108,7 +108,7 @@ export default async function LocationAboutPage({ params }: { params: Promise<{ 
         )}
         
         {/* Template Component */}
-        <template.LocationAboutPage locationData={locationData} aboutUsContent={aboutUsContent} contactContent={contactContent} />
+        <template.LocationAboutPage locationData={locationData} aboutUsContent={aboutUsContent} contactContent={contactContent} themeOptions={themeOptions} />
       </>
     );
   } catch (error) {

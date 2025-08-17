@@ -58,12 +58,12 @@ export const CTAHeader = ({ contactContent, themeOptions }: CTAHeaderProps) => {
             <span className="hidden sm:inline">{emailInfo.text}</span>
           </Link>
         ) : (
-          <Link
-            href="/contact"
-            className="bg-accent text-background-900 hover:bg-accent/90 p-1 px-2 rounded transition-colors"
+          <button
+            className="bg-accent text-background-900 hover:bg-accent/90 p-1 px-2 rounded transition-colors cb-widget-btn"
+            onClick={() => console.log('Book Now button clicked - class:', 'cb-widget-btn')}
           >
             Book Now
-          </Link>
+          </button>
         )}
       </div>
     </div>

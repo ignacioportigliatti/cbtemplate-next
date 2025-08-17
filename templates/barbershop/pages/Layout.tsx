@@ -8,6 +8,7 @@ import type { Metadata } from "next";
 import { Nav } from "@/templates/barbershop/components/layout/Nav";
 import { getContactContent, getThemeOptions } from "@/lib/wordpress";
 import { Footer } from "@/templates/barbershop/components/layout/Footer";
+import { ChilledButterScript } from "@/components/ChilledButterScript";
 import React from "react";
 
 const fontSans = FontSans({
@@ -102,6 +103,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </ThemeWrapper>
         </ThemeProvider>
         <Analytics />
+        <ChilledButterScript 
+          scriptTag={themeOptions?.general?.cta_script_tag}
+          ctaType={themeOptions?.general?.cta_type}
+        />
       </body>
     </html>
   );

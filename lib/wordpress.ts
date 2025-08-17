@@ -556,7 +556,7 @@ export async function getThemeOptions(): Promise<ThemeOptions> {
         site_logo: {} as any,
         ctaHeader: true,
         cta_type: "default_form",
-        cta_client_id: ""
+        cta_script_tag: ""
       },
       colors: {
         primary_color: "#007bff",

@@ -7,6 +7,7 @@ import Location from "@/templates/beauty_care/components/homepage/Location";
 import ScrollAnimations from "@/templates/beauty_care/components/layout/ScrollAnimations";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Container, Section } from "@/components/craft";
+import ContactForm from "@/components/ContactForm";
 
 interface Props {
   locationData: ContactLocation;
@@ -35,7 +36,7 @@ const LocationContactPage = async ({ locationData, contactContent }: Props) => {
     <ScrollAnimations>
       <main>
         {/* Contact Info */}
-        <Section className="bg-background-950 py-16 pt-32 px-4 lg:px-8">
+        <Section className="bg-background-950 pb-8 pt-36 px-4 lg:px-8">
           <Container className="max-w-7xl mx-auto px-8 lg:px-0">
             <Breadcrumb items={breadcrumbItems} className="py-4 scroll-animate" />
             
@@ -126,6 +127,13 @@ const LocationContactPage = async ({ locationData, contactContent }: Props) => {
                 </div>
               </div>
             </div>
+          </Container>
+        </Section>
+        
+        {/* Contact Form Section */}
+        <Section className="!bg-background-600 pb-16 px-4 lg:px-8">
+          <Container className="max-w-7xl mx-auto">
+            <ContactForm />
           </Container>
         </Section>
       </main>

@@ -157,12 +157,12 @@ export default async function LocationServiceDetailPage({ params }: { params: Pr
         )}
         
         {/* Template Component */}
-        <template.LocationServiceDetailPage locationData={locationData} serviceData={serviceData} />
+        <template.LocationServiceDetailPage locationData={locationData} serviceData={serviceData} contactContent={contactContent} themeOptions={themeOptions} />
       </>
     );
   } catch (error) {
     console.error('Error in LocationServiceDetailPage:', error);
     // Return template without structured data if there's an error
-    return <template.LocationServiceDetailPage locationData={null} serviceData={null} />;
+    return <template.LocationServiceDetailPage locationData={null} serviceData={null} contactContent={null} themeOptions={null} />;
   }
 } 

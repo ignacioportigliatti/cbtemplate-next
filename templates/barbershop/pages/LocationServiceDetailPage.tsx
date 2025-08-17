@@ -1,18 +1,21 @@
 import { Container, Section } from "@/components/craft";
 import ServiceGallery from "@/templates/barbershop/components/services/ServiceGallery";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
-import { ContactLocation, ServiceItem } from "@/lib/wordpress.d";
+import { ContactLocation, ServiceItem, ContactContent, ThemeOptions } from "@/lib/wordpress.d";
 import { generateLocationSlug } from "@/lib/utils";
 import Image from "next/image";
 import React from "react";
 import ScrollAnimations from "@/templates/barbershop/components/layout/ScrollAnimations";
+import AboutUsContact from "@/templates/barbershop/components/about/AboutUsContact";
 
 interface Props {
   locationData: ContactLocation;
   serviceData: ServiceItem;
+  contactContent: ContactContent;
+  themeOptions?: ThemeOptions;
 }
 
-const LocationServiceDetailPage = async ({ locationData, serviceData }: Props) => {
+const LocationServiceDetailPage = async ({ locationData, serviceData, contactContent, themeOptions }: Props) => {
   const locationSlug = generateLocationSlug(locationData.address.city, locationData.address.state);
 
   const breadcrumbItems = [
@@ -56,6 +59,11 @@ const LocationServiceDetailPage = async ({ locationData, serviceData }: Props) =
           )}
         </Container>
       </Section>
+      
+      {/* Contact Info */}
+      <section className="bg-background-600 py-16 px-4 lg:px-8">
+        <AboutUsContact contactContent={contactContent} themeOptions={themeOptions} />
+      </section>
     </ScrollAnimations>
   );
 };

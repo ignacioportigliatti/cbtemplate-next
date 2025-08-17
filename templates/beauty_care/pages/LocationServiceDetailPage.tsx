@@ -2,17 +2,20 @@ import { Container, Section } from "@/components/craft";
 import ServiceGallery from "@/templates/beauty_care/components/services/ServiceGallery";
 import ScrollAnimations from "@/templates/beauty_care/components/layout/ScrollAnimations";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
-import { ContactLocation, ServiceItem } from "@/lib/wordpress.d";
+import { ContactLocation, ServiceItem, ContactContent, ThemeOptions } from "@/lib/wordpress.d";
 import { generateLocationSlug } from "@/lib/utils";
 import Image from "next/image";
 import React from "react";
+import AboutUsContact from "@/templates/beauty_care/components/about/AboutUsContact";
 
 interface Props {
   locationData: ContactLocation;
   serviceData: ServiceItem;
+  contactContent: ContactContent;
+  themeOptions?: ThemeOptions;
 }
 
-const LocationServiceDetailPage = async ({ locationData, serviceData }: Props) => {
+const LocationServiceDetailPage = async ({ locationData, serviceData, contactContent, themeOptions }: Props) => {
   const locationSlug = generateLocationSlug(locationData.address.city, locationData.address.state);
 
   const breadcrumbItems = [
@@ -24,7 +27,7 @@ const LocationServiceDetailPage = async ({ locationData, serviceData }: Props) =
 
   return (
     <ScrollAnimations>
-      <Section className="pt-24 md:pt-32 bg-background-950">
+      <Section className="pt-36 bg-background-950">
         <Container className="max-w-7xl mx-auto pb-16 px-8 xl:px-0">
           
           <Breadcrumb items={breadcrumbItems} className="py-4 scroll-animate" />
@@ -56,6 +59,11 @@ const LocationServiceDetailPage = async ({ locationData, serviceData }: Props) =
           )}
         </Container>
       </Section>
+      
+      {/* Contact Info */}
+      <section className="bg-background-900 py-16 px-4 lg:px-8">
+        <AboutUsContact contactContent={contactContent} themeOptions={themeOptions} />
+      </section>
     </ScrollAnimations>
   );
 };

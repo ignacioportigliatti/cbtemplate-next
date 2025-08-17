@@ -41,12 +41,20 @@ const Hero = ({ homeContent, themeOptions }: Props) => {
           </p>
           
           {/* CTA Button */}
-          <Link
-            href={homeContent.hero.button.link}
-            className="inline-block bg-transparent border-2 border-border text-border px-8 py-4 text-lg font-medium tracking-wide uppercase hover:bg-border hover:text-background transition-all duration-300 ease-in-out font-heading animate-fade-in-up animate-delay-800"
-          >
-            {buttonText}
-          </Link>
+          {ctaType === "chilled_butter_widget" ? (
+            <button
+              className="inline-block bg-transparent border-2 border-border text-border px-8 py-4 text-lg font-medium tracking-wide uppercase hover:bg-border hover:text-background transition-all duration-300 ease-in-out font-heading animate-fade-in-up animate-delay-800 cb-widget-btn"
+            >
+              {buttonText}
+            </button>
+          ) : (
+            <Link
+              href={homeContent.hero.button.link}
+              className="inline-block bg-transparent border-2 border-border text-border px-8 py-4 text-lg font-medium tracking-wide uppercase hover:bg-border hover:text-background transition-all duration-300 ease-in-out font-heading animate-fade-in-up animate-delay-800"
+            >
+              {buttonText}
+            </Link>
+          )}
         </div>
       </div>
     </div>

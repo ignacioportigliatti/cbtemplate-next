@@ -12,13 +12,11 @@ import {
   FaTwitter,
 } from "react-icons/fa";
 import Link from "next/link";
+import { getContactContent, getThemeOptions } from "@/lib/wordpress";
 
-interface Props {
-  contactContent: ContactContent;
-  themeOptions?: ThemeOptions;
-}
-
-const AboutUsContact = ({ contactContent, themeOptions }: Props) => {
+const AboutUsContact = async () => {
+  const contactContent = await getContactContent();
+  const themeOptions = await getThemeOptions();
   // Determine CTA type and button text
   const ctaType = themeOptions?.general?.cta_type || "default_form";
   const buttonText = ctaType === "chilled_butter_widget" ? "Book Now" : "Get Started";

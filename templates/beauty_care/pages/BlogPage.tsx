@@ -224,7 +224,7 @@ export default async function Page({
       </Section>
       {/* Contact Info */}
       <section className="bg-background-900 py-16 px-4 lg:px-8">
-        <AboutUsContact contactContent={contactContent} themeOptions={themeOptions} />
+        <AboutUsContact />
       </section>
     </>
   );

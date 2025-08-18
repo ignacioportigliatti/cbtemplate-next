@@ -50,7 +50,7 @@ const LocationAboutPage = async ({ locationData, aboutUsContent, contactContent,
 
         {/* Contact Info */}
         <section className="bg-background-900 py-16 px-4 lg:px-16">
-          <AboutUsContact contactContent={contactContent} themeOptions={themeOptions} />
+          <AboutUsContact />
         </section>
       </main>
     </ScrollAnimations>

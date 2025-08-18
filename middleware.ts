@@ -10,6 +10,7 @@ export function middleware(request: NextRequest) {
   // Static routes to exclude from redirection
   const staticRoutes = [
     '/blog',
+    '/pages',
     '/api',
     '/favicon.ico',
     '/robots.txt',
@@ -32,13 +33,13 @@ export function middleware(request: NextRequest) {
   
   // Check if it matches the location-only pattern
   if (locationOnlyPattern.test(pathname)) {
-    // Redirect to home page
+    // For location-like patterns, redirect to home
     const url = request.nextUrl.clone();
     url.pathname = '/';
     return NextResponse.redirect(url);
   }
   
-  // Allow all other requests to continue
+  // Let Next.js handle all other routes
   return NextResponse.next();
 }
 

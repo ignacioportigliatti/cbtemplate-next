@@ -62,7 +62,7 @@ const LocationServiceDetailPage = async ({ locationData, serviceData, contactCon
       
       {/* Contact Info */}
       <section className="bg-background-600 py-16 px-4 lg:px-8">
-        <AboutUsContact contactContent={contactContent} themeOptions={themeOptions} />
+        <AboutUsContact />
       </section>
     </ScrollAnimations>
   );

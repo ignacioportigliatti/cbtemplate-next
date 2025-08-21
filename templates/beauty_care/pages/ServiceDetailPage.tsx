@@ -4,6 +4,7 @@ import { ContactContent, ThemeOptions, ServiceItem } from "@/lib/wordpress.d";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Container, Section } from "@/components/craft";
 import Image from "next/image";
+import ServiceGallery from "@/templates/beauty_care/components/services/ServiceGallery";
 
 interface Props {
   serviceData: ServiceItem;
@@ -25,30 +26,49 @@ const ServiceDetailPage = async ({ serviceData, contactContent, themeOptions }: 
           
           <Breadcrumb items={breadcrumbItems} className="py-4 scroll-animate" />
           
-          <h1 className="text-4xl md:text-5xl font-heading text-primary text-center leading-[0.9] md:text-left font-bold scroll-animate">
-            {serviceData.title}
-          </h1>
-          <p className="text-muted-foreground/80 text-center mt-2 md:text-left w-full scroll-animate">
-            {serviceData.description}
-          </p>
-          
-          {serviceData.featured_image && (
-            <div className="py-4 w-full flex justify-center scroll-animate">
-              <Image
-                src={serviceData.featured_image.url}
-                alt={serviceData.featured_image.alt || serviceData.title}
-                className="max-w-full w-full aspect-video object-cover max-h-[500px] h-auto rounded-lg shadow-lg"
-                width={1000}
-                height={1000}
-              />
+          {/* Main Content with Featured Image Side by Side */}
+          <div className="flex gap-24 mb-12">
+            {/* Content Column */}
+            <div className="w-2/3 scroll-animate">
+              {/* Header Section */}
+              <div className="mb-8">
+                <h1 className="text-4xl md:text-5xl font-heading text-primary text-center leading-[0.9] md:text-left font-bold">
+                  {serviceData.title}
+                </h1>
+                <p className="text-muted-foreground/80 text-center mt-2 md:text-left w-full">
+                  {serviceData.description}
+                </p>
+              </div>
+              
+              {serviceData.service_page_content && (
+                <div
+                  className="prose prose-lg max-w-none"
+                  dangerouslySetInnerHTML={{ __html: serviceData.service_page_content }}
+                />
+              )}
             </div>
-          )}
+            
+            {/* Featured Image Column */}
+            {serviceData.featured_image && (
+              <div className="w-1/3 scroll-animate">
+                <div className="sticky top-24 h-full">
+                  <Image
+                    src={serviceData.featured_image.url}
+                    alt={serviceData.featured_image.alt || serviceData.title}
+                    className="w-full h-full object-cover object-center rounded-lg shadow-lg"
+                    width={400}
+                    height={400}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
           
-          {serviceData.service_page_content && (
-            <div
-              className="prose prose-lg max-w-none mt-8 scroll-animate"
-              dangerouslySetInnerHTML={{ __html: serviceData.service_page_content }}
-            />
+          {/* Gallery Section - Full Width */}
+          {serviceData.gallery && serviceData.gallery.length > 0 && (
+            <div className="scroll-animate">
+              <ServiceGallery service={serviceData} />
+            </div>
           )}
         </Container>
       </Section>

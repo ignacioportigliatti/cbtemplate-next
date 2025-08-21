@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 import { getAllPosts, getContactContent, getServicesContent, getAboutUsContent } from "@/lib/wordpress";
 import { getSiteConfig } from "@/site.config";
-import { generateLocationSlug } from "@/lib/utils";
+import { getStateFullName } from "@/lib/utils";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [posts, contactContent, servicesContent, aboutUsContent, siteConfig] = await Promise.all([
@@ -31,31 +31,32 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const locationUrls: MetadataRoute.Sitemap = [];
   
   allLocations.forEach((location) => {
-    const locationSlug = generateLocationSlug(location.address.city, location.address.state);
+    const stateSlug = getStateFullName(location.address.state);
+    const citySlug = location.address.city.toLowerCase().replace(/\s+/g, '-');
     const isPhysical = location.physical_location === true;
     const basePriority = isPhysical ? 0.9 : 0.5; // Physical locations get higher priority
     
     locationUrls.push(
       {
-        url: `${siteConfig.site_domain}/${locationSlug}`,
+        url: `${siteConfig.site_domain}/locations/${stateSlug}/${citySlug}`,
         lastModified: new Date(),
         changeFrequency: "daily" as const,
         priority: basePriority,
       },
       {
-        url: `${siteConfig.site_domain}/${locationSlug}/services`,
+        url: `${siteConfig.site_domain}/locations/${stateSlug}/${citySlug}/services`,
         lastModified: new Date(),
         changeFrequency: "weekly" as const,
         priority: basePriority - 0.1,
       },
       {
-        url: `${siteConfig.site_domain}/${locationSlug}/about`,
+        url: `${siteConfig.site_domain}/locations/${stateSlug}/${citySlug}/about`,
         lastModified: new Date(),
         changeFrequency: "monthly" as const,
         priority: basePriority - 0.2,
       },
       {
-        url: `${siteConfig.site_domain}/${locationSlug}/contact`,
+        url: `${siteConfig.site_domain}/locations/${stateSlug}/${citySlug}/contact`,
         lastModified: new Date(),
         changeFrequency: "monthly" as const,
         priority: basePriority - 0.2,
@@ -66,7 +67,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     if (servicesContent?.services) {
       servicesContent.services.forEach((service) => {
         locationUrls.push({
-          url: `${siteConfig.site_domain}/${locationSlug}/services/${service.slug}`,
+          url: `${siteConfig.site_domain}/locations/${stateSlug}/${citySlug}/services/${service.slug}`,
           lastModified: new Date(),
           changeFrequency: "monthly" as const,
           priority: basePriority - 0.3,

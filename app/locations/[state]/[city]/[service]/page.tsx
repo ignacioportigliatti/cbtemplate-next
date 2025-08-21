@@ -1,6 +1,6 @@
 import { getActiveTemplate, loadTemplate } from "@/lib/template-resolver";
 import { getContactContent, getServicesContent, getThemeOptions } from "@/lib/wordpress";
-import { generateLocationSlug, findLocationBySlug, getStateAbbreviation } from "@/lib/utils";
+import { generateLocationSlug, findLocationBySlug, getStateAbbreviation, getStateFullName } from "@/lib/utils";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { ServiceSchema, LocalBusinessSchema } from "@/components/StructuredData";
@@ -18,7 +18,7 @@ export async function generateStaticParams() {
   
   // Generate pages for ALL locations (physical and virtual) for SEO
   contactContent.locations.forEach(location => {
-    const stateSlug = getStateAbbreviation(location.address.state);
+    const stateSlug = getStateFullName(location.address.state);
     const citySlug = location.address.city.toLowerCase().replace(/\s+/g, '-');
     
     servicesContent.services.forEach(service => {
@@ -44,8 +44,7 @@ export async function generateMetadata({ params }: { params: Promise<{ state: st
     ]);
     
     // Create the location slug from state and city parameters
-    const stateAbbr = getStateAbbreviation(state);
-    const locationSlug = `${city.replace(/-/g, ' ')}-${stateAbbr}`;
+    const locationSlug = `${state}/${city}`;
     
     // Find location using the existing utility function
     const locationData = findLocationBySlug(contactContent.locations, locationSlug);
@@ -106,8 +105,7 @@ export default async function LocationServiceDetailPage({ params }: { params: Pr
     ]);
     
     // Create the location slug from state and city parameters
-    const stateAbbr = getStateAbbreviation(state);
-    const locationSlug = `${city.replace(/-/g, ' ')}-${stateAbbr}`;
+    const locationSlug = `${state}/${city}`;
     
     // Find location using the existing utility function
     const locationData = findLocationBySlug(contactContent.locations, locationSlug);

@@ -56,7 +56,7 @@ const ServiceGallery = ({ service }: Props) => {
             >
                 <CarouselContent className="-ml-2 md:-ml-4">
                     {service.gallery.map((image, index) => (
-                        <CarouselItem key={image.id} className="pl-2 md:pl-4 basis-full md:basis-1/3">
+                        <CarouselItem key={image.id} className="pl-2 md:pl-4 basis-full md:basis-1/4">
                             <div className="p-1 scroll-animate" style={{ animationDelay: `${(index + 1) * 0.1}s` }}>
                                 <Image 
                                     src={image.url} 

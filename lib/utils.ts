@@ -290,7 +290,8 @@ const STATE_ABBREVIATIONS: { [key: string]: string } = {
 
 // Location utilities
 export function generateLocationSlug(city: string, state: string): string {
-  return `${city.toLowerCase().replace(/\s+/g, '-')}-${state.toLowerCase()}`;
+  const stateFullName = getStateFullName(state);
+  return `${stateFullName}/${city.toLowerCase().replace(/\s+/g, '-')}`;
 }
 
 export function getStateAbbreviation(stateName: string): string {

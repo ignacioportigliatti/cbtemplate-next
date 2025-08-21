@@ -1,10 +1,10 @@
 import { HomePageContent, ServicesContent, ContactContent, ThemeOptions } from "@/lib/wordpress.d";
-import { generateLocationSlug, getMainPhysicalLocation } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
 import Balancer from "react-wrap-balancer";
 import { GiHairStrands } from "react-icons/gi";
 import { FaArrowRight } from "react-icons/fa";
+import { getMainPhysicalLocation, getStateFullName } from "@/lib/utils";
 
 interface Props {
   homeContent: HomePageContent;
@@ -18,15 +18,12 @@ const PopularServices = (props: Props) => {
 
   // Get main location (first location) and generate slug
   const mainLocation = getMainPhysicalLocation(contactContent.locations || []);
-  const locationSlug = mainLocation 
-    ? generateLocationSlug(mainLocation.address.city, mainLocation.address.state)
-    : '';
 
-  // Generate the correct href for services page with location
-  const servicesHref = locationSlug ? `/${locationSlug}/services` : homeContent.popular_services.button.link;
+  // Generate the correct href for services page (singular)
+  const servicesHref = "/services";
 
-  // Generate the correct href for contact page with location
-  const contactHref = locationSlug ? `/${locationSlug}/contact` : "/contact";
+  // Generate the correct href for contact page (singular)
+  const contactHref = "/contact";
 
   // Determine CTA button text based on theme options
   const ctaType = themeOptions?.general?.cta_type || "default_form";
@@ -55,10 +52,10 @@ const PopularServices = (props: Props) => {
                 {homeContent.popular_services.button.label}
                 <FaArrowRight className="w-4 h-4 -mt-1 ml-2" />
               </Link>
-                             {ctaType === "chilled_butter_widget" ? (
+                          {ctaType === "chilled_butter_widget" ? (
                  <button
                    className="bg-primary text-primary-foreground font-heading px-8 py-3 font-medium tracking-wide uppercase hover:bg-primary/90 transition-all duration-300 ease-in-out inline-flex items-center justify-center cb-widget-btn"
-                 >
+                   >
                    {ctaButtonText}
                  </button>
               ) : (
@@ -80,30 +77,30 @@ const PopularServices = (props: Props) => {
             .map((service, index) => {
               // Generate service page URL
               const serviceSlug = service.slug || service.title.toLowerCase().replace(/\s+/g, '-');
-              const serviceHref = locationSlug ? `/${locationSlug}/services/${serviceSlug}` : `/services/${serviceSlug}`;
+              const serviceHref = `/services/${serviceSlug}`;
               
               return (
                 <Link key={index} href={serviceHref} className="flex items-start space-x-2 group scroll-animate cursor-pointer" style={{ animationDelay: `${(index + 1) * 0.1}s` }}>
-                <div className="flex items-center justify-center p-2 rounded-full ">
-                <GiHairStrands className="flex-shrink-0 group-hover:scale-105 group-hover:text-primary transition-all ease-in-out duration-200 text-text w-6 h-6" />
-                </div>
-                <div className="flex-1">
-                  {index < 2 ? (
-                    <h3 className="text-2xl font-bold text-text group-hover:text-primary transition-colors duration-200 font-heading">
-                      {service.title}
-                    </h3>
-                  ) : (
-                    <div className="text-2xl font-bold text-text group-hover:text-primary transition-colors duration-200 font-heading">
-                      {service.title}
-                    </div>
-                  )}
-                  <p className="text-text mt leading-relaxed font-sans text-sm">
-                    {service.description}
-                  </p>
-                </div>
-              </Link>
-            );
-            })}
+                 <div className="flex items-center justify-center p-2 rounded-full ">
+                 <GiHairStrands className="flex-shrink-0 group-hover:scale-105 group-hover:text-primary transition-all ease-in-out duration-200 text-text w-6 h-6" />
+                 </div>
+                 <div className="flex-1">
+                   {index < 2 ? (
+                     <h3 className="text-2xl font-bold text-text group-hover:text-primary transition-colors duration-200 font-heading">
+                       {service.title}
+                     </h3>
+                   ) : (
+                     <div className="text-2xl font-bold text-text group-hover:text-primary transition-colors duration-200 font-heading">
+                       {service.title}
+                     </div>
+                   )}
+                   <p className="text-text mt leading-relaxed font-sans text-sm">
+                     {service.description}
+                   </p>
+                 </div>
+                </Link>
+              );
+              })}
           
         </div>
       </div>

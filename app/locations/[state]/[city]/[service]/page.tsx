@@ -1,6 +1,6 @@
 import { getActiveTemplate, loadTemplate } from "@/lib/template-resolver";
 import { getContactContent, getServicesContent, getThemeOptions } from "@/lib/wordpress";
-import { generateLocationSlug, findLocationBySlug } from "@/lib/utils";
+import { generateLocationSlug, findLocationBySlug, getStateAbbreviation } from "@/lib/utils";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { ServiceSchema, LocalBusinessSchema } from "@/components/StructuredData";
@@ -14,15 +14,17 @@ export async function generateStaticParams() {
     getServicesContent()
   ]);
   
-  const params: Array<{ location: string; service: string }> = [];
+  const params: Array<{ state: string; city: string; service: string }> = [];
   
   // Generate pages for ALL locations (physical and virtual) for SEO
   contactContent.locations.forEach(location => {
-    const locationSlug = generateLocationSlug(location.address.city, location.address.state);
+    const stateSlug = getStateAbbreviation(location.address.state);
+    const citySlug = location.address.city.toLowerCase().replace(/\s+/g, '-');
     
     servicesContent.services.forEach(service => {
       params.push({
-        location: locationSlug,
+        state: stateSlug,
+        city: citySlug,
         service: service.slug
       });
     });
@@ -31,20 +33,25 @@ export async function generateStaticParams() {
   return params;
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ location: string; service: string }> }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ state: string; city: string; service: string }> }): Promise<Metadata> {
   try {
-    const { location, service } = await params;
-    const [contactContent, servicesContent] = await Promise.all([
+    const { state, city, service } = await params;
+    const [contactContent, servicesContent, themeOptions, siteConfig] = await Promise.all([
       getContactContent(),
-      getServicesContent()
+      getServicesContent(),
+      getThemeOptions(),
+      getSiteConfig()
     ]);
     
-    const locationData = findLocationBySlug(contactContent.locations, location);
+    // Create the location slug from state and city parameters
+    const stateAbbr = getStateAbbreviation(state);
+    const locationSlug = `${city.replace(/-/g, ' ')}-${stateAbbr}`;
+    
+    // Find location using the existing utility function
+    const locationData = findLocationBySlug(contactContent.locations, locationSlug);
+    
     const serviceData = servicesContent.services.find((s: ServiceItem) => s.slug === service);
-    const { getSiteConfig } = await import("@/site.config");
-    const siteConfig = await getSiteConfig();
-    const themeOptions = await getThemeOptions();
-
+    
     if (!locationData || !serviceData) {
       return {
         title: "Service not found",
@@ -54,51 +61,39 @@ export async function generateMetadata({ params }: { params: Promise<{ location:
     }
 
     const title = siteConfig.site_name;
-    const description = serviceData.description;
+    const description = `${serviceData.title} in ${locationData.address.city}, ${locationData.address.state}. ${serviceData.description}`;
     const logoUrl = themeOptions.general.site_logo?.url;
 
     return {
-      title: `${serviceData.title} in ${locationData.address.city} | ${title}`,
-      description: description,
-      metadataBase: new URL(siteConfig.site_domain),
-      alternates: {
-        canonical: `/${location}/services/${service}`,
-      },
+      title: `${serviceData.title} in ${locationData.address.city}, ${locationData.address.state} | ${title}`,
+      description,
       openGraph: {
-        title: `${serviceData.title} in ${locationData.address.city} | ${title}`,
-        description: description,
+        title: `${serviceData.title} in ${locationData.address.city}, ${locationData.address.state} | ${title}`,
+        description,
         type: "website",
-        url: `${siteConfig.site_domain}/${location}/services/${service}`,
-        siteName: title,
-        images: [
-          {
-            url: `${siteConfig.site_domain}/api/og?title=${encodeURIComponent(`${serviceData.title} in ${locationData.address.city} | ${title}`)}&description=${encodeURIComponent(description)}${logoUrl ? `&logo=${encodeURIComponent(logoUrl)}` : ''}`,
-            width: 1200,
-            height: 630,
-            alt: title,
-          },
-        ],
+        url: `${siteConfig.site_domain}/locations/${state}/${city}/${service}`,
+        images: serviceData.featured_image?.url ? [{ url: serviceData.featured_image.url }] : logoUrl ? [{ url: logoUrl }] : [],
       },
       twitter: {
         card: "summary_large_image",
-        title: `${serviceData.title} in ${locationData.address.city} | ${title}`,
-        description: description,
-        images: [`${siteConfig.site_domain}/api/og?title=${encodeURIComponent(`${serviceData.title} in ${locationData.address.city} | ${title}`)}&description=${encodeURIComponent(description)}${logoUrl ? `&logo=${encodeURIComponent(logoUrl)}` : ''}`],
+        title: `${serviceData.title} in ${locationData.address.city}, ${locationData.address.state} | ${title}`,
+        description,
+        images: serviceData.featured_image?.url ? [serviceData.featured_image.url] : logoUrl ? [logoUrl] : [],
       },
+      metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
     };
   } catch (error) {
-    console.error("Error generating metadata:", error);
-    // Fallback metadata
+    console.error('Error generating metadata for location service page:', error);
     return {
       title: "Service",
-      description: "Service details",
+      description: "Professional service details",
       metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
     };
   }
 }
 
-export default async function LocationServiceDetailPage({ params }: { params: Promise<{ location: string; service: string }> }) {
-  const { location, service } = await params;
+export default async function LocationServiceDetailPage({ params }: { params: Promise<{ state: string; city: string; service: string }> }) {
+  const { state, city, service } = await params;
   const templateId = await getActiveTemplate();
   const template = await loadTemplate(templateId);
   
@@ -110,7 +105,13 @@ export default async function LocationServiceDetailPage({ params }: { params: Pr
       getSiteConfig()
     ]);
     
-    const locationData = findLocationBySlug(contactContent.locations, location);
+    // Create the location slug from state and city parameters
+    const stateAbbr = getStateAbbreviation(state);
+    const locationSlug = `${city.replace(/-/g, ' ')}-${stateAbbr}`;
+    
+    // Find location using the existing utility function
+    const locationData = findLocationBySlug(contactContent.locations, locationSlug);
+    
     const serviceData = servicesContent.services.find((s: ServiceItem) => s.slug === service);
     
     if (!locationData || !serviceData) {
@@ -166,4 +167,4 @@ export default async function LocationServiceDetailPage({ params }: { params: Pr
     // Return template without structured data if there's an error
     return <template.LocationServiceDetailPage locationData={null} serviceData={null} contactContent={null} themeOptions={null} />;
   }
-} 
+}

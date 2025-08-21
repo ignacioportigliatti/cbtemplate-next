@@ -3,7 +3,7 @@ import ServiceGallery from "@/templates/beauty_care/components/services/ServiceG
 import ScrollAnimations from "@/templates/beauty_care/components/layout/ScrollAnimations";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { ContactLocation, ServiceItem, ContactContent, ThemeOptions } from "@/lib/wordpress.d";
-import { generateLocationSlug } from "@/lib/utils";
+import { generateLocationSlug, getStateFullName } from "@/lib/utils";
 import Image from "next/image";
 import React from "react";
 import AboutUsContact from "@/templates/beauty_care/components/about/AboutUsContact";
@@ -16,12 +16,25 @@ interface Props {
 }
 
 const LocationServiceDetailPage = async ({ locationData, serviceData, contactContent, themeOptions }: Props) => {
+  // Early return if locationData or serviceData is null
+  if (!locationData || !serviceData) {
+    return (
+      <main className="space-y-6">
+        <h1>Service not found</h1>
+        <p>The requested service could not be found.</p>
+      </main>
+    );
+  }
+
   const locationSlug = generateLocationSlug(locationData.address.city, locationData.address.state);
 
+  const stateSlug = getStateFullName(locationData.address.state);
+  const citySlug = locationData.address.city.toLowerCase().replace(/\s+/g, '-');
+  
   const breadcrumbItems = [
     { label: "Home", href: "/" },
-    { label: locationData.address.city, href: `/${locationSlug}` },
-    { label: "Services", href: `/${locationSlug}/services` },
+    { label: locationData.address.state, href: `/locations/${stateSlug}` },
+    { label: locationData.address.city, href: `/locations/${stateSlug}/${citySlug}` },
     { label: serviceData.title }
   ];
 

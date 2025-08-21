@@ -2,7 +2,7 @@ import AboutUsContact from "@/templates/beauty_care/components/about/AboutUsCont
 import ServicesGrid from "@/templates/beauty_care/components/services/ServicesGrid";
 import ScrollAnimations from "@/templates/beauty_care/components/layout/ScrollAnimations";
 import { ServicesContent, ContactContent, ContactLocation, ThemeOptions } from "@/lib/wordpress.d";
-import { generateLocationSlug } from "@/lib/utils";
+import { generateLocationSlug, getStateFullName } from "@/lib/utils";
 import React from "react";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Container, Section } from "@/components/craft";
@@ -18,11 +18,13 @@ interface Props {
 }
 
 const LocationServicesPage = async ({ locationData, servicesContent, contactContent, themeOptions }: Props) => {
-  const locationSlug = generateLocationSlug(locationData.address.city, locationData.address.state);
+  const stateSlug = getStateFullName(locationData.address.state);
+  const citySlug = locationData.address.city.toLowerCase().replace(/\s+/g, '-');
 
   const breadcrumbItems = [
     { label: "Home", href: "/" },
-    { label: locationData.address.city, href: `/${locationSlug}` },
+    { label: locationData.address.state, href: `#` },
+    { label: locationData.address.city, href: `/locations/${stateSlug}/${citySlug}` },
     { label: "Services" }
   ];
 
@@ -41,7 +43,7 @@ const LocationServicesPage = async ({ locationData, servicesContent, contactCont
         <Section className="pt-32 md:pt-32 bg-background-950 pb-16">
           <Container className="max-w-7xl mx-auto xl:px-0">
             <Breadcrumb items={breadcrumbItems} className="py-4 scroll-animate" />
-            <LocationServicesGrid servicesContent={servicesContent} locationSlug={locationSlug} />
+            <LocationServicesGrid servicesContent={servicesContent} locationData={locationData} />
           </Container>
         </Section>
         
@@ -55,7 +57,7 @@ const LocationServicesPage = async ({ locationData, servicesContent, contactCont
 };
 
 // Location Services Grid Component
-const LocationServicesGrid = ({ servicesContent, locationSlug }: { servicesContent: ServicesContent; locationSlug: string }) => {
+const LocationServicesGrid = ({ servicesContent, locationData }: { servicesContent: ServicesContent; locationData: ContactLocation }) => {
   return (
     <div className="max-w-7xl mx-auto px-8 xl:px-0">
       <div className="space-y-2 scroll-animate">
@@ -73,7 +75,7 @@ const LocationServicesGrid = ({ servicesContent, locationSlug }: { servicesConte
         {servicesContent.services.map((service, index) => (
           <Link
             key={service.title}
-            href={`/${locationSlug}/services/${service.slug}`}
+            href={`/locations/${getStateFullName(locationData.address.state)}/${locationData.address.city.toLowerCase().replace(/\s+/g, '-')}/${service.slug}`}
             className="bg-background-900 rounded-lg flex text-center items-center md:text-left flex-col-reverse gap-4 md:gap-6 md:flex-row p-6 border border-border/50 hover:border-border/80 transition-all 
             duration-300 hover:shadow-lg hover:bg-background-600 ease-in-out scroll-animate"
             style={{ animationDelay: `${(index + 1) * 0.025}s` }}

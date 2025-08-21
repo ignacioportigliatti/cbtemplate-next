@@ -4,7 +4,7 @@ import React from "react";
 import Balancer from "react-wrap-balancer";
 import HeroCarousel from "./HeroCarousel";
 import Image from "next/image";
-import { getMainPhysicalLocation, generateLocationSlug } from "@/lib/utils";
+import { getMainPhysicalLocation, getStateFullName } from "@/lib/utils";
 
 interface Props {
   homeContent: HomePageContent;
@@ -21,10 +21,7 @@ const Hero = ({ homeContent, themeOptions, contactContent }: Props) => {
 
   // Get main location and generate contact URL
   const mainLocation = getMainPhysicalLocation(contactContent?.locations || []);
-  const locationSlug = mainLocation 
-    ? generateLocationSlug(mainLocation.address.city, mainLocation.address.state)
-    : '';
-  const contactHref = locationSlug ? `/${locationSlug}/contact` : homeContent.hero.button.link;
+  const contactHref = "/contact"; // Use singular contact page
 
   return (
     <div className="relative min-h-screen bg-background">

@@ -11,6 +11,10 @@ export function middleware(request: NextRequest) {
   const staticRoutes = [
     '/blog',
     '/pages',
+    '/about',
+    '/contact',
+    '/services',
+    '/locations',
     '/api',
     '/favicon.ico',
     '/robots.txt',

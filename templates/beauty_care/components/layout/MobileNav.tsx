@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 // Utility Imports
 import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { generateLocationSlug, getMainPhysicalLocation } from "@/lib/utils";
+import { getMainPhysicalLocation, getStateFullName } from "@/lib/utils";
 
 // Component Imports
 import { Button } from "@/components/ui/button";
@@ -33,28 +33,41 @@ interface MobileNavProps {
 }
 
 export function MobileNav({ themeOptions, contactContent }: MobileNavProps) {
+  const [mounted, setMounted] = React.useState(false);
   const [open, setOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Get the main location (index 0)
   const mainLocation = getMainPhysicalLocation(contactContent.locations || []);
   
-  // Generate location-based menu items using only the main location
-  const generateLocationMenu = () => {
-    if (!mainLocation) {
-      return mainMenu; // Fallback to original menu
-    }
-
-    const locationSlug = generateLocationSlug(mainLocation.address.city, mainLocation.address.state);
+  // Generate menu items using the new structure
+  const generateMenu = () => {
     return {
       home: "/",
-      about: `/${locationSlug}/about`,
-      services: `/${locationSlug}/services`,
-      contact: `/${locationSlug}/contact`,
+      about: "/about",
+      services: "/services",
+      contact: "/contact",
       blog: "/blog",
     };
   };
 
-  const locationMenu = generateLocationMenu();
+  const menu = generateMenu();
+
+  // Don't render the sheet until mounted to avoid hydration issues
+  if (!mounted) {
+    return (
+      <Button
+        variant="ghost"
+        className="px-0 border w-10 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+      >
+        <Menu />
+        <span className="sr-only">Toggle Menu</span>
+      </Button>
+    );
+  }
 
   return (
     <Sheet
@@ -97,7 +110,7 @@ export function MobileNav({ themeOptions, contactContent }: MobileNavProps) {
         <ScrollArea className="my-4 h-[calc(100vh-20rem)] pb-10 pl-2">
           <div className="flex flex-col space-y-1">
             {/* Direct links for all menu items */}
-            {Object.entries(locationMenu).map(([key, href]) => (
+            {Object.entries(menu).map(([key, href]) => (
               <MobileLink
                 key={key}
                 href={href}

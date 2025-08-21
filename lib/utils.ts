@@ -234,9 +234,77 @@ ${rootVars}
   `;
 }
 
+// State abbreviation mapping
+const STATE_ABBREVIATIONS: { [key: string]: string } = {
+  'alabama': 'al',
+  'alaska': 'ak',
+  'arizona': 'az',
+  'arkansas': 'ar',
+  'california': 'ca',
+  'colorado': 'co',
+  'connecticut': 'ct',
+  'delaware': 'de',
+  'florida': 'fl',
+  'georgia': 'ga',
+  'hawaii': 'hi',
+  'idaho': 'id',
+  'illinois': 'il',
+  'indiana': 'in',
+  'iowa': 'ia',
+  'kansas': 'ks',
+  'kentucky': 'ky',
+  'louisiana': 'la',
+  'maine': 'me',
+  'maryland': 'md',
+  'massachusetts': 'ma',
+  'michigan': 'mi',
+  'minnesota': 'mn',
+  'mississippi': 'ms',
+  'missouri': 'mo',
+  'montana': 'mt',
+  'nebraska': 'ne',
+  'nevada': 'nv',
+  'new hampshire': 'nh',
+  'new jersey': 'nj',
+  'new mexico': 'nm',
+  'new york': 'ny',
+  'north carolina': 'nc',
+  'north dakota': 'nd',
+  'ohio': 'oh',
+  'oklahoma': 'ok',
+  'oregon': 'or',
+  'pennsylvania': 'pa',
+  'rhode island': 'ri',
+  'south carolina': 'sc',
+  'south dakota': 'sd',
+  'tennessee': 'tn',
+  'texas': 'tx',
+  'utah': 'ut',
+  'vermont': 'vt',
+  'virginia': 'va',
+  'washington': 'wa',
+  'west virginia': 'wv',
+  'wisconsin': 'wi',
+  'wyoming': 'wy'
+};
+
 // Location utilities
 export function generateLocationSlug(city: string, state: string): string {
   return `${city.toLowerCase().replace(/\s+/g, '-')}-${state.toLowerCase()}`;
+}
+
+export function getStateAbbreviation(stateName: string): string {
+  const normalizedState = stateName.toLowerCase().trim();
+  return STATE_ABBREVIATIONS[normalizedState] || stateName.toLowerCase();
+}
+
+export function getStateFullName(stateAbbr: string): string {
+  const normalizedAbbr = stateAbbr.toLowerCase().trim();
+  // Find the full name by looking for the abbreviation in the values
+  const fullName = Object.keys(STATE_ABBREVIATIONS).find(
+    key => STATE_ABBREVIATIONS[key] === normalizedAbbr
+  );
+  return fullName || stateAbbr.toLowerCase();
 }
 
 export function parseLocationSlug(locationSlug: string): { city: string; state: string } | null {

@@ -26,13 +26,6 @@ const AboutUsContact = async () => {
   // Use all physical locations
   const physicalLocations = getPhysicalLocations(contactContent.locations || []);
   
-  // Get main location and generate contact URL
-  const mainLocation = getMainPhysicalLocation(contactContent.locations || []);
-  const locationSlug = mainLocation 
-    ? generateLocationSlug(mainLocation.address.city, mainLocation.address.state)
-    : '';
-  const contactHref = locationSlug ? `/${locationSlug}/contact` : "/contact";
-  
   if (physicalLocations.length === 0) {
     return (
       <div className="max-w-7xl mx-auto px-8 flex flex-col items-center md:items-start lg:px-0">
@@ -152,7 +145,7 @@ const AboutUsContact = async () => {
                   </button>
                 ) : (
                   <Link
-                    href={contactHref}
+                    href="/contact"
                     className="w-full bg-primary text-primary-foreground font-heading px-6 py-3 font-medium tracking-wide  hover:bg-primary/90 transition-all duration-300 ease-in-out rounded-lg inline-block text-center"
                   >
                     {buttonText}

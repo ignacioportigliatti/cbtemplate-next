@@ -9,34 +9,10 @@ import Image from "next/image";
 import { useScrollPosition } from "@/lib/hooks/useScrollPosition";
 import { ContactContent, ThemeOptions } from "@/lib/wordpress.d";
 import { siteConfig } from "@/site.config";
-import { Button } from "@/components/ui/button";
-import { mainMenu } from "@/templates/beauty_care/menu.config";
-import { generateLocationSlug, getMainPhysicalLocation } from "@/lib/utils";
 
 export const Nav = ({ className, children, id, themeOptions, contactContent }: NavProps) => {
   const { isScrolled } = useScrollPosition();
   const showCTAHeader = themeOptions?.general?.ctaHeader !== false; // Default to true
-
-  // Get the main physical location
-  const mainLocation = getMainPhysicalLocation(contactContent?.locations || []);
-  
-  // Generate location-based menu items using only the main location
-  const generateLocationMenu = () => {
-    if (!mainLocation) {
-      return mainMenu; // Fallback to original menu
-    }
-
-    const locationSlug = generateLocationSlug(mainLocation.address.city, mainLocation.address.state);
-    return {
-      home: "/",
-      about: `/${locationSlug}/about`,
-      services: `/${locationSlug}/services`,
-      contact: `/${locationSlug}/contact`,
-      blog: "/blog",
-    };
-  };
-
-  const locationMenu = generateLocationMenu();
 
   return (
     <>

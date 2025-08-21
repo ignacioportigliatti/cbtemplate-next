@@ -3,12 +3,15 @@ import Link from 'next/link';
 import React from 'react'
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
+import { getStateFullName } from '@/lib/utils';
 
 interface Props {
     servicesContent: ServicesContent;
+    locationSlug?: string;
+    locationData?: any; // Add locationData prop for better URL generation
 }
 
-const ServicesGrid = ({servicesContent} : Props) => {
+const ServicesGrid = ({servicesContent, locationData} : Props) => {
     return (
         <div className="max-w-7xl mx-auto px-8 xl:px-0">
             <div className="space-y-2">
@@ -32,8 +35,8 @@ const ServicesGrid = ({servicesContent} : Props) => {
                 {servicesContent.services.map((service) => (
                 <Link
                   key={service.title}
-                  href={`/services/${service.slug}`}
-                  className="bg-background-900 rounded-lg flex text-center items-center md:text-left flex-col-reverse gap-4 md:gap-6 md:flex-row p-6 border border-border/50 hover:border-border/80 transition-all 
+                  href={locationData ? `/locations/${getStateFullName(locationData.address.state)}/${locationData.address.city.toLowerCase().replace(/\s+/g, '-')}/${service.slug}` : `/services/${service.slug}`}
+                  className="!bg-transparent rounded-lg flex text-center items-center md:text-left flex-col-reverse gap-4 md:gap-6 md:flex-row p-6 border border-border/50 hover:border-border/80 transition-all 
                   duration-300 hover:shadow-lg hover:bg-background-600 ease-in-out"
                 >
                   <div className="flex flex-col h-full gap-4 xl:pr-8 md:justify-between items-center md:items-start">

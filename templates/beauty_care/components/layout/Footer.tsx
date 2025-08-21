@@ -3,7 +3,7 @@ import { Container, Section } from "@/components/craft";
 import Link from "next/link";
 import { contentMenu, mainMenu } from "@/templates/beauty_care/menu.config";
 import { ContactContent, ThemeOptions } from "@/lib/wordpress.d";
-import { generateLocationSlug, getMainPhysicalLocation } from "@/lib/utils";
+import { getMainPhysicalLocation, getStateFullName } from "@/lib/utils";
 import { 
   FaEnvelope, 
   FaFacebook, 
@@ -27,23 +27,18 @@ export const Footer = ({ themeOptions, contactContent }: FooterProps) => {
   // Get the main location (index 0)
   const mainLocation = getMainPhysicalLocation(contactContent.locations || []);
   
-  // Generate location-based menu items using only the main location
-  const generateLocationMenu = () => {
-    if (!mainLocation) {
-      return mainMenu; // Fallback to original menu
-    }
-
-    const locationSlug = generateLocationSlug(mainLocation.address.city, mainLocation.address.state);
+  // Generate menu items using the new structure
+  const generateMenu = () => {
     return {
       home: "/",
-      about: `/${locationSlug}/about`,
-      services: `/${locationSlug}/services`,
-      contact: `/${locationSlug}/contact`,
+      about: "/about",
+      services: "/services",
+      contact: "/contact",
       blog: "/blog",
     };
   };
 
-  const locationMenu = generateLocationMenu();
+  const menu = generateMenu();
 
   // Generate Google Maps URL for address
   const generateGoogleMapsUrl = () => {
@@ -209,7 +204,7 @@ export const Footer = ({ themeOptions, contactContent }: FooterProps) => {
              <div className="lg:col-span-1">
               <h5 className="font-medium text-base text-text mb-4 font-heading">Website</h5>
               <div className="space-y-2">
-                {Object.entries(locationMenu).map(([key, href]) => (
+                {Object.entries(menu).map(([key, href]) => (
                   <Link
                     key={href}
                     href={href}
@@ -218,6 +213,16 @@ export const Footer = ({ themeOptions, contactContent }: FooterProps) => {
                     {key.charAt(0).toUpperCase() + key.slice(1)}
                   </Link>
                 ))}
+                
+                {/* Location-specific link if main location exists */}
+                {mainLocation && (
+                  <Link
+                    href={`/locations/${getStateFullName(mainLocation.address.state)}/${mainLocation.address.city.toLowerCase().replace(/\s+/g, '-')}`}
+                    className="block text-muted-foreground/70 hover:text-primary transition-colors text-sm"
+                  >
+                    {mainLocation.address.city}, {mainLocation.address.state}
+                  </Link>
+                )}
               </div>
             </div>
 

@@ -24,3 +24,12 @@ export { default as LocationAboutPage } from './pages/LocationAboutPage';
 
 // Location Contact
 export { default as LocationContactPage } from './pages/LocationContactPage';
+
+// Singular Pages
+export { default as AboutPage } from './pages/AboutPage';
+export { default as ContactPage } from './pages/ContactPage';
+export { default as ServicesPage } from './pages/ServicesPage';
+export { default as ServiceDetailPage } from './pages/ServiceDetailPage';
+
+// Location Hub Pages
+export { default as LocationHubPage } from './pages/LocationHubPage';

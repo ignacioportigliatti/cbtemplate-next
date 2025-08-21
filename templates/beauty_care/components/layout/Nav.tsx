@@ -11,14 +11,14 @@ import { ContactContent, ThemeOptions } from "@/lib/wordpress.d";
 import { siteConfig } from "@/site.config";
 import { Button } from "@/components/ui/button";
 import { mainMenu } from "@/templates/beauty_care/menu.config";
-import { generateLocationSlug } from "@/lib/utils";
+import { generateLocationSlug, getMainPhysicalLocation } from "@/lib/utils";
 
 export const Nav = ({ className, children, id, themeOptions, contactContent }: NavProps) => {
   const { isScrolled } = useScrollPosition();
   const showCTAHeader = themeOptions?.general?.ctaHeader !== false; // Default to true
 
-  // Get the main location (index 0)
-  const mainLocation = contactContent?.locations?.[0];
+  // Get the main physical location
+  const mainLocation = getMainPhysicalLocation(contactContent?.locations || []);
   
   // Generate location-based menu items using only the main location
   const generateLocationMenu = () => {

@@ -1,4 +1,4 @@
-import { cn, convertTo12HourFormat } from "@/lib/utils";
+import { cn, convertTo12HourFormat, getPhysicalLocations } from "@/lib/utils";
 import { ContactContent } from "@/lib/wordpress.d";
 import Link from "next/link";
 import React from "react";
@@ -67,10 +67,10 @@ const formatBusinessHoursCalendar = (timetable: any) => {
 };
 
 export const Location = ({ contactContent, mapHeight = "100%" }: Props) => {
-  // Use the first location as default
-  const primaryLocation = contactContent.locations?.[0];
+  // Use all physical locations
+  const physicalLocations = getPhysicalLocations(contactContent.locations || []);
   
-  if (!primaryLocation) {
+  if (physicalLocations.length === 0) {
     return (
       <div className="space-y-4 flex flex-col justify-start h-full">
         <div className="w-full h-64 overflow-hidden bg-gray-200 flex items-center justify-center" style={{ height: mapHeight }}>
@@ -80,20 +80,21 @@ export const Location = ({ contactContent, mapHeight = "100%" }: Props) => {
     );
   }
 
-  // Use dynamic timetable if available, otherwise fallback to hardcoded hours
-  const businessHours = formatBusinessHoursCalendar(primaryLocation.timetable);
+  // Use first physical location for map and hours (or combine multiple if needed)
+  const mainLocation = physicalLocations[0];
+  const businessHours = formatBusinessHoursCalendar(mainLocation.timetable);
   
   // Generate Google Maps URL with business name + address for better SEO
   const generateMapUrl = () => {
     // Try with business name + address first
-    const businessNameAddress = `${primaryLocation.name} ${primaryLocation.address.street}, ${primaryLocation.address.city}, ${primaryLocation.address.state} ${primaryLocation.address.zip_code}`;
+    const businessNameAddress = `${mainLocation.name} ${mainLocation.address.street}, ${mainLocation.address.city}, ${mainLocation.address.state} ${mainLocation.address.zip_code}`;
     
     // Fallback to address only if business name is not available
-    const addressOnly = primaryLocation.address.full_address || 
-      `${primaryLocation.address.street}, ${primaryLocation.address.city}, ${primaryLocation.address.state} ${primaryLocation.address.zip_code}`;
+    const addressOnly = mainLocation.address.full_address || 
+      `${mainLocation.address.street}, ${mainLocation.address.city}, ${mainLocation.address.state} ${mainLocation.address.zip_code}`;
     
     // Use business name + address if name exists, otherwise fallback to address only
-    const searchQuery = primaryLocation.name ? businessNameAddress : addressOnly;
+    const searchQuery = mainLocation.name ? businessNameAddress : addressOnly;
 
     return `https://maps.google.com/maps?q=${encodeURIComponent(searchQuery)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
   };

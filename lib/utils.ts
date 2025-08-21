@@ -256,6 +256,22 @@ export function findLocationBySlug(locations: ContactLocation[], locationSlug: s
   }) || null;
 }
 
+// Location filtering utilities
+export function getPhysicalLocations(locations: ContactLocation[]): ContactLocation[] {
+  const physicalLocations = locations.filter(location => location.physical_location === true);
+  return physicalLocations;
+}
+
+export function getVirtualLocations(locations: ContactLocation[]): ContactLocation[] {
+  const virtualLocations = locations.filter(location => location.physical_location === false);
+  return virtualLocations;
+}
+
+export function getMainPhysicalLocation(locations: ContactLocation[]): ContactLocation | null {
+  const physicalLocations = getPhysicalLocations(locations);
+  return physicalLocations[0] || null;
+}
+
 // Simple function to convert 24h to 12h format
 export function convertTo12HourFormat(time: string): string {
   if (!time) return "";

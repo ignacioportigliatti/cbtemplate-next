@@ -12,8 +12,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getSiteConfig(),
   ]);
 
-  // Get main location (index 0) - SEO focused on primary location
-  const mainLocation = contactContent?.locations?.[0];
+  // Get all locations for SEO - physical and virtual
+  const allLocations = contactContent?.locations || [];
+  const physicalLocations = allLocations.filter(location => location.physical_location === true);
+  const mainLocation = physicalLocations[0]; // Use first physical location for main pages
 
   // Core static URLs with highest priority
   const coreUrls: MetadataRoute.Sitemap = [
@@ -25,50 +27,53 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // Main location URLs with high priority
+  // All location URLs - physical locations with high priority, virtual with lower priority
   const locationUrls: MetadataRoute.Sitemap = [];
-  if (mainLocation) {
-    const locationSlug = generateLocationSlug(mainLocation.address.city, mainLocation.address.state);
+  
+  allLocations.forEach((location) => {
+    const locationSlug = generateLocationSlug(location.address.city, location.address.state);
+    const isPhysical = location.physical_location === true;
+    const basePriority = isPhysical ? 0.9 : 0.5; // Physical locations get higher priority
     
     locationUrls.push(
       {
         url: `${siteConfig.site_domain}/${locationSlug}`,
         lastModified: new Date(),
         changeFrequency: "daily" as const,
-        priority: 0.9,
+        priority: basePriority,
       },
       {
         url: `${siteConfig.site_domain}/${locationSlug}/services`,
         lastModified: new Date(),
         changeFrequency: "weekly" as const,
-        priority: 0.8,
+        priority: basePriority - 0.1,
       },
       {
         url: `${siteConfig.site_domain}/${locationSlug}/about`,
         lastModified: new Date(),
         changeFrequency: "monthly" as const,
-        priority: 0.7,
+        priority: basePriority - 0.2,
       },
       {
         url: `${siteConfig.site_domain}/${locationSlug}/contact`,
         lastModified: new Date(),
         changeFrequency: "monthly" as const,
-        priority: 0.7,
+        priority: basePriority - 0.2,
       }
     );
 
-    // Service detail pages for main location - high priority for local SEO
+    // Service detail pages for all locations
     if (servicesContent?.services) {
       servicesContent.services.forEach((service) => {
         locationUrls.push({
           url: `${siteConfig.site_domain}/${locationSlug}/services/${service.slug}`,
           lastModified: new Date(),
           changeFrequency: "monthly" as const,
-          priority: 0.6,
+          priority: basePriority - 0.3,
         });
       });
     }
-  }
+  });
 
   // Blog section URLs
   const blogUrls: MetadataRoute.Sitemap = [

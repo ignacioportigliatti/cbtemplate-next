@@ -131,7 +131,7 @@ const LocationContactPage = async ({ locationData, contactContent }: Props) => {
         </Section>
         
         {/* Contact Form Section */}
-        <Section className="!bg-background-600 pb-16 px-4 lg:px-8">
+        <Section className="!bg-background-600 py-16 px-4 lg:px-8">
           <Container className="max-w-7xl mx-auto">
             <ContactForm />
           </Container>

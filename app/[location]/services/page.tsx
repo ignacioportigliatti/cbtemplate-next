@@ -10,6 +10,7 @@ import { getSiteConfig } from "@/site.config";
 export async function generateStaticParams() {
   const contactContent = await getContactContent();
   
+  // Generate pages for ALL locations (physical and virtual) for SEO
   return contactContent.locations.map(location => ({
     location: generateLocationSlug(location.address.city, location.address.state)
   }));

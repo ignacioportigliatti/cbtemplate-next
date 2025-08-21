@@ -1,21 +1,30 @@
-import { HomePageContent, ThemeOptions } from "@/lib/wordpress.d";
+import { HomePageContent, ThemeOptions, ContactContent } from "@/lib/wordpress.d";
 import Link from "next/link";
 import React from "react";
 import Balancer from "react-wrap-balancer";
 import HeroCarousel from "./HeroCarousel";
 import Image from "next/image";
+import { getMainPhysicalLocation, generateLocationSlug } from "@/lib/utils";
 
 interface Props {
   homeContent: HomePageContent;
   themeOptions?: ThemeOptions;
+  contactContent?: ContactContent;
 }
 
-const Hero = ({ homeContent, themeOptions }: Props) => {
+const Hero = ({ homeContent, themeOptions, contactContent }: Props) => {
   // Determine button text based on CTA type
   const ctaType = themeOptions?.general?.cta_type || "default_form";
   const buttonText = ctaType === "chilled_butter_widget" 
     ? homeContent.hero.button.label 
     : "Get Started";
+
+  // Get main location and generate contact URL
+  const mainLocation = getMainPhysicalLocation(contactContent?.locations || []);
+  const locationSlug = mainLocation 
+    ? generateLocationSlug(mainLocation.address.city, mainLocation.address.state)
+    : '';
+  const contactHref = locationSlug ? `/${locationSlug}/contact` : homeContent.hero.button.link;
 
   return (
     <div className="relative min-h-screen bg-background">
@@ -73,7 +82,7 @@ const Hero = ({ homeContent, themeOptions }: Props) => {
                 </button>
               ) : (
                 <Link
-                  href={homeContent.hero.button.link}
+                  href={contactHref}
                   className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 text-lg font-medium hover:bg-primary/90 transition-all duration-300 ease-in-out font-heading rounded-lg"
                 >
                   {buttonText}

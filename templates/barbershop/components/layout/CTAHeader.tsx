@@ -5,6 +5,7 @@ import { ContactContent, ThemeOptions } from "@/lib/wordpress.d";
 import { Button } from "@/components/ui/button";
 import { useScrollPosition } from "@/lib/hooks/useScrollPosition";
 import { FaPhone, FaEnvelope } from "react-icons/fa";
+import { getMainPhysicalLocation } from "@/lib/utils";
 import Link from "next/link";
 
 interface CTAHeaderProps {
@@ -14,7 +15,7 @@ interface CTAHeaderProps {
 
 export const CTAHeader = ({ contactContent, themeOptions }: CTAHeaderProps) => {
   const { isScrolled } = useScrollPosition();
-  const primaryLocation = contactContent.locations?.[0];
+  const primaryLocation = getMainPhysicalLocation(contactContent.locations || []);
 
   if (!primaryLocation) return null;
 

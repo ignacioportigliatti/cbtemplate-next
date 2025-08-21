@@ -13,7 +13,7 @@ export function transformContactToBusiness(
   siteDomain: string
 ) {
   try {
-    const mainLocation = contactContent.locations?.[0];
+    const mainLocation = contactContent.locations?.find(location => location.physical_location === true);
     
     if (!mainLocation) {
       return null;
@@ -131,7 +131,7 @@ export function transformToOrganizationSchema(
   contactContent: ContactContent,
   siteDomain: string
 ) {
-  const mainLocation = contactContent.locations?.[0];
+  const mainLocation = contactContent.locations?.find(location => location.physical_location === true);
   
   return {
     name: themeOptions.general.site_name,

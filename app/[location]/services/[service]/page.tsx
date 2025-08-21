@@ -16,6 +16,7 @@ export async function generateStaticParams() {
   
   const params: Array<{ location: string; service: string }> = [];
   
+  // Generate pages for ALL locations (physical and virtual) for SEO
   contactContent.locations.forEach(location => {
     const locationSlug = generateLocationSlug(location.address.city, location.address.state);
     

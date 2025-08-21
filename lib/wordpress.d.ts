@@ -400,6 +400,7 @@ interface ContactTimetable {
 interface ContactLocation {
   id: string;
   name: string;
+  physical_location: boolean;
   address: ContactAddress;
   phone_number?: string;
   email?: string;

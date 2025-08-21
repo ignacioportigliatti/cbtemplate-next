@@ -1,5 +1,5 @@
 import { HomePageContent, ServicesContent, ContactContent, ThemeOptions } from "@/lib/wordpress.d";
-import { generateLocationSlug } from "@/lib/utils";
+import { generateLocationSlug, getMainPhysicalLocation } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
 import Balancer from "react-wrap-balancer";
@@ -17,13 +17,16 @@ const PopularServices = (props: Props) => {
   const { homeContent, servicesContent, contactContent, themeOptions } = props;
 
   // Get main location (first location) and generate slug
-  const mainLocation = contactContent.locations[0];
+  const mainLocation = getMainPhysicalLocation(contactContent.locations || []);
   const locationSlug = mainLocation 
     ? generateLocationSlug(mainLocation.address.city, mainLocation.address.state)
     : '';
 
   // Generate the correct href for services page with location
   const servicesHref = locationSlug ? `/${locationSlug}/services` : homeContent.popular_services.button.link;
+
+  // Generate the correct href for contact page with location
+  const contactHref = locationSlug ? `/${locationSlug}/contact` : "/contact";
 
   // Determine CTA button text based on theme options
   const ctaType = themeOptions?.general?.cta_type || "default_form";
@@ -60,7 +63,7 @@ const PopularServices = (props: Props) => {
                  </button>
               ) : (
                 <Link
-                  href="/contact"
+                  href={contactHref}
                   className="bg-primary text-primary-foreground font-heading px-8 py-3 font-medium tracking-wide uppercase hover:bg-primary/90 transition-all duration-300 ease-in-out inline-flex items-center justify-center"
                 >
                   {ctaButtonText}

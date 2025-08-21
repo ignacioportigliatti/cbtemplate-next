@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 // Utility Imports
 import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { generateLocationSlug } from "@/lib/utils";
+import { generateLocationSlug, getMainPhysicalLocation } from "@/lib/utils";
 
 // Component Imports
 import { Button } from "@/components/ui/button";
@@ -36,7 +36,7 @@ export function MobileNav({ themeOptions, contactContent }: MobileNavProps) {
   const [open, setOpen] = React.useState(false);
 
   // Get the main location (index 0)
-  const mainLocation = contactContent.locations?.[0];
+  const mainLocation = getMainPhysicalLocation(contactContent.locations || []);
   
   // Generate location-based menu items using only the main location
   const generateLocationMenu = () => {

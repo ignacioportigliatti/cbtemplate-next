@@ -122,7 +122,7 @@ const HomePage = async () => {
         <main>
           {/* Hero Section - Main H1 */}
           <section>
-            <Hero homeContent={homeContent} themeOptions={themeOptions} />
+            <Hero homeContent={homeContent} themeOptions={themeOptions} contactContent={contactContent} />
           </section>
 
           {/* About Us & Image Carousel Section */}

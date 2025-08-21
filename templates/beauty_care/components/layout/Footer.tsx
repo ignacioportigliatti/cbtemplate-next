@@ -3,7 +3,7 @@ import { Container, Section } from "@/components/craft";
 import Link from "next/link";
 import { contentMenu, mainMenu } from "@/templates/beauty_care/menu.config";
 import { ContactContent, ThemeOptions } from "@/lib/wordpress.d";
-import { generateLocationSlug } from "@/lib/utils";
+import { generateLocationSlug, getMainPhysicalLocation } from "@/lib/utils";
 import { 
   FaEnvelope, 
   FaFacebook, 
@@ -25,7 +25,7 @@ interface FooterProps {
 
 export const Footer = ({ themeOptions, contactContent }: FooterProps) => {
   // Get the main location (index 0)
-  const mainLocation = contactContent.locations?.[0];
+  const mainLocation = getMainPhysicalLocation(contactContent.locations || []);
   
   // Generate location-based menu items using only the main location
   const generateLocationMenu = () => {

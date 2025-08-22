@@ -9,6 +9,7 @@ import { Nav } from "@/templates/beauty_care/components/layout/Nav";
 import { getContactContent, getThemeOptions } from "@/lib/wordpress";
 import { Footer } from "@/templates/beauty_care/components/layout/Footer";
 import { ChilledButterScript } from "@/components/ChilledButterScript";
+
 import React from "react";
 
 const fontSans = FontSans({
@@ -31,7 +32,7 @@ export async function generateMetadata(): Promise<Metadata> {
     const title = siteConfig.site_name;
     const description = siteConfig.site_description;
     const logoUrl = themeOptions.general.site_logo?.url;
-
+    
     return {
       title: {
         default: title,
@@ -41,6 +42,17 @@ export async function generateMetadata(): Promise<Metadata> {
       metadataBase: new URL(siteConfig.site_domain),
       alternates: {
         canonical: "/",
+      },
+      icons: {
+        icon: [
+          { url: '/api/favicon?size=16', sizes: '16x16', type: 'image/png' },
+          { url: '/api/favicon?size=32', sizes: '32x32', type: 'image/png' },
+          { url: '/api/favicon', type: 'image/png' },
+        ],
+        shortcut: '/api/favicon',
+        apple: [
+          { url: '/api/favicon?size=apple', sizes: '180x180', type: 'image/png' },
+        ],
       },
       openGraph: {
         title: title,
@@ -66,13 +78,18 @@ export async function generateMetadata(): Promise<Metadata> {
     };
   } catch (error) {
     console.error("Error generating metadata:", error);
-    // Fallback metadata
+    // Fallback metadata with local favicon
     return {
       title: "Your Business",
       description: "Professional services",
       metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
       alternates: {
         canonical: "/",
+      },
+      icons: {
+        icon: '/api/favicon',
+        shortcut: '/api/favicon',
+        apple: '/api/favicon?size=apple',
       },
     };
   }

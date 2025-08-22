@@ -20,7 +20,7 @@ const AboutUs = (props: Props) => {
         </h3>
         <p className="text-text text-center md:text-left mb-8 leading-relaxed">{aboutUsContent.page_info.description}</p>
         <h4 className="text-text text-center md:text-left leading-relaxed font-bold font-heading text-2xl">{aboutUsContent.mission.title}</h4>
-        <div dangerouslySetInnerHTML={{ __html: aboutUsContent.mission.content }} />
+        <div className="!text-center md:!text-left" dangerouslySetInnerHTML={{ __html: aboutUsContent.mission.content }} />
       </div>
       <div></div>
     </div>

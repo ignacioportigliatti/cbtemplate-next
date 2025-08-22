@@ -26,17 +26,17 @@ const Hero = ({ homeContent, themeOptions, contactContent }: Props) => {
   return (
     <div className="relative min-h-screen bg-background">
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto min-h-screen py-24 pt-32 flex items-center px-8">
-        <div className="flex flex-col lg:flex-row gap-24 items-center w-full">
+      <div className="relative z-10 max-w-7xl mx-auto min-h-screen py-24 md:pt-32 pt-40  flex items-center px-8">
+        <div className="flex flex-col lg:flex-row md:gap-24 gap-12 items-center w-full">
           
           {/* Left Side - Image Carousel */}
-          <div className="relative w-full lg:w-5/12 animate-scale-in animate-delay-400">
-            <div className="relative w-full h-[500px] shadow-[15px_15px_0px_0px] shadow-text lg:h-[500px] rounded-xl rounded-tl-[180px] rounded-tr-none overflow-hidden">
+          <div className="relative w-10/12 lg:w-5/12 animate-scale-in animate-delay-400">
+            <div className="relative w-full h-[400px] shadow-[15px_15px_0px_0px] shadow-text lg:h-[500px] rounded-xl md:rounded-tl-[180px] rounded-tl-[140px] rounded-tr-none overflow-hidden">
               <HeroCarousel gallery={homeContent.hero.gallery} />
             </div>
             {/* Decorative elements - similar to the reference image */}
-            <Image src="/flowers.webp" alt="Hero Decorative" width={300} height={100} className="pointer-events-none absolute lg:w-80 w-52 lg:-top-14 lg:-left-16 -top-8 -left-8 -hue-rotate-60 saturate-50 brightness-110" />
-            <Image src="/flowers2.webp" alt="Hero Decorative" width={300} height={100} className="pointer-events-none absolute lg:w-80 w-52 lg:-bottom-14 lg:-right-20 -right-8 -bottom-8 -hue-rotate-60 saturate-50 brightness-110" />
+            <Image src="/flowers.webp" alt="Hero Decorative" width={300} height={100} className="pointer-events-none absolute lg:w-80 w-44 lg:-top-14 lg:-left-16 -top-6 -left-6 -hue-rotate-60 saturate-50 brightness-110" />
+            <Image src="/flowers2.webp" alt="Hero Decorative" width={300} height={100} className="pointer-events-none absolute lg:w-80 w-44 lg:-bottom-14 lg:-right-20 -right-10 -bottom-10 -hue-rotate-60 saturate-50 brightness-110" />
           </div>
 
           {/* Right Side - Text Content */}
@@ -60,7 +60,7 @@ const Hero = ({ homeContent, themeOptions, contactContent }: Props) => {
             <div className="pt-4 animate-fade-in-up animate-delay-800">
               {ctaType === "chilled_butter_widget" ? (
                 <button
-                  className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 text-lg font-medium hover:bg-primary/90 transition-all duration-300 ease-in-out font-heading rounded-lg cb-widget-btn"
+                  className="inline-flex items-center gap-2 bg-transparent text-primary px-8 py-4 text-xl font-medium border-2 hover:text-primary-foreground border-primary hover:bg-primary transition-all duration-300 ease-in-out font-heading rounded-lg cb-widget-btn"
                 >
                   {buttonText}
                   <svg 

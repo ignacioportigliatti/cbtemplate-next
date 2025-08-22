@@ -34,7 +34,7 @@ export async function PostCard({ post, className }: { post: Post, className?: st
       )}
     >
       <div className="flex flex-col gap-4">
-        <div className="h-48 w-full overflow-hidden relative rounded-md border flex items-center justify-center bg-muted">
+        <div className="h-48 w-full overflow-hidden relative rounded-md  flex items-center justify-center bg-muted">
           {media?.source_url ? (
             <Image
               className="h-full w-full object-cover"
@@ -53,7 +53,7 @@ export async function PostCard({ post, className }: { post: Post, className?: st
           dangerouslySetInnerHTML={{
             __html: post.title?.rendered || "Untitled Post",
           }}
-          className="text-xl text-primary font-medium group-hover:underline decoration-muted-foreground underline-offset-4 decoration-dotted transition-all"
+          className="text-xl text-text font-medium group-hover:underline decoration-muted-foreground underline-offset-4 decoration-dotted transition-all"
         ></div>
         <div
           className="text-sm"

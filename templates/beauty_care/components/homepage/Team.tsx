@@ -10,6 +10,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { cn } from "@/lib/utils";
 
 interface Props {
   teamContent: TeamContent;
@@ -76,7 +77,7 @@ const Team = ({ teamContent }: Props) => {
   return (
     <div className="bg-background-800 py-16 px-8 lg:px-16">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start justify-between gap-12 md:gap-0">
-        <div className="flex w-full md:w-5/12 flex-col justify-between text-center items-center md:items-start md:text-left scroll-animate-left">
+        <div className={cn("flex w-full flex-col justify-between text-center items-center md:items-start md:text-left scroll-animate-left", isSingleSpecialist ? "md:w-7/12" : "w-full md:w-5/12")}>
           <div className="pr-0 md:pr-20">
             <span className="text-primary font-medium mb-1 text-2xl font-heading block scroll-animate">
               {content.subtitle}
@@ -89,17 +90,17 @@ const Team = ({ teamContent }: Props) => {
             </p>
           </div>
         </div>
-        <div className="w-full md:w-7/12 scroll-animate-right">
+        <div className={cn("w-full scroll-animate-right", isSingleSpecialist ? "md:w-5/12" : "w-full md:w-7/12")}>
           {isSingleSpecialist ? (
             // Single specialist display without carousel
             <div className="flex flex-col items-center">
-              <div className="w-full max-w-md aspect-square h-64 relative overflow-hidden rounded-lg">
+              <div className="max-w-md aspect-square h-72 w-72 relative overflow-hidden rounded-lg">
                 {teamContent.members[0].member_photo.url && (
                   <Image
                     src={teamContent.members[0].member_photo.url}
                     alt={teamContent.members[0].member_name}
                     fill
-                    className="object-cover aspect-square"
+                    className="!object-cover"
                   />
                 )}
               </div>
@@ -131,7 +132,7 @@ const Team = ({ teamContent }: Props) => {
                             src={member.member_photo.url}
                             alt={member.member_name}
                             fill
-                            className="object-cover aspect-square"
+                            className="object-cover !aspect-square"
                           />
                         )}
                       </div>

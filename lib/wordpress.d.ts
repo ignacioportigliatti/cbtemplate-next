@@ -447,6 +447,7 @@ export interface ThemeOptions {
     site_name: string;
     site_description: string;
     site_logo: WordpressImageInfo;
+    site_icon?: WordpressImageInfo;
     ctaHeader?: boolean;
     cta_type?: "chilled_butter_widget" | "default_form";
     cta_script_tag?: string;

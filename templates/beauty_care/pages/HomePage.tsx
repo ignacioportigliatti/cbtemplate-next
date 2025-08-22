@@ -183,7 +183,7 @@ const HomePage = async () => {
           </section>
 
           {/* Contact Section */}
-          <section className="bg-background-900 px-8 lg:px-16 text-foreground py-16 md:py-16">
+          <section className="bg-background-900 lg:px-16 text-foreground py-16 md:py-16">
             <AboutUsContact />
           </section>
 

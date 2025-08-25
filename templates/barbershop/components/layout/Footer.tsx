@@ -151,15 +151,26 @@ export const Footer = ({ themeOptions, contactContent }: FooterProps) => {
                 ))}
                 
                 {/* Location-specific links for all SEO locations */}
-                {seoLocations.map((seoLocation, index) => (
-                  <Link
-                    key={`${seoLocation.address.city}-${seoLocation.address.state}`}
-                    href={`/locations/${getStateFullName(seoLocation.address.state)}/${seoLocation.address.city.toLowerCase().replace(/\s+/g, '-')}`}
-                    className="block text-muted-foreground/70 hover:text-primary transition-colors text-sm tracking-[0.1em] uppercase"
-                  >
-                    {seoLocation.address.city}, {seoLocation.address.state}
-                  </Link>
-                ))}
+                {seoLocations.map((seoLocation, index) => {
+                  const hasNeighborhood = seoLocation.address.neighborhood && seoLocation.address.neighborhood.trim() !== '';
+                  const displayText = hasNeighborhood 
+                    ? `${seoLocation.address.neighborhood}, ${seoLocation.address.city}, ${seoLocation.address.state}`
+                    : `${seoLocation.address.city}, ${seoLocation.address.state}`;
+                  
+                  const href = hasNeighborhood
+                    ? `/locations/${getStateFullName(seoLocation.address.state)}/${seoLocation.address.city.toLowerCase().replace(/\s+/g, '-')}/${seoLocation.address.neighborhood.toLowerCase().replace(/\s+/g, '-')}`
+                    : `/locations/${getStateFullName(seoLocation.address.state)}/${seoLocation.address.city.toLowerCase().replace(/\s+/g, '-')}`;
+                  
+                  return (
+                    <Link
+                      key={`${seoLocation.address.city}-${seoLocation.address.state}-${seoLocation.address.neighborhood || 'no-neighborhood'}`}
+                      href={href}
+                      className="block text-muted-foreground/70 hover:text-primary transition-colors text-sm tracking-[0.1em] uppercase"
+                    >
+                      {displayText}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
 

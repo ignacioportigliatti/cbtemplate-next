@@ -9,49 +9,36 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import ScrollAnimations from "@/templates/barbershop/components/layout/ScrollAnimations";
 import { FaMapMarker, FaPhone, FaEnvelope, FaClock } from "react-icons/fa";
-import { formatPhoneForDisplay, formatPhoneForTel, getStateFullName } from "@/lib/utils";
+import { formatPhoneForDisplay, formatPhoneForTel, getStateFullName, generateNeighborhoodBreadcrumbs, generateGoogleMapsUrl } from "@/lib/utils";
 
 interface Props {
-  seoLocationData?: SEOLocation;
-  mainLocationData?: ContactLocation;
-  locationData?: ContactLocation; // For backward compatibility
+  seoLocationData: SEOLocation;
+  mainLocationData: ContactLocation;
   servicesContent: ServicesContent;
   contactContent: ContactContent;
   themeOptions?: ThemeOptions;
 }
 
-const LocationHubPage = async ({ seoLocationData, mainLocationData, locationData, servicesContent, contactContent, themeOptions }: Props) => {
-  // Use new structure if available, fallback to old structure for backward compatibility
-  const currentLocationData = seoLocationData || locationData;
-  const currentMainLocationData = mainLocationData || locationData;
-  
-  // Early return if no location data is available
-  if (!currentLocationData) {
+const NeighborhoodHubPage = async ({ seoLocationData, mainLocationData, servicesContent, contactContent, themeOptions }: Props) => {
+  // Early return if seoLocationData is null
+  if (!seoLocationData) {
     return (
       <main className="space-y-6">
-        <h1>Location not found</h1>
-        <p>The requested location could not be found.</p>
+        <h1>Neighborhood not found</h1>
+        <p>The requested neighborhood could not be found.</p>
       </main>
     );
   }
 
-  const stateSlug = getStateFullName(currentLocationData.address.state);
-  const citySlug = currentLocationData.address.city.toLowerCase().replace(/\s+/g, '-');
-
-  // Generate Google Maps URL for address
-  const generateGoogleMapsUrl = () => {
-    const address = currentLocationData.address.full_address || 
-      `${currentLocationData.address.street}, ${currentLocationData.address.city}, ${currentLocationData.address.state} ${currentLocationData.address.zip_code}`;
-    
-    return `https://maps.google.com/?q=${encodeURIComponent(address)}`;
-  };
-
+  const stateSlug = getStateFullName(seoLocationData.address.state);
+  const citySlug = seoLocationData.address.city.toLowerCase().replace(/\s+/g, '-');
+  const neighborhoodSlug = seoLocationData.address.neighborhood.toLowerCase().replace(/\s+/g, '-');
 
   if (!servicesContent) {
     return (
       <main className="space-y-6">
         <h1>No content available</h1>
-        <p>Unable to load location hub page content.</p>
+        <p>Unable to load neighborhood hub page content.</p>
       </main>
     );
   }
@@ -65,17 +52,17 @@ const LocationHubPage = async ({ seoLocationData, mainLocationData, locationData
             
             <div className="text-center mb-12 scroll-animate">
               <h1 className="text-4xl md:text-6xl font-heading text-primary font-bold mb-4">
-                Professional Services in {currentLocationData.address.city}
+                Professional Services in {seoLocationData.address.neighborhood}
               </h1>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Serving {currentLocationData.address.city}, {currentLocationData.address.state} with expert solutions and exceptional service.
+                Serving {seoLocationData.address.neighborhood}, {seoLocationData.address.city}, {seoLocationData.address.state} with expert solutions and exceptional service.
               </p>
             </div>
 
             {/* NAP Information */}
             <div className="grid md:grid-cols-3 gap-8 mb-12 scroll-animate">
               <Link
-                href={generateGoogleMapsUrl()}
+                href={generateGoogleMapsUrl(seoLocationData.address, seoLocationData.name)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block hover:text-primary transition-colors"
@@ -84,34 +71,34 @@ const LocationHubPage = async ({ seoLocationData, mainLocationData, locationData
                   <FaMapMarker className="text-primary text-3xl mx-auto mb-4" />
                   <h3 className="text-lg font-semibold mb-2">Address</h3>
                   <p className="text-muted-foreground">
-                    {currentLocationData.address.street}<br />
-                    {currentLocationData.address.city}, {currentLocationData.address.state} {currentLocationData.address.zip_code}
+                    {seoLocationData.address.street}<br />
+                    {seoLocationData.address.city}, {seoLocationData.address.state} {seoLocationData.address.zip_code}
                   </p>
                 </div>
               </Link>
               
               <Link
-                href={`tel:${formatPhoneForTel(currentMainLocationData?.phone_number || "")}`}
+                href={`tel:${formatPhoneForTel(mainLocationData.phone_number || "")}`}
                 className="block hover:text-primary transition-colors"
               >
                 <div className="text-center p-6 border border-border hover:bg-background-700 transition-all duration-300 ease-in-out h-full min-h-[200px] flex flex-col justify-center">
                   <FaPhone className="text-primary text-3xl mx-auto mb-4" />
                   <h3 className="text-lg font-semibold mb-2">Phone</h3>
                   <p className="text-muted-foreground">
-                    {formatPhoneForDisplay(currentMainLocationData?.phone_number || "")}
+                    {formatPhoneForDisplay(mainLocationData.phone_number || "")}
                   </p>
                 </div>
               </Link>
               
               <Link
-                href={`mailto:${currentMainLocationData?.email}`}
+                href={`mailto:${mainLocationData.email}`}
                 className="block hover:text-primary transition-colors"
               >
                 <div className="text-center p-6 border border-border hover:bg-background-700 transition-all duration-300 ease-in-out h-full min-h-[200px] flex flex-col justify-center">
                   <FaEnvelope className="text-primary text-3xl mx-auto mb-4" />
                   <h3 className="text-lg font-semibold mb-2">Email</h3>
                   <p className="text-muted-foreground">
-                    {currentMainLocationData?.email}
+                    {mainLocationData.email}
                   </p>
                 </div>
               </Link>
@@ -124,7 +111,7 @@ const LocationHubPage = async ({ seoLocationData, mainLocationData, locationData
                   Contact Us
                 </Button>
               </Link>
-              <Link href={`/locations/${stateSlug}/${citySlug}/services`}>
+              <Link href={`/locations/${stateSlug}/${citySlug}/${neighborhoodSlug}/services`}>
                 <Button size="lg" variant="outline" className="w-full sm:w-auto rounded-none">
                   View Services
                 </Button>
@@ -136,22 +123,9 @@ const LocationHubPage = async ({ seoLocationData, mainLocationData, locationData
         {/* Services Preview */}
         <Section className="bg-background-700 py-16">
           <Container className="max-w-7xl mx-auto">
-            <div className="text-center mb-12 scroll-animate">
-              <h2 className="text-3xl md:text-4xl font-heading text-text font-bold mb-4">
-                Our Services in {currentLocationData.address.city}
-              </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                We offer comprehensive professional services tailored to meet your needs in {currentLocationData.address.city}, {currentLocationData.address.state}.
-              </p>
-            </div>
+
             
-            <ServicesGrid 
-              servicesContent={servicesContent} 
-              locationData={locationData}
-              seoLocationData={seoLocationData}
-              mainLocationData={currentMainLocationData}
-              isNeighborhoodPage={false}
-            />
+            <ServicesGrid servicesContent={servicesContent} seoLocationData={seoLocationData} mainLocationData={mainLocationData} isNeighborhoodPage={true} />
             
           </Container>
         </Section>
@@ -165,4 +139,4 @@ const LocationHubPage = async ({ seoLocationData, mainLocationData, locationData
   );
 };
 
-export default LocationHubPage;
+export default NeighborhoodHubPage;

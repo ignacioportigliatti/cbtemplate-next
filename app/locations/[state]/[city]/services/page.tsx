@@ -1,6 +1,6 @@
 import { getActiveTemplate, loadTemplate } from "@/lib/template-resolver";
 import { getContactContent, getServicesContent, getThemeOptions } from "@/lib/wordpress";
-import { generateLocationSlug, findLocationBySlug, getStateAbbreviation, getStateFullName } from "@/lib/utils";
+import { generateLocationSlug, findSEOLocationByCitySlug, getStateAbbreviation, getStateFullName, getMainPhysicalLocation } from "@/lib/utils";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { LocalBusinessSchema } from "@/components/StructuredData";
@@ -10,8 +10,8 @@ import { getSiteConfig } from "@/site.config";
 export async function generateStaticParams() {
   const contactContent = await getContactContent();
   
-  // Generate pages for ALL locations (physical and virtual) for SEO
-  return contactContent.locations.map(location => ({
+  // Generate pages for ALL SEO locations for better local SEO
+  return contactContent.seo_locations.map(location => ({
     state: getStateFullName(location.address.state),
     city: location.address.city.toLowerCase().replace(/\s+/g, '-')
   }));
@@ -30,10 +30,10 @@ export async function generateMetadata({ params }: { params: Promise<{ state: st
     // Create the location slug from state and city parameters
     const locationSlug = `${state}/${city}`;
     
-    // Find location using the existing utility function
-    const locationData = findLocationBySlug(contactContent.locations, locationSlug);
+    // Find SEO location using the city slug
+    const seoLocationData = findSEOLocationByCitySlug(contactContent.seo_locations, locationSlug);
     
-    if (!locationData) {
+    if (!seoLocationData) {
       return {
         title: "Services not found",
         description: "The requested services could not be found",
@@ -41,15 +41,18 @@ export async function generateMetadata({ params }: { params: Promise<{ state: st
       };
     }
 
+    // Get main location for contact data
+    const mainLocationData = getMainPhysicalLocation(contactContent.locations);
+
     const title = siteConfig.site_name;
-    const description = `Professional services in ${locationData.address.city}, ${locationData.address.state}. Browse our complete range of services.`;
+    const description = `Professional services in ${seoLocationData.address.city}, ${seoLocationData.address.state}. Browse our complete range of services.`;
     const logoUrl = themeOptions.general.site_logo?.url;
 
     return {
-      title: `Services in ${locationData.address.city}, ${locationData.address.state} | ${title}`,
+      title: `Services in ${seoLocationData.address.city}, ${seoLocationData.address.state} | ${title}`,
       description,
       openGraph: {
-        title: `Services in ${locationData.address.city}, ${locationData.address.state} | ${title}`,
+        title: `Services in ${seoLocationData.address.city}, ${seoLocationData.address.state} | ${title}`,
         description,
         type: "website",
         url: `${siteConfig.site_domain}/locations/${state}/${city}/services`,
@@ -57,7 +60,7 @@ export async function generateMetadata({ params }: { params: Promise<{ state: st
       },
       twitter: {
         card: "summary_large_image",
-        title: `Services in ${locationData.address.city}, ${locationData.address.state} | ${title}`,
+        title: `Services in ${seoLocationData.address.city}, ${seoLocationData.address.state} | ${title}`,
         description,
         images: logoUrl ? [logoUrl] : [],
       },
@@ -89,12 +92,15 @@ export default async function LocationServicesPage({ params }: { params: Promise
     // Create the location slug from state and city parameters
     const locationSlug = `${state}/${city}`;
     
-    // Find location using the existing utility function
-    const locationData = findLocationBySlug(contactContent.locations, locationSlug);
+    // Find SEO location using the city slug
+    const seoLocationData = findSEOLocationByCitySlug(contactContent.seo_locations, locationSlug);
     
-    if (!locationData) {
+    if (!seoLocationData) {
       return notFound();
     }
+    
+    // Get main location for contact data
+    const mainLocationData = getMainPhysicalLocation(contactContent.locations);
     
     // Transform data for structured data
     const business = transformContactToBusiness(contactContent, themeOptions, siteConfig.site_domain);
@@ -112,7 +118,8 @@ export default async function LocationServicesPage({ params }: { params: Promise
         
         {/* Template Component */}
         <template.LocationServicesPage 
-          locationData={locationData} 
+          seoLocationData={seoLocationData}
+          mainLocationData={mainLocationData}
           servicesContent={servicesContent} 
           contactContent={contactContent} 
           themeOptions={themeOptions} 
@@ -122,6 +129,6 @@ export default async function LocationServicesPage({ params }: { params: Promise
   } catch (error) {
     console.error('Error in LocationServicesPage:', error);
     // Return template without structured data if there's an error
-    return <template.LocationServicesPage locationData={null} servicesContent={null} contactContent={null} themeOptions={null} />;
+    return <template.LocationServicesPage seoLocationData={null} mainLocationData={null} servicesContent={null} contactContent={null} themeOptions={null} />;
   }
 }

@@ -13,7 +13,7 @@ import {
 } from "react-icons/fa";
 import Link from "next/link";
 import { getContactContent, getThemeOptions } from "@/lib/wordpress";
-import { getPhysicalLocations, getMainPhysicalLocation, generateLocationSlug } from "@/lib/utils";
+import { getPhysicalLocations, getMainPhysicalLocation, generateLocationSlug, formatPhoneForTel, formatPhoneForDisplay, generateGoogleMapsUrl } from "@/lib/utils";
 
 
 const AboutUsContact = async () => {
@@ -69,23 +69,30 @@ const AboutUsContact = async () => {
                   <h4 className="font-medium text-lg mb-3 text-primary">{location.name}</h4>
                   
                   <div className="flex flex-col mt-2 group scroll-animate" style={{ animationDelay: `${0.1 + index * 0.1}s` }}>
-                    <div className="flex items-center gap-2 text-text group-hover:text-primary transition-all duration-300 ease-in-out">
-                      <FaMapMarker className="w-4 h-4 -mt-1" />
-                      <h4 className="font-medium capitalize">Address</h4>
-                    </div>
-                    <p className="text-text">
-                      {`${location.address.street}, ${location.address.city}, ${location.address.state} ${location.address.zip_code}`}
-                    </p>
+                    <Link 
+                      href={generateGoogleMapsUrl(location.address, location.name)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-text hover:text-primary transition-all duration-300 ease-in-out"
+                    >
+                      <div className="flex items-center gap-2 text-text group-hover:text-primary transition-all duration-300 ease-in-out">
+                        <FaMapMarker className="w-4 h-4 -mt-1" />
+                        <h4 className="font-medium capitalize">Address</h4>
+                      </div>
+                      <p className="text-text group-hover:text-primary transition-all duration-300 ease-in-out">
+                        {`${location.address.street}, ${location.address.city}, ${location.address.state} ${location.address.zip_code}`}
+                      </p>
+                    </Link>
                   </div>
                   
                   {location.phone_number && (
                     <div className="flex flex-col mt-2 group scroll-animate" style={{ animationDelay: `${0.2 + index * 0.1}s` }}>
-                      <Link href={`tel:${location.phone_number}`} className="text-text hover:text-primary transition-all duration-300 ease-in-out">
+                      <Link href={`tel:${formatPhoneForTel(location.phone_number)}`} className="text-text hover:text-primary transition-all duration-300 ease-in-out">
                         <div className="flex items-center gap-1 text-text group-hover:text-primary transition-all duration-300 ease-in-out">
                           <FaPhone className="w-4 h-4 -mt-1" />
                           <h4 className="font-medium capitalize">Phone Number</h4>
                         </div>
-                        {location.phone_number}
+                        {formatPhoneForDisplay(location.phone_number)}
                       </Link>
                     </div>
                   )}
@@ -114,8 +121,11 @@ const AboutUsContact = async () => {
                           google: <FaGoogle className="w-4 h-4 -mt-1" />,
                         };
 
+                        const isSocialMedia = key === "facebook" || key === "instagram" || key === "twitter" || key === "linkedin" || key === "google";
+
                         return (
-                          <div
+                          isSocialMedia && (
+                            <div
                             key={key}
                             className="flex items-center gap-2 text-text hover:text-primary transition-all duration-300 ease-in-out"
                           >
@@ -129,7 +139,7 @@ const AboutUsContact = async () => {
                               {key}
                             </Link>
                           </div>
-                        );
+                        ))
                       })}
                   </div>
                 </div>

@@ -366,6 +366,7 @@ export interface ReviewsContent {
 // Contact Content Types
 interface ContactAddress {
   street: string;
+  neighborhood: string;
   city: string;
   state: string;
   country: string;
@@ -377,6 +378,9 @@ interface ContactSocialMedia {
   facebook?: string;
   instagram?: string;
   google?: string;
+  google_reviews?: string;
+  yelp_reviews?: string;
+  tripadvisor_reviews?: string;
   linkedin?: string;
   pinterest?: string;
 }
@@ -408,6 +412,12 @@ interface ContactLocation {
   timetable: ContactTimetable;
 }
 
+interface SEOLocation {
+  id: string;
+  name: string;
+  address: ContactAddress;
+}
+
 interface ContactPageInfo {
   subtitle?: string;
   title?: string;
@@ -415,8 +425,9 @@ interface ContactPageInfo {
 }
 
 export interface ContactContent {
-  page_info?: ContactPageInfo;
+  page_info: ContactPageInfo;
   locations: ContactLocation[];
+  seo_locations: SEOLocation[];
 }
 
 // Additional types for contact updates

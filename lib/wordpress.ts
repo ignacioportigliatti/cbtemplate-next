@@ -539,7 +539,8 @@ export async function getContactContent(): Promise<ContactContent> {
         title: "Get in Touch",
         description: "We'd love to hear from you"
       },
-      locations: []
+      locations: [],
+      seo_locations: []
     } as ContactContent;
   }
 }

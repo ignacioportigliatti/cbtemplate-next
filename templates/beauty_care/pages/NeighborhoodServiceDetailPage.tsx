@@ -3,27 +3,22 @@ import ServiceGallery from "@/templates/beauty_care/components/services/ServiceG
 import ScrollAnimations from "@/templates/beauty_care/components/layout/ScrollAnimations";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { ContactLocation, SEOLocation, ServiceItem, ContactContent, ThemeOptions } from "@/lib/wordpress.d";
-import { generateLocationSlug, getStateFullName } from "@/lib/utils";
+import { generateNeighborhoodBreadcrumbs, getStateFullName } from "@/lib/utils";
 import Image from "next/image";
 import React from "react";
 import AboutUsContact from "@/templates/beauty_care/components/about/AboutUsContact";
 
 interface Props {
-  seoLocationData?: SEOLocation;
-  mainLocationData?: ContactLocation;
-  locationData?: ContactLocation; // For backward compatibility
+  seoLocationData: SEOLocation;
+  mainLocationData: ContactLocation;
   serviceData: ServiceItem;
   contactContent: ContactContent;
   themeOptions?: ThemeOptions;
 }
 
-const LocationServiceDetailPage = async ({ seoLocationData, mainLocationData, locationData, serviceData, contactContent, themeOptions }: Props) => {
-  // Use new structure if available, fallback to old structure for backward compatibility
-  const currentLocationData = seoLocationData || locationData;
-  const currentMainLocationData = mainLocationData || locationData;
-  
-  // Early return if no location data or service data is available
-  if (!currentLocationData || !serviceData) {
+const NeighborhoodServiceDetailPage = async ({ seoLocationData, mainLocationData, serviceData, contactContent, themeOptions }: Props) => {
+  // Early return if locationData or serviceData is null
+  if (!seoLocationData || !serviceData) {
     return (
       <main className="space-y-6">
         <h1>Service not found</h1>
@@ -32,14 +27,14 @@ const LocationServiceDetailPage = async ({ seoLocationData, mainLocationData, lo
     );
   }
 
-  const stateSlug = getStateFullName(currentLocationData.address.state);
-  const citySlug = currentLocationData.address.city.toLowerCase().replace(/\s+/g, '-');
-  
+  // Generate breadcrumbs for neighborhood service detail
+  const baseBreadcrumbs = generateNeighborhoodBreadcrumbs(seoLocationData);
   const breadcrumbItems = [
-    { label: "Home", href: "/" },
-    { label: currentLocationData.address.state, href: `/locations/${stateSlug}` },
-    { label: currentLocationData.address.city, href: `/locations/${stateSlug}/${citySlug}` },
-    { label: "Services", href: `/locations/${stateSlug}/${citySlug}/services` },
+    ...baseBreadcrumbs,
+    { 
+      label: "Services", 
+      href: `/locations/${getStateFullName(seoLocationData.address.state)}/${seoLocationData.address.city.toLowerCase().replace(/\s+/g, '-')}/${seoLocationData.address.neighborhood.toLowerCase().replace(/\s+/g, '-')}/services`
+    },
     { label: serviceData.title }
   ];
 
@@ -105,4 +100,4 @@ const LocationServiceDetailPage = async ({ seoLocationData, mainLocationData, lo
   );
 };
 
-export default LocationServiceDetailPage; 
+export default NeighborhoodServiceDetailPage;

@@ -1,7 +1,7 @@
 import AboutUsContact from "@/templates/barbershop/components/about/AboutUsContact";
 import ServicesGrid from "@/templates/barbershop/components/services/ServicesGrid";
 import { ServicesContent, ContactContent, ContactLocation, SEOLocation, ThemeOptions } from "@/lib/wordpress.d";
-import { generateLocationSlug, getStateFullName } from "@/lib/utils";
+import { generateNeighborhoodBreadcrumbs, getStateFullName } from "@/lib/utils";
 import React from "react";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Container, Section } from "@/components/craft";
@@ -11,35 +11,18 @@ import Image from "next/image";
 import ScrollAnimations from "@/templates/barbershop/components/layout/ScrollAnimations";
 
 interface Props {
-  seoLocationData?: SEOLocation;
-  mainLocationData?: ContactLocation;
-  locationData?: ContactLocation; // For backward compatibility
+  seoLocationData: SEOLocation;
+  mainLocationData: ContactLocation;
   servicesContent: ServicesContent;
   contactContent: ContactContent;
   themeOptions?: ThemeOptions;
 }
 
-const LocationServicesPage = async ({ seoLocationData, mainLocationData, locationData, servicesContent, contactContent, themeOptions }: Props) => {
-  // Use new structure if available, fallback to old structure for backward compatibility
-  const currentLocationData = seoLocationData || locationData;
-  const currentMainLocationData = mainLocationData || locationData;
-  
-  if (!currentLocationData) {
-    return (
-      <main className="space-y-6">
-        <h1>Location not found</h1>
-        <p>The requested location could not be found.</p>
-      </main>
-    );
-  }
-
-  const stateSlug = getStateFullName(currentLocationData.address.state);
-  const citySlug = currentLocationData.address.city.toLowerCase().replace(/\s+/g, '-');
-
+const NeighborhoodServicesPage = async ({ seoLocationData, mainLocationData, servicesContent, contactContent, themeOptions }: Props) => {
+  // Generate breadcrumbs for neighborhood services
+  const baseBreadcrumbs = generateNeighborhoodBreadcrumbs(seoLocationData);
   const breadcrumbItems = [
-    { label: "Home", href: "/" },
-    { label: currentLocationData.address.state, href: `#` },
-    { label: currentLocationData.address.city, href: `/locations/${stateSlug}/${citySlug}` },
+    ...baseBreadcrumbs,
     { label: "Services" }
   ];
 
@@ -58,7 +41,7 @@ const LocationServicesPage = async ({ seoLocationData, mainLocationData, locatio
         <Section className="pt-36 bg-background-900 pb-16">
           <Container className="max-w-7xl mx-auto">
             <Breadcrumb items={breadcrumbItems} className="scroll-animate py-4" />
-            <LocationServicesGrid servicesContent={servicesContent} locationData={currentLocationData} />
+            <NeighborhoodServicesGrid servicesContent={servicesContent} seoLocationData={seoLocationData} mainLocationData={mainLocationData} />
           </Container>
         </Section>
         
@@ -71,8 +54,8 @@ const LocationServicesPage = async ({ seoLocationData, mainLocationData, locatio
   );
 };
 
-// Location Services Grid Component
-const LocationServicesGrid = ({ servicesContent, locationData }: { servicesContent: ServicesContent; locationData: ContactLocation | SEOLocation }) => {
+// Neighborhood Services Grid Component
+const NeighborhoodServicesGrid = ({ servicesContent, seoLocationData, mainLocationData }: { servicesContent: ServicesContent; seoLocationData: SEOLocation; mainLocationData: ContactLocation }) => {
   return (
     <div className="max-w-7xl mx-auto px-8 xl:px-0">
       <div className="space-y-2 scroll-animate">
@@ -90,7 +73,7 @@ const LocationServicesGrid = ({ servicesContent, locationData }: { servicesConte
         {servicesContent.services.map((service, index) => (
           <Link
             key={service.title}
-            href={`/locations/${getStateFullName(locationData.address.state)}/${locationData.address.city.toLowerCase().replace(/\s+/g, '-')}/services/${service.slug}`}
+            href={`/locations/${getStateFullName(seoLocationData.address.state)}/${seoLocationData.address.city.toLowerCase().replace(/\s+/g, '-')}/${seoLocationData.address.neighborhood.toLowerCase().replace(/\s+/g, '-')}/services/${service.slug}`}
             className="bg-background-600 flex text-center items-center md:text-left flex-col-reverse gap-4 md:gap-6 md:flex-row p-6 border border-border/50 hover:border-border/80 transition-all 
             duration-300 hover:shadow-lg hover:bg-background-300 ease-in-out scroll-animate"
             style={{ animationDelay: `${(index + 1) * 0.025}s` }}
@@ -125,4 +108,4 @@ const LocationServicesGrid = ({ servicesContent, locationData }: { servicesConte
   );
 };
 
-export default LocationServicesPage; 
+export default NeighborhoodServicesPage;

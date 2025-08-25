@@ -5,7 +5,7 @@ import { ContactContent, ThemeOptions } from "@/lib/wordpress.d";
 import { Button } from "@/components/ui/button";
 import { useScrollPosition } from "@/lib/hooks/useScrollPosition";
 import { FaPhone, FaEnvelope } from "react-icons/fa";
-import { getMainPhysicalLocation } from "@/lib/utils";
+import { getMainPhysicalLocation, formatPhoneForTel, formatPhoneForDisplay } from "@/lib/utils";
 import Link from "next/link";
 
 interface CTAHeaderProps {
@@ -25,8 +25,8 @@ export const CTAHeader = ({ contactContent, themeOptions }: CTAHeaderProps) => {
 
   const contactInfo = {
     icon: <FaPhone className="w-4 h-4" />,
-    text: primaryLocation.phone_number || "(555) 123-4567",
-    href: `tel:${primaryLocation.phone_number || "(555) 123-4567"}`
+    text: formatPhoneForDisplay(primaryLocation.phone_number || "(555) 123-4567"),
+    href: `tel:${formatPhoneForTel(primaryLocation.phone_number || "(555) 123-4567")}`
   };
 
   const emailInfo = {

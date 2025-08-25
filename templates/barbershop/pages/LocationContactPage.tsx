@@ -1,5 +1,5 @@
 import { ContactContent, ContactLocation } from "@/lib/wordpress.d";
-import { generateLocationSlug } from "@/lib/utils";
+import { generateLocationSlug, formatPhoneForTel, formatPhoneForDisplay, generateGoogleMapsUrl } from "@/lib/utils";
 import React from "react";
 import Link from "next/link";
 import { FaEnvelope, FaFacebook, FaGoogle, FaInstagram, FaLinkedin, FaMapMarker, FaPhone, FaTwitter } from "react-icons/fa";
@@ -60,14 +60,21 @@ const LocationContactPage = async ({ locationData, contactContent }: Props) => {
                 </h2>
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col mt-2 group">
-                    <div className="flex items-center gap-2 text-text group-hover:text-primary transition-all duration-300 ease-in-out">
-                      <FaMapMarker className="w-4 h-4 -mt-1" />
-                      <h3 className="font-medium tracking-[0.2em] uppercase font-heading">Address</h3>
-                    </div>
-                    <p className="text-text">
-                      {locationData.address.full_address || 
-                       `${locationData.address.street}, ${locationData.address.city}, ${locationData.address.state} ${locationData.address.zip_code}`}
-                    </p>
+                    <Link 
+                      href={generateGoogleMapsUrl(locationData.address, locationData.name)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-text hover:text-primary transition-all duration-300 ease-in-out"
+                    >
+                      <div className="flex items-center gap-2 text-text group-hover:text-primary transition-all duration-300 ease-in-out">
+                        <FaMapMarker className="w-4 h-4 -mt-1" />
+                        <h3 className="font-medium tracking-[0.2em] uppercase font-heading">Address</h3>
+                      </div>
+                      <p className="text-text">
+                        {locationData.address.full_address || 
+                         `${locationData.address.street}, ${locationData.address.city}, ${locationData.address.state} ${locationData.address.zip_code}`}
+                      </p>
+                    </Link>
                   </div>
                   {locationData.phone_number && (
                     <div className="flex flex-col mt-2 group">
@@ -75,8 +82,8 @@ const LocationContactPage = async ({ locationData, contactContent }: Props) => {
                         <FaPhone className="w-4 h-4 -mt-1 mr-1" />
                         <h3 className="font-medium tracking-[0.2em] uppercase font-heading">Phone</h3>
                       </div>
-                      <Link href={`tel:${locationData.phone_number}`} className="text-text hover:text-primary transition-all duration-300 ease-in-out">
-                        {locationData.phone_number}
+                      <Link href={`tel:${formatPhoneForTel(locationData.phone_number)}`} className="text-text hover:text-primary transition-all duration-300 ease-in-out">
+                        {formatPhoneForDisplay(locationData.phone_number)}
                       </Link>
                     </div>
                   )}

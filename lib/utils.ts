@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { ContactLocation } from "./wordpress.d"
+import { ContactLocation, SEOLocation } from "./wordpress.d"
 import { ThemeColors } from "./wordpress.d"
 
 export function cn(...inputs: ClassValue[]) {
@@ -352,4 +352,174 @@ export function convertTo12HourFormat(time: string): string {
   const displayHours = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours;
   
   return `${displayHours}:${minutes.toString().padStart(2, "0")} ${period}`;
+}
+
+/**
+ * Formats a US phone number for tel: links
+ * Converts "(123) 456-7890" to "+11234567890"
+ */
+export function formatPhoneForTel(phoneNumber: string): string {
+  if (!phoneNumber) return "";
+  
+  // Remove all non-digits
+  const digitsOnly = phoneNumber.replace(/\D/g, '');
+  
+  // If it's already 11 digits starting with 1, return with +
+  if (digitsOnly.length === 11 && digitsOnly.startsWith('1')) {
+    return `+${digitsOnly}`;
+  }
+  
+  // If it's 10 digits, add +1 prefix
+  if (digitsOnly.length === 10) {
+    return `+1${digitsOnly}`;
+  }
+  
+  // If it's already formatted with +1, return as is
+  if (phoneNumber.startsWith('+1')) {
+    return phoneNumber;
+  }
+  
+  // Fallback: try to extract 10 digits and add +1
+  const match = phoneNumber.match(/\d{10}/);
+  if (match) {
+    return `+1${match[0]}`;
+  }
+  
+  return phoneNumber; // Return original if we can't format it
+}
+
+/**
+ * Formats a US phone number for display
+ * Converts "+11234567890" or "1234567890" to "(123) 456-7890"
+ */
+export function formatPhoneForDisplay(phoneNumber: string): string {
+  if (!phoneNumber) return "";
+  
+  // Remove all non-digits
+  const digitsOnly = phoneNumber.replace(/\D/g, '');
+  
+  // Handle 11 digits (with country code)
+  if (digitsOnly.length === 11 && digitsOnly.startsWith('1')) {
+    const areaCode = digitsOnly.slice(1, 4);
+    const exchange = digitsOnly.slice(4, 7);
+    const number = digitsOnly.slice(7, 11);
+    return `(${areaCode}) ${exchange}-${number}`;
+  }
+  
+  // Handle 10 digits (without country code)
+  if (digitsOnly.length === 10) {
+    const areaCode = digitsOnly.slice(0, 3);
+    const exchange = digitsOnly.slice(3, 6);
+    const number = digitsOnly.slice(6, 10);
+    return `(${areaCode}) ${exchange}-${number}`;
+  }
+  
+  // If already in correct format, return as is
+  if (phoneNumber.match(/^\(\d{3}\) \d{3}-\d{4}$/)) {
+    return phoneNumber;
+  }
+  
+  return phoneNumber; // Return original if we can't format it
+}
+
+/**
+ * Generates a Google Maps URL for a location address
+ * Can include business name for better search results
+ */
+export function generateGoogleMapsUrl(address: any, businessName?: string): string {
+  if (!address) return "#";
+  
+  // Build the full address string
+  const fullAddress = address.full_address || 
+    `${address.street}, ${address.city}, ${address.state} ${address.zip_code}`;
+  
+  // If business name is provided, include it for better search results
+  const searchQuery = businessName ? 
+    `${businessName} ${fullAddress}` : 
+    fullAddress;
+  
+  return `https://maps.google.com/?q=${encodeURIComponent(searchQuery)}`;
+}
+
+/**
+ * Generates a neighborhood slug for routing
+ * Example: generateNeighborhoodSlug("Los Angeles", "CA", "Hollywood") 
+ * Returns: "california/los-angeles/hollywood"
+ */
+export function generateNeighborhoodSlug(city: string, state: string, neighborhood: string): string {
+  const stateFullName = getStateFullName(state);
+  const citySlug = city.toLowerCase().replace(/\s+/g, '-');
+  const neighborhoodSlug = neighborhood.toLowerCase().replace(/\s+/g, '-');
+  return `${stateFullName}/${citySlug}/${neighborhoodSlug}`;
+}
+
+/**
+ * Finds location by neighborhood slug
+ * Example: findLocationByNeighborhoodSlug(locations, "california/los-angeles/hollywood")
+ */
+export function findSEOLocationByNeighborhoodSlug(seoLocations: SEOLocation[], neighborhoodSlug: string): SEOLocation | null {
+  if (!seoLocations || seoLocations.length === 0) {
+    return null;
+  }
+  
+  return seoLocations.find(location => {
+    if (!location?.address?.neighborhood || location.address.neighborhood.trim() === "") {
+      return false;
+    }
+    const expectedSlug = generateNeighborhoodSlug(
+      location.address.city, 
+      location.address.state, 
+      location.address.neighborhood
+    );
+    return expectedSlug === neighborhoodSlug;
+  }) || null;
+}
+
+/**
+ * Gets only SEO locations that have neighborhoods
+ */
+export function getSEOLocationsWithNeighborhoods(seoLocations: SEOLocation[]): SEOLocation[] {
+  return seoLocations.filter(location => 
+    location.address.neighborhood && 
+    location.address.neighborhood.trim() !== ""
+  );
+}
+
+/**
+ * Finds SEO location by city slug
+ * Example: findSEOLocationByCitySlug(seoLocations, "california/los-angeles")
+ */
+export function findSEOLocationByCitySlug(seoLocations: SEOLocation[], citySlug: string): SEOLocation | null {
+  if (!seoLocations || seoLocations.length === 0) {
+    return null;
+  }
+  
+  return seoLocations.find(location => {
+    const expectedSlug = `${getStateFullName(location.address.state)}/${location.address.city.toLowerCase().replace(/\s+/g, '-')}`;
+    return expectedSlug === citySlug;
+  }) || null;
+}
+
+/**
+ * Generates breadcrumb data for neighborhood pages using SEOLocation
+ */
+export function generateNeighborhoodBreadcrumbs(seoLocation: SEOLocation | null) {
+  if (!seoLocation) {
+    return [
+      { label: "Home", href: "/" },
+      { label: "Locations", href: "/locations" }
+    ];
+  }
+  
+  const stateFullName = getStateFullName(seoLocation.address.state);
+  const citySlug = seoLocation.address.city.toLowerCase().replace(/\s+/g, '-');
+  const neighborhoodSlug = seoLocation.address.neighborhood.toLowerCase().replace(/\s+/g, '-');
+  
+  return [
+    { label: "Home", href: "/" },
+    { label: "Locations", href: "/locations" },
+    { label: seoLocation.address.state, href: `/locations/${stateFullName}` },
+    { label: seoLocation.address.city, href: `/locations/${stateFullName}/${citySlug}` },
+    { label: seoLocation.address.neighborhood, href: `/locations/${stateFullName}/${citySlug}/${neighborhoodSlug}` }
+  ];
 }

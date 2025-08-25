@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 // Utility Imports
 import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { getMainPhysicalLocation, getStateFullName } from "@/lib/utils";
+import { getMainPhysicalLocation, getStateFullName, formatPhoneForTel, formatPhoneForDisplay } from "@/lib/utils";
 
 // Component Imports
 import { Button } from "@/components/ui/button";
@@ -127,8 +127,8 @@ export function MobileNav({ themeOptions, contactContent }: MobileNavProps) {
             {mainLocation?.phone_number && (
               <div className="flex items-center gap-2">
                 <FaPhone className="w-4 h-4" />
-                <Link href={`tel:${mainLocation.phone_number}`} className="text-muted-foreground/80 hover:text-primary transition-all duration-300 ease-in-out">
-                  {mainLocation.phone_number}
+                <Link href={`tel:${formatPhoneForTel(mainLocation.phone_number)}`} className="text-muted-foreground/80 hover:text-primary transition-all duration-300 ease-in-out">
+                  {formatPhoneForDisplay(mainLocation.phone_number)}
                 </Link>
               </div>
             )}

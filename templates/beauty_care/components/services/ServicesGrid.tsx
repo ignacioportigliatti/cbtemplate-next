@@ -1,4 +1,4 @@
-import { ServicesContent } from '@/lib/wordpress.d';
+import { ServicesContent, ContactLocation, SEOLocation } from '@/lib/wordpress.d';
 import Link from 'next/link';
 import React from 'react'
 import { Button } from '@/components/ui/button';
@@ -8,10 +8,13 @@ import { getStateFullName } from '@/lib/utils';
 interface Props {
     servicesContent: ServicesContent;
     locationSlug?: string;
-    locationData?: any; // Add locationData prop for better URL generation
+    locationData?: ContactLocation; // For backward compatibility with city pages
+    seoLocationData?: SEOLocation; // For neighborhood pages
+    mainLocationData?: ContactLocation; // For neighborhood pages (contact info)
+    isNeighborhoodPage?: boolean;
 }
 
-const ServicesGrid = ({servicesContent, locationData} : Props) => {
+const ServicesGrid = ({servicesContent, locationData, seoLocationData, mainLocationData, isNeighborhoodPage = false} : Props) => {
     return (
         <div className="max-w-7xl mx-auto px-8 xl:px-0">
             <div className="space-y-2">
@@ -35,7 +38,21 @@ const ServicesGrid = ({servicesContent, locationData} : Props) => {
                 {servicesContent.services.map((service) => (
                 <Link
                   key={service.title}
-                  href={locationData ? `/locations/${getStateFullName(locationData.address.state)}/${locationData.address.city.toLowerCase().replace(/\s+/g, '-')}/${service.slug}` : `/services/${service.slug}`}
+                  href={(() => {
+                    if (isNeighborhoodPage && seoLocationData) {
+                      // Neighborhood page - use seoLocationData for URL
+                      return `/locations/${getStateFullName(seoLocationData.address.state)}/${seoLocationData.address.city.toLowerCase().replace(/\s+/g, '-')}/${seoLocationData.address.neighborhood.toLowerCase().replace(/\s+/g, '-')}/services/${service.slug}`;
+                    } else if (seoLocationData && !locationData) {
+                      // City page with SEO location only - use seoLocationData for URL
+                      return `/locations/${getStateFullName(seoLocationData.address.state)}/${seoLocationData.address.city.toLowerCase().replace(/\s+/g, '-')}/services/${service.slug}`;
+                    } else if (locationData) {
+                      // City page with regular location - use locationData for URL
+                      return `/locations/${getStateFullName(locationData.address.state)}/${locationData.address.city.toLowerCase().replace(/\s+/g, '-')}/services/${service.slug}`;
+                    } else {
+                      // Default services page
+                      return `/services/${service.slug}`;
+                    }
+                  })()}
                   className="!bg-transparent rounded-lg flex text-center items-center md:text-left flex-col-reverse gap-4 md:gap-6 md:flex-row p-6 border border-border/50 hover:border-border/80 transition-all 
                   duration-300 hover:shadow-lg hover:bg-background-600 ease-in-out"
                 >

@@ -33,3 +33,8 @@ export { default as ServiceDetailPage } from './pages/ServiceDetailPage';
 
 // Location Hub Pages
 export { default as LocationHubPage } from './pages/LocationHubPage';
+
+// Neighborhood Pages
+export { default as NeighborhoodHubPage } from './pages/NeighborhoodHubPage';
+export { default as NeighborhoodServicesPage } from './pages/NeighborhoodServicesPage';
+export { default as NeighborhoodServiceDetailPage } from './pages/NeighborhoodServiceDetailPage';

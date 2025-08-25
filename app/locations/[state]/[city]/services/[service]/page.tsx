@@ -1,6 +1,6 @@
 import { getActiveTemplate, loadTemplate } from "@/lib/template-resolver";
 import { getContactContent, getServicesContent, getThemeOptions } from "@/lib/wordpress";
-import { generateLocationSlug, findLocationBySlug, getStateAbbreviation, getStateFullName } from "@/lib/utils";
+import { generateLocationSlug, findSEOLocationByCitySlug, getStateAbbreviation, getStateFullName, getMainPhysicalLocation } from "@/lib/utils";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { ServiceSchema, LocalBusinessSchema } from "@/components/StructuredData";
@@ -16,8 +16,8 @@ export async function generateStaticParams() {
   
   const params: Array<{ state: string; city: string; service: string }> = [];
   
-  // Generate pages for ALL locations (physical and virtual) for SEO
-  contactContent.locations.forEach(location => {
+  // Generate pages for ALL SEO locations for better local SEO
+  contactContent.seo_locations.forEach(location => {
     const stateSlug = getStateFullName(location.address.state);
     const citySlug = location.address.city.toLowerCase().replace(/\s+/g, '-');
     
@@ -46,12 +46,12 @@ export async function generateMetadata({ params }: { params: Promise<{ state: st
     // Create the location slug from state and city parameters
     const locationSlug = `${state}/${city}`;
     
-    // Find location using the existing utility function
-    const locationData = findLocationBySlug(contactContent.locations, locationSlug);
+    // Find SEO location using the city slug
+    const seoLocationData = findSEOLocationByCitySlug(contactContent.seo_locations, locationSlug);
     
     const serviceData = servicesContent.services.find((s: ServiceItem) => s.slug === service);
     
-    if (!locationData || !serviceData) {
+    if (!seoLocationData || !serviceData) {
       return {
         title: "Service not found",
         description: "The requested service could not be found",
@@ -59,23 +59,26 @@ export async function generateMetadata({ params }: { params: Promise<{ state: st
       };
     }
 
+    // Get main location for contact data
+    const mainLocationData = getMainPhysicalLocation(contactContent.locations);
+
     const title = siteConfig.site_name;
-    const description = `${serviceData.title} in ${locationData.address.city}, ${locationData.address.state}. ${serviceData.description}`;
+    const description = `${serviceData.title} in ${seoLocationData.address.city}, ${seoLocationData.address.state}. ${serviceData.description}`;
     const logoUrl = themeOptions.general.site_logo?.url;
 
     return {
-      title: `${serviceData.title} in ${locationData.address.city}, ${locationData.address.state} | ${title}`,
+      title: `${serviceData.title} in ${seoLocationData.address.city}, ${seoLocationData.address.state} | ${title}`,
       description,
       openGraph: {
-        title: `${serviceData.title} in ${locationData.address.city}, ${locationData.address.state} | ${title}`,
+        title: `${serviceData.title} in ${seoLocationData.address.city}, ${seoLocationData.address.state} | ${title}`,
         description,
         type: "website",
-        url: `${siteConfig.site_domain}/locations/${state}/${city}/${service}`,
+        url: `${siteConfig.site_domain}/locations/${state}/${city}/services/${service}`,
         images: serviceData.featured_image?.url ? [{ url: serviceData.featured_image.url }] : logoUrl ? [{ url: logoUrl }] : [],
       },
       twitter: {
         card: "summary_large_image",
-        title: `${serviceData.title} in ${locationData.address.city}, ${locationData.address.state} | ${title}`,
+        title: `${serviceData.title} in ${seoLocationData.address.city}, ${seoLocationData.address.state} | ${title}`,
         description,
         images: serviceData.featured_image?.url ? [serviceData.featured_image.url] : logoUrl ? [logoUrl] : [],
       },
@@ -107,14 +110,17 @@ export default async function LocationServiceDetailPage({ params }: { params: Pr
     // Create the location slug from state and city parameters
     const locationSlug = `${state}/${city}`;
     
-    // Find location using the existing utility function
-    const locationData = findLocationBySlug(contactContent.locations, locationSlug);
+    // Find SEO location using the city slug
+    const seoLocationData = findSEOLocationByCitySlug(contactContent.seo_locations, locationSlug);
     
     const serviceData = servicesContent.services.find((s: ServiceItem) => s.slug === service);
     
-    if (!locationData || !serviceData) {
+    if (!seoLocationData || !serviceData) {
       return notFound();
     }
+    
+    // Get main location for contact data
+    const mainLocationData = getMainPhysicalLocation(contactContent.locations);
     
     // Transform data for structured data
     const business = transformContactToBusiness(contactContent, themeOptions, siteConfig.site_domain);
@@ -133,11 +139,11 @@ export default async function LocationServiceDetailPage({ params }: { params: Pr
       name: themeOptions.general.site_name,
       url: siteConfig.site_domain,
       address: business?.address || {
-        street: locationData.address.street,
-        city: locationData.address.city,
-        state: locationData.address.state,
-        zipCode: locationData.address.zip_code,
-        country: locationData.address.country
+        street: seoLocationData.address.street,
+        city: seoLocationData.address.city,
+        state: seoLocationData.address.state,
+        zipCode: seoLocationData.address.zip_code,
+        country: seoLocationData.address.country
       }
     };
     
@@ -157,12 +163,18 @@ export default async function LocationServiceDetailPage({ params }: { params: Pr
         )}
         
         {/* Template Component */}
-        <template.LocationServiceDetailPage locationData={locationData} serviceData={serviceData} contactContent={contactContent} themeOptions={themeOptions} />
+        <template.LocationServiceDetailPage 
+          seoLocationData={seoLocationData}
+          mainLocationData={mainLocationData}
+          serviceData={serviceData} 
+          contactContent={contactContent} 
+          themeOptions={themeOptions} 
+        />
       </>
     );
   } catch (error) {
     console.error('Error in LocationServiceDetailPage:', error);
     // Return template without structured data if there's an error
-    return <template.LocationServiceDetailPage locationData={null} serviceData={null} contactContent={null} themeOptions={null} />;
+    return <template.LocationServiceDetailPage seoLocationData={null} mainLocationData={null} serviceData={null} contactContent={null} themeOptions={null} />;
   }
 }

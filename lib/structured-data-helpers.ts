@@ -3,7 +3,9 @@ import {
   ServicesContent, 
   ReviewsContent, 
   ThemeOptions,
-  Post
+  Post,
+  ContactLocation,
+  SEOLocation
 } from './wordpress.d';
 
 // Transformar datos de contacto a formato de negocio local
@@ -26,6 +28,7 @@ export function transformContactToBusiness(
       logo: themeOptions.general.site_logo?.url,
       address: {
         street: mainLocation.address.street || '',
+        neighborhood: mainLocation.address.neighborhood || '',
         city: mainLocation.address.city || '',
         state: mainLocation.address.state || '',
         zipCode: mainLocation.address.zip_code || '',
@@ -41,6 +44,9 @@ export function transformContactToBusiness(
         facebook: mainLocation.social_media.facebook,
         instagram: mainLocation.social_media.instagram,
         google: mainLocation.social_media.google,
+        google_reviews: mainLocation.social_media.google_reviews,
+        yelp_reviews: mainLocation.social_media.yelp_reviews,
+        tripadvisor_reviews: mainLocation.social_media.tripadvisor_reviews,
         linkedin: mainLocation.social_media.linkedin,
         pinterest: mainLocation.social_media.pinterest
       } : undefined
@@ -66,6 +72,66 @@ export function transformTimetableToHours(timetable: any) {
     }
     return acc;
   }, {} as Record<string, { isOpen: boolean; openTime?: string; closeTime?: string }>);
+}
+
+/**
+ * Transform contact data to neighborhood business schema
+ * Uses SEOLocation for address/neighborhood data and ContactLocation for contact info
+ */
+export function transformContactToNeighborhoodBusiness(
+  contactContent: ContactContent,
+  themeOptions: ThemeOptions,
+  siteDomain: string,
+  seoLocationData: SEOLocation
+) {
+  try {
+    if (!seoLocationData.address.neighborhood || seoLocationData.address.neighborhood.trim() === "") {
+      return null;
+    }
+
+    // Get main location for contact data
+    const mainLocation = contactContent.locations.find(location => location.physical_location) || contactContent.locations[0];
+
+    return {
+      name: `${themeOptions.general.site_name} - ${seoLocationData.address.neighborhood}`,
+      description: `${themeOptions.general.site_description} Located in ${seoLocationData.address.neighborhood}, ${seoLocationData.address.city}, ${seoLocationData.address.state}`,
+      url: siteDomain,
+      logo: themeOptions.general.site_logo?.url,
+      address: {
+        street: seoLocationData.address.street || '',
+        neighborhood: seoLocationData.address.neighborhood || '',
+        city: seoLocationData.address.city || '',
+        state: seoLocationData.address.state || '',
+        zipCode: seoLocationData.address.zip_code || '',
+        country: seoLocationData.address.country || ''
+      },
+      contact: {
+        phone: mainLocation?.phone_number || '',
+        email: mainLocation?.email || ''
+      },
+      hours: mainLocation?.timetable ? transformTimetableToHours(mainLocation.timetable) : {},
+      priceRange: '$$', // Puede ser configurable desde WordPress
+      socialMedia: mainLocation?.social_media ? {
+        facebook: mainLocation.social_media.facebook,
+        instagram: mainLocation.social_media.instagram,
+        google: mainLocation.social_media.google,
+        google_reviews: mainLocation.social_media.google_reviews,
+        yelp_reviews: mainLocation.social_media.yelp_reviews,
+        tripadvisor_reviews: mainLocation.social_media.tripadvisor_reviews,
+        linkedin: mainLocation.social_media.linkedin,
+        pinterest: mainLocation.social_media.pinterest
+      } : undefined,
+      // Neighborhood specific data for enhanced local SEO
+      areaServed: {
+        neighborhood: seoLocationData.address.neighborhood,
+        city: seoLocationData.address.city,
+        state: seoLocationData.address.state
+      }
+    };
+  } catch (error) {
+    console.error('Error transforming contact to neighborhood business:', error);
+    return null;
+  }
 }
 
 // Transformar servicios de WordPress a formato de schema

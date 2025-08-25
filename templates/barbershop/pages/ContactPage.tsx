@@ -1,5 +1,5 @@
 import { ContactContent, ContactLocation } from "@/lib/wordpress.d";
-import { generateLocationSlug } from "@/lib/utils";
+import { generateLocationSlug, formatPhoneForTel, formatPhoneForDisplay, generateGoogleMapsUrl } from "@/lib/utils";
 import React from "react";
 import Link from "next/link";
 import { FaEnvelope, FaFacebook, FaGoogle, FaInstagram, FaLinkedin, FaMapMarker, FaPhone, FaTwitter } from "react-icons/fa";
@@ -60,33 +60,40 @@ const ContactPage = async ({ contactContent }: Props) => {
                 </h2>
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col mt-2 group">
-                    <div className="flex items-center gap-2 text-text group-hover:text-primary transition-all duration-300 ease-in-out">
-                      <FaMapMarker className="w-4 h-4 -mt-1" />
-                      <h3 className="font-medium tracking-[0.2em] uppercase font-heading">Address</h3>
-                    </div>
-                    <p className="text-text">
-                      {locationData.address.full_address || 
-                       `${locationData.address.street}, ${locationData.address.city}, ${locationData.address.state} ${locationData.address.zip_code}`}
-                    </p>
+                    <Link 
+                      href={generateGoogleMapsUrl(locationData.address, locationData.name)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-text hover:text-primary transition-all duration-300 ease-in-out"
+                    >
+                      <div className="flex items-center gap-2 text-text group-hover:text-primary transition-all duration-300 ease-in-out">
+                        <FaMapMarker className="w-4 h-4 -mt-1" />
+                        <h3 className="font-medium tracking-[0.2em] uppercase font-heading">Address</h3>
+                      </div>
+                      <p className="text-text group-hover:text-primary transition-all duration-300 ease-in-out">
+                        {locationData.address.full_address || 
+                         `${locationData.address.street}, ${locationData.address.city}, ${locationData.address.state} ${locationData.address.zip_code}`}
+                      </p>
+                    </Link>
                   </div>
                   {locationData.phone_number && (
                     <div className="flex flex-col mt-2 group">
+                      <Link href={`tel:${formatPhoneForTel(locationData.phone_number)}`} className="text-text hover:text-primary transition-all duration-300 ease-in-out">
                       <div className="flex items-center gap-1 text-text group-hover:text-primary transition-all duration-300 ease-in-out">
                         <FaPhone className="w-4 h-4 -mt-1 mr-1" />
-                        <h3 className="font-medium tracking-[0.2em] uppercase font-heading">Phone</h3>
+                        <h3 className="font-medium tracking-[0.2em] uppercase font-heading pointer-events-none">Phone</h3>
                       </div>
-                      <Link href={`tel:${locationData.phone_number}`} className="text-text hover:text-primary transition-all duration-300 ease-in-out">
-                        {locationData.phone_number}
+                        {formatPhoneForDisplay(locationData.phone_number)}
                       </Link>
                     </div>
                   )}
                   {locationData.email && (
                     <div className="flex flex-col mt-2 group">
+                      <Link href={`mailto:${locationData.email}`} className="text-text hover:text-primary transition-all duration-300 ease-in-out">
                       <div className="flex items-center gap-2 text-text group-hover:text-primary transition-all duration-300 ease-in-out">
                         <FaEnvelope className="w-4 h-4 -mt-1" />
-                        <h3 className="font-medium tracking-[0.2em] uppercase font-heading">Email</h3>
+                        <h3 className="font-medium tracking-[0.2em] uppercase font-heading pointer-events-none">Email</h3>
                       </div>
-                      <Link href={`mailto:${locationData.email}`} className="text-text hover:text-primary transition-all duration-300 ease-in-out">
                         {locationData.email}
                       </Link>
                     </div>
@@ -103,8 +110,11 @@ const ContactPage = async ({ contactContent }: Props) => {
                           google: <FaGoogle className="w-4 h-4 -mt-1" />,
                         };
 
+                        const isSocialMedia = key === "facebook" || key === "instagram" || key === "twitter" || key === "linkedin" || key === "google";
+
                         return (
-                          <div
+                          isSocialMedia && (
+                            <div
                             key={key}
                             className="flex items-center gap-2 text-text hover:text-primary transition-all duration-300 ease-in-out"
                           >
@@ -118,7 +128,7 @@ const ContactPage = async ({ contactContent }: Props) => {
                               {key}
                             </Link>
                           </div>
-                        );
+                        ))
                       })}
                   </div>
                 </div>

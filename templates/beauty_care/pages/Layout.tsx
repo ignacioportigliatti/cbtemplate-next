@@ -9,6 +9,7 @@ import { Nav } from "@/templates/beauty_care/components/layout/Nav";
 import { getContactContent, getThemeOptions } from "@/lib/wordpress";
 import { Footer } from "@/templates/beauty_care/components/layout/Footer";
 import { ChilledButterScript } from "@/components/ChilledButterScript";
+import { HeaderScripts } from "@/components/HeaderScripts";
 
 import React from "react";
 
@@ -123,6 +124,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <ChilledButterScript 
           scriptTag={themeOptions?.general?.cta_script_tag}
           ctaType={themeOptions?.general?.cta_type}
+        />
+        <HeaderScripts 
+          headerScripts={themeOptions?.general?.header_scripts}
         />
       </body>
     </html>

@@ -462,6 +462,14 @@ export interface ThemeOptions {
     ctaHeader?: boolean;
     cta_type?: "chilled_butter_widget" | "default_form";
     cta_script_tag?: string;
+    header_scripts?: {
+      scripts: Array<{
+        id: string;
+        name: string;
+        code: string;
+        active: boolean;
+      }>;
+    };
   };
   colors: ThemeColors;
   templates: ThemeTemplates;

@@ -57,7 +57,7 @@ export default async function CustomPage({ params }: { params: Promise<{ slug: s
 
     return (
       <ScrollAnimations>
-        <Section>
+        <Section className="!bg-background-950">
           <Container className="max-w-7xl mx-auto pt-40">
             <div>
               <h1 className="text-4xl font-bold mb-6">{page.title.rendered}</h1>
@@ -66,9 +66,13 @@ export default async function CustomPage({ params }: { params: Promise<{ slug: s
                 dangerouslySetInnerHTML={{ __html: page.content.rendered }}
               />
             </div>
-              <AboutUsContact />
           </Container>
         </Section>
+              <Section>
+                <Container className="max-w-7xl mx-auto pt-16">
+                  <AboutUsContact />
+                </Container>
+              </Section>
       </ScrollAnimations>
     );
   } catch (error) { 

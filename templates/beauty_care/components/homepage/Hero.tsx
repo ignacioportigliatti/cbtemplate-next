@@ -1,3 +1,5 @@
+"use client";
+
 import { HomePageContent, ThemeOptions, ContactContent } from "@/lib/wordpress.d";
 import Link from "next/link";
 import React from "react";
@@ -5,6 +7,7 @@ import Balancer from "react-wrap-balancer";
 import HeroCarousel from "./HeroCarousel";
 import Image from "next/image";
 import { getMainPhysicalLocation, getStateFullName } from "@/lib/utils";
+import TrackedButton from "./TrackedButton";
 
 interface Props {
   homeContent: HomePageContent;
@@ -79,8 +82,9 @@ const Hero = ({ homeContent, themeOptions, contactContent }: Props) => {
                 </button>
               ) : (
                 <Link
-                  href={contactHref}
-                  className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 text-lg font-medium hover:bg-primary/90 transition-all duration-300 ease-in-out font-heading rounded-lg"
+                href={contactHref}
+                  className="inline-flex items-center gap-2 bg-transparent text-primary px-8 py-4 text-xl font-medium border-2 hover:text-primary-foreground border-primary hover:bg-primary transition-all duration-300 ease-in-out font-heading rounded-lg
+                  "
                 >
                   {buttonText}
                   <svg 

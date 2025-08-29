@@ -17,7 +17,6 @@ import PopularServices from "@/templates/beauty_care/components/homepage/Popular
 import FeaturedBlog from "@/templates/beauty_care/components/homepage/FeaturedBlog";
 import FAQ from "@/templates/beauty_care/components/homepage/FAQ";
 import { Metadata } from "next";
-import { siteConfig } from "@/site.config";
 import Reviews from "@/templates/beauty_care/components/homepage/Reviews";
 import Team from "@/templates/beauty_care/components/homepage/Team";
 import AboutUsContact from "../components/about/AboutUsContact";

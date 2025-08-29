@@ -43,8 +43,8 @@ export const Nav = ({ className, children, id, themeOptions, contactContent }: N
               src={themeOptions?.general?.site_logo?.url as string}
               alt="Logo"
               loading="eager"
-              className="w-[96px] h-[48px] md:w-[128px] md:h-[64px] object-contain"
-              width={128}
+              className="h-[48px] md:h-[64px] object-contain"
+              width={64}
               height={64}
             />
           ) : (

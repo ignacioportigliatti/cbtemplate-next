@@ -11,7 +11,8 @@ import { Footer } from "@/templates/barbershop/components/layout/Footer";
 import { ChilledButterScript } from "@/components/ChilledButterScript";
 import { HeaderScripts } from "@/components/HeaderScripts";
 
-import React from "react";
+import React, { Suspense } from "react";
+import FormbricksProvider from "@/app/formbricks";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -107,6 +108,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       suppressHydrationWarning
     >
       <head />
+      <Suspense>
+        <FormbricksProvider />
+      </Suspense>
       <body className={cn("min-h-screen font-sans antialiased overflow-x-hidden", fontSans.variable, fontHeading.variable)}>
         <ThemeProvider
           attribute="class"

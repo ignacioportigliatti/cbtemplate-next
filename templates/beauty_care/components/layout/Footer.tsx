@@ -91,9 +91,9 @@ export const Footer = async ({ themeOptions, contactContent }: FooterProps) => {
                   <Image
                     src={themeOptions?.general?.site_logo?.url as string}
                     alt={themeOptions?.general?.site_name || "Logo"}
-                    className="h-[60px] object-contain"
-                    width={60}
-                    height={60}
+                    className="w-[96px] h-[48px] md:w-[128px] md:h-[64px] object-contain"
+                    width={128}
+                    height={128}
                   />
                 ) : (
                   <h3 className="text-xl font-bold text-primary">

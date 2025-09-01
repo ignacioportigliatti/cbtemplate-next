@@ -2,7 +2,6 @@ import { Inter as FontSans, Teko as FontHeading } from "next/font/google";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { ThemeWrapper } from "@/components/theme/theme-wrapper";
 import { Analytics } from "@vercel/analytics/react";
-import { siteConfig } from "@/site.config";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { Nav } from "@/templates/barbershop/components/layout/Nav";
@@ -12,7 +11,6 @@ import { ChilledButterScript } from "@/components/ChilledButterScript";
 import { HeaderScripts } from "@/components/HeaderScripts";
 
 import React, { Suspense } from "react";
-import FormbricksProvider from "@/app/formbricks";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -108,9 +106,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       suppressHydrationWarning
     >
       <head />
-      <Suspense>
-        <FormbricksProvider />
-      </Suspense>
       <body className={cn("min-h-screen font-sans antialiased overflow-x-hidden", fontSans.variable, fontHeading.variable)}>
         <ThemeProvider
           attribute="class"

@@ -428,6 +428,7 @@ export interface ContactContent {
   page_info: ContactPageInfo;
   locations: ContactLocation[];
   seo_locations: SEOLocation[];
+  contact_forms: ContactForms;
 }
 
 // Additional types for contact updates
@@ -460,8 +461,13 @@ export interface ThemeOptions {
     site_logo: WordpressImageInfo;
     site_icon?: WordpressImageInfo;
     ctaHeader?: boolean;
-    cta_type?: "chilled_butter_widget" | "default_form";
+    cta_type?: "chilled_butter_widget" | "default_form" | "contact_form";
     cta_script_tag?: string;
+    cta_form_id?: string;
+    available_forms?: Array<{
+      id: string;
+      title: string;
+    }>;
     header_scripts?: {
       scripts: Array<{
         id: string;
@@ -549,4 +555,89 @@ export interface AboutUsContent {
   mission: AboutSection;
   values: AboutValues;
   gallery: WordpressImageInfo[];
+}
+
+// Dynamic Forms Types
+export interface FormField {
+  id: string;
+  type: 'text' | 'email' | 'tel' | 'select' | 'radio' | 'textarea' | 'checkbox';
+  label: string;
+  placeholder?: string;
+  required: boolean;
+  validation?: string[];
+  options?: {
+    label: string;
+    value: string;
+  }[];
+  conditional?: {
+    field: string;
+    value: string;
+    operator: 'equals' | 'contains';
+  };
+}
+
+export interface FormStep {
+  id: string;
+  title: string;
+  subtitle: string;
+  fields: FormField[];
+  validation?: {
+    required: string[];
+    custom?: string[];
+  };
+}
+
+export interface FormSettings {
+  submitText: string;
+  successMessage: string;
+  errorMessage: string;
+  redirectUrl?: string;
+  emailNotifications: {
+    enabled: boolean;
+    recipients: string[] | false;
+    subject: string;
+    template: string;
+  };
+}
+
+export interface DynamicFormConfig {
+  id: string;
+  title: string;
+  description: string;
+  active: boolean;
+  steps: FormStep[];
+  settings: FormSettings;
+}
+
+export interface ContactFormGlobalSettings {
+  default_email: string;
+  default_subject: string;
+  default_template: string;
+}
+
+export interface ContactForms {
+  enabled: boolean;
+  global_settings: ContactFormGlobalSettings;
+  forms: DynamicFormConfig[];
+}
+
+// Form submission types
+export interface FormSubmission {
+  formId: string;
+  formData: Record<string, string>;
+  timestamp: string;
+  userAgent: string;
+  referrer: string;
+  ip?: string;
+  location?: {
+    country?: string;
+    city?: string;
+  };
+}
+
+export interface FormSubmissionResponse {
+  success: boolean;
+  message: string;
+  submissionId?: string;
+  errors?: Record<string, string>;
 }

@@ -1,13 +1,12 @@
 "use client";
 
 import { HomePageContent, ThemeOptions, ContactContent } from "@/lib/wordpress.d";
-import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import Balancer from "react-wrap-balancer";
 import HeroCarousel from "./HeroCarousel";
 import Image from "next/image";
 import { getMainPhysicalLocation, getStateFullName } from "@/lib/utils";
-import TrackedButton from "./TrackedButton";
+import ContactDialog from "./ContactDialog";
 
 interface Props {
   homeContent: HomePageContent;
@@ -16,7 +15,9 @@ interface Props {
 }
 
 const Hero = ({ homeContent, themeOptions, contactContent }: Props) => {
-  // Determine button text based on CTA type
+  const [dialogOpen, setDialogOpen] = useState(false);
+  
+  // Determine button text and behavior based on CTA type
   const ctaType = themeOptions?.general?.cta_type || "default_form";
   const buttonText = ctaType === "chilled_butter_widget" 
     ? homeContent.hero.button.label 
@@ -81,10 +82,9 @@ const Hero = ({ homeContent, themeOptions, contactContent }: Props) => {
                   </svg>
                 </button>
               ) : (
-                <Link
-                href={contactHref}
-                  className="inline-flex items-center gap-2 bg-transparent text-primary px-8 py-4 text-xl font-medium border-2 hover:text-primary-foreground border-primary hover:bg-primary transition-all duration-300 ease-in-out font-heading rounded-lg
-                  "
+                <button
+                  onClick={() => setDialogOpen(true)}
+                  className="inline-flex items-center gap-2 bg-transparent text-primary px-8 py-4 text-xl font-medium border-2 hover:text-primary-foreground border-primary hover:bg-primary transition-all duration-300 ease-in-out font-heading rounded-lg"
                 >
                   {buttonText}
                   <svg 
@@ -100,12 +100,21 @@ const Hero = ({ homeContent, themeOptions, contactContent }: Props) => {
                     <path d="M5 12h14"/>
                     <path d="m12 5 7 7-7 7"/>
                   </svg>
-                </Link>
+                </button>
               )}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Contact Dialog */}
+      <ContactDialog 
+        open={dialogOpen} 
+        onOpenChange={setDialogOpen}
+        contactContent={contactContent}
+        themeOptions={themeOptions}
+      />
+
     </div>
   );
 };

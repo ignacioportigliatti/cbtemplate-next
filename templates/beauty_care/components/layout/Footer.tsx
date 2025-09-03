@@ -213,7 +213,8 @@ export const Footer = async ({ themeOptions, contactContent }: FooterProps) => {
             {/* Column 4: Locations & Other Pages */}
             <div className="space-y-6">
               {/* Locations Section */}
-              <div className="space-y-4">
+              {seoLocations.length > 0 && (
+                <div className="space-y-4">
                 <h5 className="font-medium text-base text-text font-heading">Locations</h5>
                 <div className="space-y-2">
                   {seoLocations.map((seoLocation, index) => {
@@ -228,7 +229,7 @@ export const Footer = async ({ themeOptions, contactContent }: FooterProps) => {
                     
                     return (
                       <Link
-                        key={`${seoLocation.address.city}-${seoLocation.address.state}-${seoLocation.address.neighborhood || 'no-neighborhood'}`}
+                        key={`${seoLocation.address.city}-${seoLocation.address.state}-${seoLocation.address.neighborhood || `no-neighborhood-${index}`}`}
                         href={href}
                         className="block text-muted-foreground/70 hover:text-primary transition-colors text-sm"
                       >
@@ -238,6 +239,7 @@ export const Footer = async ({ themeOptions, contactContent }: FooterProps) => {
                   })}
                 </div>
               </div>
+              )}
 
               {/* Other Pages Section */}
               <div className="space-y-4">

@@ -18,6 +18,12 @@ import type {
   ThemeOptions,
   TeamContent,
   AboutUsContent,
+  DynamicFormConfig,
+  FormSubmission,
+  FormSubmissionResponse,
+  FormField,
+  FormStep,
+  ContactForms,
 } from "./wordpress.d";
 
 const baseUrl = process.env.WORDPRESS_URL;
@@ -540,7 +546,16 @@ export async function getContactContent(): Promise<ContactContent> {
         description: "We'd love to hear from you"
       },
       locations: [],
-      seo_locations: []
+      seo_locations: [],
+      contact_forms: {
+        enabled: false,
+        global_settings: {
+          default_email: "info@example.com",
+          default_subject: "New Form Submission",
+          default_template: "You have received a new form submission."
+        },
+        forms: []
+      }
     } as ContactContent;
   }
 }
@@ -626,6 +641,105 @@ export async function getAboutUsContent(): Promise<AboutUsContent> {
       gallery: []
     } as AboutUsContent;
   }
+}
+
+// Dynamic Forms Functions
+export async function getDynamicFormConfig(formId: string): Promise<DynamicFormConfig | null> {
+  try {
+    const contactContent = await getContactContent();
+    if (!contactContent.contact_forms.enabled) {
+      return null;
+    }
+    
+    const form = contactContent.contact_forms.forms.find(f => f.id === formId && f.active);
+    return form || null;
+  } catch (error) {
+    console.error(`Error fetching form configuration for ${formId}:`, error);
+    return null;
+  }
+}
+
+export async function getAllDynamicForms(): Promise<DynamicFormConfig[]> {
+  try {
+    const contactContent = await getContactContent();
+    if (!contactContent.contact_forms.enabled) {
+      return [];
+    }
+    
+    return contactContent.contact_forms.forms.filter(f => f.active);
+  } catch (error) {
+    console.error('Error fetching all forms:', error);
+    return [];
+  }
+}
+
+export async function submitDynamicForm(submission: FormSubmission): Promise<FormSubmissionResponse> {
+  try {
+    const response = await fetch(`${baseUrl}/wp-json/wp/v2/content/contact/submit`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'Next.js WordPress Client',
+      },
+      body: JSON.stringify(submission),
+    });
+
+    if (!response.ok) {
+      throw new WordPressAPIError(
+        `Form submission failed: ${response.statusText}`,
+        response.status,
+        '/wp-json/wp/v2/content/contact/submit'
+      );
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error submitting form:', error);
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : 'Form submission failed',
+    };
+  }
+}
+
+// Helper function to validate form fields
+export function validateFormField(field: FormField, value: string): string[] {
+  const errors: string[] = [];
+  
+  if (field.required && !value.trim()) {
+    errors.push(`${field.label} is required`);
+  }
+  
+  if (field.validation) {
+    field.validation.forEach(rule => {
+      switch (rule) {
+        case 'email':
+          if (value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+            errors.push('Please enter a valid email address');
+          }
+          break;
+        case 'phone':
+          if (value && !/^[\+]?[1-9][\d]{0,15}$/.test(value.replace(/\s/g, ''))) {
+            errors.push('Please enter a valid phone number');
+          }
+          break;
+      }
+    });
+  }
+  
+  return errors;
+}
+
+// Helper function to validate form step
+export function validateFormStep(step: FormStep, formData: Record<string, string>): string[] {
+  const errors: string[] = [];
+  
+  step.fields.forEach(field => {
+    const fieldErrors = validateFormField(field, formData[field.id] || '');
+    errors.push(...fieldErrors);
+  });
+  
+  return errors;
 }
 
 export { WordPressAPIError };

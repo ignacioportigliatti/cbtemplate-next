@@ -675,20 +675,20 @@ export async function getAllDynamicForms(): Promise<DynamicFormConfig[]> {
 
 export async function submitDynamicForm(submission: FormSubmission): Promise<FormSubmissionResponse> {
   try {
-    const response = await fetch(`${baseUrl}/wp-json/wp/v2/content/contact/submit`, {
+    const response = await fetch(`${baseUrl}/wp-json/wp/v2/leads/submit`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'User-Agent': 'Next.js WordPress Client',
       },
       body: JSON.stringify(submission),
-    });
+    }); 
 
     if (!response.ok) {
       throw new WordPressAPIError(
         `Form submission failed: ${response.statusText}`,
         response.status,
-        '/wp-json/wp/v2/content/contact/submit'
+        '/wp-json/wp/v2/leads/submit'
       );
     }
 
@@ -698,6 +698,29 @@ export async function submitDynamicForm(submission: FormSubmission): Promise<For
     return {
       success: false,
       message: error instanceof Error ? error.message : 'Form submission failed',
+    };
+  }
+}
+
+export async function submitLead(leadData: {
+  formId: string;
+  formData: Record<string, any>;
+}): Promise<FormSubmissionResponse> {
+  try {
+    const submission: FormSubmission = {
+      formId: leadData.formId,
+      formData: leadData.formData,
+      timestamp: new Date().toISOString(),
+      userAgent: 'Next.js Lead Form',
+      referrer: 'Lead Form Submission'
+    };
+
+    return await submitDynamicForm(submission);
+  } catch (error) {
+    console.error('Error submitting lead:', error);
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : 'Lead submission failed',
     };
   }
 }

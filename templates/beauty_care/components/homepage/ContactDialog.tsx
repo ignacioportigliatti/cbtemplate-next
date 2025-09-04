@@ -92,8 +92,13 @@ const ContactDialog = ({ open, onOpenChange, contactContent, themeOptions }: Con
   };
 
   const nextStep = () => {
+    console.log('Next button clicked. Current step:', currentStep, 'Total steps:', getTotalSteps());
+    
     if (validateCurrentStep() && currentStep < getTotalSteps()) {
+      console.log('Validation passed, moving to next step');
       setCurrentStep(currentStep + 1);
+    } else {
+      console.log('Validation failed or already at last step');
     }
   };
 
@@ -104,20 +109,43 @@ const ContactDialog = ({ open, onOpenChange, contactContent, themeOptions }: Con
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (validateCurrentStep()) {
-      console.log("Form submitted:", formData);
+      // Obtener el ID del formulario actual
+      const formId = themeOptions?.general?.cta_form_id || 'default-form';
       
-      // Here would go the real submission logic
-      // For now, just close the dialog
-      onOpenChange(false);
-      
-      // Reset form
-      setFormData({});
-      setErrors({});
-      setCurrentStep(1);
+      try {
+        const response = await fetch('/api/leads/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            formId,
+            formData
+          }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          console.log('Lead enviado exitosamente:', result);
+          
+          // Cerrar dialog y resetear formulario
+          onOpenChange(false);
+          setFormData({});
+          setErrors({});
+          setCurrentStep(1);
+        } else {
+          console.error('Error enviando lead:', result.message);
+          // Aquí podrías mostrar un mensaje de error al usuario
+        }
+      } catch (error) {
+        console.error('Error en la submission:', error);
+        // Manejar errores de red o otros errores
+      }
     }
   };
 
@@ -299,48 +327,48 @@ const ContactDialog = ({ open, onOpenChange, contactContent, themeOptions }: Con
             />
           </div>
           
-          <form onSubmit={handleSubmit}>
-            {/* Step Content */}
-            <div className="space-y-6">
-              <div className="text-center space-y-2">
-                <h3 className="text-xl font-semibold">{currentStepConfig.title}</h3>
-                <p className="text-muted-foreground">{currentStepConfig.subtitle}</p>
-              </div>
-              
-              <div className="space-y-4">
-                {currentStepConfig.fields.map(renderField)}
-              </div>
+          {/* Step Content */}
+          <div className="space-y-6">
+            <div className="text-center space-y-2">
+              <h3 className="text-xl font-semibold">{currentStepConfig.title}</h3>
+              <p className="text-muted-foreground">{currentStepConfig.subtitle}</p>
             </div>
             
-            {/* Navigation Buttons */}
-            <div className="flex justify-between mt-8">
+            <div className="space-y-4">
+              {currentStepConfig.fields.map(renderField)}
+            </div>
+          </div>
+          
+          {/* Navigation Buttons - Moved outside form to prevent form submission issues */}
+          <div className="flex justify-between mt-8">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={prevStep}
+              disabled={currentStep === 1}
+              className="flex items-center gap-2"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              Previous
+            </Button>
+            
+            {currentStep < getTotalSteps() ? (
               <Button
                 type="button"
-                variant="outline"
-                onClick={prevStep}
-                disabled={currentStep === 1}
+                onClick={nextStep}
                 className="flex items-center gap-2"
               >
-                <ChevronLeft className="w-4 h-4" />
-                Previous
+                Next
+                <ChevronRight className="w-4 h-4" />
               </Button>
-              
-              {currentStep < getTotalSteps() ? (
-                <Button
-                  type="button"
-                  onClick={nextStep}
-                  className="flex items-center gap-2"
-                >
-                  Next
-                  <ChevronRight className="w-4 h-4" />
-                </Button>
-              ) : (
+            ) : (
+              <form onSubmit={handleSubmit} className="inline">
                 <Button type="submit" className="flex items-center gap-2">
                   {contactContent?.contact_forms?.forms?.find(f => f.active)?.settings?.submitText || "Get Started Today"}
                 </Button>
-              )}
-            </div>
-          </form>
+              </form>
+            )}
+          </div>
         </div>
       </DialogContent>
     </Dialog>
